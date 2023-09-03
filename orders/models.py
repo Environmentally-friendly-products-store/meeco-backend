@@ -8,7 +8,10 @@ class Orders(models.Model):
         on_delete=models.CASCADE,
         related_name="orders",
     )
-    address = models.TextField()
+    address = models.ForeignKey(
+        "DeliveryAddress",
+        on_delete=models.SET_NULL,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     price_total = models.FloatField()
     status = models.CharField(max_length=50)
