@@ -1,29 +1,41 @@
 from django.db import models
 
+
 class Orders(models.Model):
     article_number = models.CharField(max_length=50)
     customer = models.ForeignKey(
-        "User", 
+        "User",
         on_delete=models.CASCADE,
-        related_name='orders',
+        related_name="orders",
     )
     address = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     price_total = models.FloatField()
     status = models.CharField(max_length=50)
 
+
 class OrderProducts(models.Model):
-    id integer [primary key]
-    order_id integer
-    product_id integer
-    amount integer
-    purchase_price integer
+    order_id = models.ForeignKey(
+        Orders,
+        on_delete=models.SET_NULL,
+        related_name="orderProducts",
+    )
+    product_id = models.ForeignKey(
+        "Products",
+        on_delete=models.SET_NULL,
+    )
+    amount = models.FloatField()
+    purchase_price = models.FloatField()
+
 
 class DeliveryAddress(models.Model):
-    id integer [primary key]
-    owner string
-    country string
-    city string
-    street string
-    house string
-    apartment string
+    owner = models.ForeignKey(
+        "User",
+        on_delete=models.CASCADE,
+        related_name="deliveryAddress",
+    )
+    country = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    street = models.CharField(max_length=100)
+    house = models.CharField(max_length=10)
+    apartment = models.CharField(max_length=10)
