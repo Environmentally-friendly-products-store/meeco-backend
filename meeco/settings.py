@@ -20,16 +20,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework',
     'django_filters',
     'djoser',
-    'core',
-    'api',
-    'events',
-    'orders',
-    'products',
-    'users',
+    'core.apps.CoreConfig',
+    'api.apps.ApiConfig',
+    'events.apps.EventsConfig',
+    'orders.apps.OrdersConfig',
+    'products.apps.ProductsConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
