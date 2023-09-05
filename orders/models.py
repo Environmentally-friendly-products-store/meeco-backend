@@ -15,6 +15,7 @@ class Orders(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     price_total = models.FloatField()
     status = models.CharField(max_length=50)
+    comment = models.TextField()
 
 
 class OrderProducts(models.Model):
