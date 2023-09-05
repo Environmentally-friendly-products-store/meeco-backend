@@ -1,8 +1,9 @@
 from django.db import models
+from orders import ordervars as VARS
 
 
 class Orders(models.Model):
-    article_number = models.CharField(max_length=50)
+    article_number = models.CharField(max_length=VARS.ORDERS_ARTICLE_ML)
     customer = models.ForeignKey(
         "User",
         on_delete=models.CASCADE,
@@ -14,7 +15,7 @@ class Orders(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     price_total = models.FloatField()
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=VARS.ORDERS_STATUS_ML)
     comment = models.TextField()
 
 
@@ -38,8 +39,8 @@ class DeliveryAddress(models.Model):
         on_delete=models.CASCADE,
         related_name="deliveryAddress",
     )
-    country = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    street = models.CharField(max_length=100)
-    house = models.CharField(max_length=10)
-    apartment = models.CharField(max_length=10)
+    country = models.CharField(max_length=VARS.DEL_ADDR_COUNTRY_ML)
+    city = models.CharField(max_length=VARS.DEL_ADDR_CITY_ML)
+    street = models.CharField(max_length=VARS.DEL_ADDR_STREET_ML)
+    house = models.CharField(max_length=VARS.DEL_ADDR_HOUSE_ML)
+    apartment = models.CharField(max_length=VARS.DEL_ADDR_APARTMENT_ML)
