@@ -7,8 +7,8 @@ from orders.models import Product
 
 class Event(models.Model):
     """Модель акций по скидкам."""
-    name = models.CharField('название', max_length=200)
-    description = models.CharField('описание', max_length=200)
+    name = models.CharField('название', max_length=50)
+    description = models.CharField('описание', max_length=255)
     discount = models.PositiveSmallIntegerField(
         'cкидка',
         help_text='Введите целое число от 1 до 100',
@@ -21,6 +21,7 @@ class Event(models.Model):
     )
     date_start = models.DateField('Дата начала акции')
     date_end = models.DateField('Дата окончания акции')
+    slug = models.SlugField('уникальный слаг', unique=True)
 
     class Meta:
         ordering = ("name",)
