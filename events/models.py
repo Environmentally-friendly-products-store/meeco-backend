@@ -34,9 +34,9 @@ class Event(models.Model):
 class ProductEvent(models.Model):
     """Вспомогательная модель, связывающая продукцию и акции."""
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE,
-                                related_name='product_event')
+                                   related_name='product_event')
     event_id = models.ForeignKey(Event, on_delete=models.CASCADE,
-                              verbose_name="акция",)
+                                 verbose_name="акция",)
 
     class Meta:
         verbose_name = "акция продукта"
