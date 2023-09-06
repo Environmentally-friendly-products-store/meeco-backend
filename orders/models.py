@@ -1,5 +1,5 @@
 from django.db import models
-from orders import ordervars as VARS
+from orders import appvars as VARS
 
 
 class Orders(models.Model):
