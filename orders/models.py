@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+
 from orders import appvars as VARS
 from products.models import Product
 
@@ -19,7 +20,7 @@ class DeliveryAddress(models.Model):
     apartment = models.CharField(max_length=VARS.DEL_ADDR_APARTMENT_ML)
 
 
-class Orders(models.Model):
+class Order(models.Model):
     article_number = models.CharField(max_length=VARS.ORDERS_ARTICLE_ML)
     customer = models.ForeignKey(
         User,
@@ -36,9 +37,9 @@ class Orders(models.Model):
     comment = models.TextField()
 
 
-class OrderProducts(models.Model):
+class OrderProduct(models.Model):
     order_id = models.ForeignKey(
-        Orders,
+        Order,
         on_delete=models.SET_NULL,
         related_name="orderProducts",
     )
