@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.text import slugify
+
 from django.db.models import UniqueConstraint
 from orders.models import Product
 
@@ -22,6 +24,11 @@ class Event(models.Model):
     date_start = models.DateField('Дата начала акции')
     date_end = models.DateField('Дата окончания акции')
     slug = models.SlugField('уникальный слаг', unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ("name",)
