@@ -1,6 +1,5 @@
 # variables for orders app
 
-
 # Orders table fields
 ORDERS_ARTICLE_ML = 50
 ORDERS_STATUS_ML = 50
