@@ -1,4 +1,6 @@
 from django.db import models
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 from events.models import Event
 from users.models import User
@@ -12,14 +14,6 @@ class Product(models.Model):
     description = models.TextField(
         verbose_name='Описание товара',
         max_length=255
-    )
-    image_big = models.ImageField(
-        verbose_name='Изображение товара',
-        upload_to='product_images/'
-    )
-    image_icon = models.ImageField(
-        verbose_name='Иконка товаров',
-        upload_to='product_icons/'
     )
     category = models.ForeignKey(
         'Category',
@@ -69,6 +63,31 @@ class Product(models.Model):
         ordering = ['id']
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
+
+
+class ImageSet(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name='Товар'
+    )
+    image = models.ImageField(
+        upload_to='product_images/',
+        verbose_name='Основное изображение'
+    )
+    image_preview = ImageSpecField(
+        source='image',
+        processors=[ResizeToFill(300, 300)],
+        format='JPEG',
+        options={'quality': 80}
+    )
+    image_thumbnail = ImageSpecField(
+        source='image',
+        processors=[ResizeToFill(100, 100)],
+        format='JPEG',
+        options={'quality': 70}
+    )
 
 
 class Favorite(models.Model):

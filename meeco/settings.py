@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'djoser',
+    'imagekit',
     'core.apps.CoreConfig',
     'api.apps.ApiConfig',
     'events.apps.EventsConfig',
