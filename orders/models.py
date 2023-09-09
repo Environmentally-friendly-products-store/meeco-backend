@@ -1,5 +1,10 @@
 from django.conf import settings
 from django.db import models
+from django.contrib.auth import get_user_model
+
+from products.models import Product
+
+User = get_user_model()
 
 from orders import appvars as VARS
 from products.models import Product
@@ -30,6 +35,7 @@ class Order(models.Model):
     address = models.ForeignKey(
         DeliveryAddress,
         on_delete=models.SET_NULL,
+        null=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
     price_total = models.FloatField()
@@ -42,10 +48,12 @@ class OrderProduct(models.Model):
         Order,
         on_delete=models.SET_NULL,
         related_name="orderProducts",
+        null=True
     )
     product_id = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,
+        null=True
     )
     amount = models.FloatField()
     purchase_price = models.FloatField()

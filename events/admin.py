@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Event, ProductEvent
+from .models import Event
+from products.models import ProductEvent
 
 
 class ProductEventInline(admin.TabularInline):
@@ -11,10 +12,10 @@ class ProductEventInline(admin.TabularInline):
 
 
 class EventAdmin(admin.ModelAdmin):
-    inlines = (ProductEventInline)
+    inlines = (ProductEventInline,)
     list_display = ('name', 'description', 'discount',
-                    'start_date', 'end_date')
-    list_filter = ('name', 'discount', 'start_date', 'end_date')
+                    'date_start', 'date_end')
+    list_filter = ('name', 'discount', 'date_start', 'date_end')
     empty_value_display = '-пусто-'
 
 

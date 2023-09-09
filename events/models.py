@@ -4,7 +4,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.text import slugify
 
 from django.db.models import UniqueConstraint
-from orders.models import Product
 
 
 class Event(models.Model):
@@ -37,17 +36,3 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class ProductEvent(models.Model):
-    """Вспомогательная модель, связывающая продукцию и акции."""
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE,
-                                   related_name='product_event')
-    event_id = models.ForeignKey(Event, on_delete=models.CASCADE,
-                                 verbose_name="акция",)
-
-    class Meta:
-        verbose_name = "акция продукта"
-        verbose_name_plural = "акции продукции"
-        UniqueConstraint(fields=['product', 'event'],
-                         name='unique_product_event')
