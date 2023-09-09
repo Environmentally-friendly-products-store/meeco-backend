@@ -1,9 +1,15 @@
 from django.db import models
+from django.db.models import UniqueConstraint
+from django.core.validators import MaxValueValidator, MinValueValidator
 from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import ResizeToFill
 
 from events.models import Event
-from users.models import User
+
+# временная мера
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class Product(models.Model):
@@ -18,15 +24,18 @@ class Product(models.Model):
     category = models.ForeignKey(
         'Category',
         verbose_name='Категория товара',
-
+        on_delete=models.CASCADE,
     )
     brand = models.ForeignKey(
         'Brand',
-        verbose_name='Брэнд товара'
+        verbose_name='Брэнд товара',
+        on_delete=models.CASCADE
     )
     event = models.ForeignKey(
         Event,
-        verbose_name='Событие'
+        verbose_name='Событие',
+        on_delete=models.SET_NULL,
+        null=True
     )
     price_per_unit = models.DecimalField(
         max_digits=10,
@@ -37,8 +46,8 @@ class Product(models.Model):
         verbose_name='Скидка в процентах',
         default=0,
         validators=[
-            models.MinValueValidator(0),
-            models.MaxValueValidator(100),
+            MinValueValidator(0),
+            MaxValueValidator(100),
         ]
     )
     rating = models.DecimalField(
@@ -100,11 +109,13 @@ class Favorite(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Пользователь'
+        verbose_name='Пользователь',
     )
     product = models.ForeignKey(
         Product,
-        verbose_name='Товар'
+        verbose_name='Товар',
+        on_delete=models.SET_NULL,
+        null=True
     )
 
     class Meta:
@@ -127,7 +138,9 @@ class ShoppingCart(models.Model):
     )
     product = models.ForeignKey(
         Product,
-        verbose_name='Товар'
+        verbose_name='Товар',
+        on_delete=models.SET_NULL,
+        null=True
     )
     amount = models.IntegerField(
         verbose_name='Количество',
@@ -182,3 +195,17 @@ class Brand(models.Model):
         ordering = ['id']
         verbose_name = 'Бренд'
         verbose_name_plural = 'Бренды'
+
+
+class ProductEvent(models.Model):
+    """Вспомогательная модель, связывающая продукцию и акции."""
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE,
+                                   related_name='product_event')
+    event_id = models.ForeignKey(Event, on_delete=models.CASCADE,
+                                 verbose_name="акция",)
+
+    class Meta:
+        verbose_name = "акция продукта"
+        verbose_name_plural = "акции продукции"
+        UniqueConstraint(fields=['product', 'event'],
+                         name='unique_product_event')

@@ -68,7 +68,7 @@ DJOSER = {
     "LOGIN_FIELD": "email",
 }
 
-AUTH_USER_MODEL = 'users.User'
+# AUTH_USER_MODEL = 'users.User'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
