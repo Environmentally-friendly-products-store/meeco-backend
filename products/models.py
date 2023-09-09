@@ -1,5 +1,5 @@
 from django.db import models
-from imagekit.models import ImageSpecField
+from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import ResizeToFill
 
 from events.models import Event
@@ -72,11 +72,17 @@ class ImageSet(models.Model):
         related_name='images',
         verbose_name='Товар'
     )
-    image = models.ImageField(
+    image = ProcessedImageField(
         upload_to='product_images/',
         verbose_name='Основное изображение'
     )
-    image_preview = ImageSpecField(
+    big_image = ImageSpecField(
+        source='image',
+        processors=[ResizeToFill(1000, 1000)],
+        format='JPEG',
+        options={'quality': 100}
+    )
+    preview_image = ImageSpecField(
         source='image',
         processors=[ResizeToFill(300, 300)],
         format='JPEG',
