@@ -1,16 +1,15 @@
 from django.urls import include, path, re_path
 
-from rest_framework.routers import DefaultRouter
+from users.views import UserRegisterViewSet
 
-from users.views import CustomUserViewSet
 
-router = DefaultRouter()
+app_name = 'api'
 
-router.register('users',
-                CustomUserViewSet,
-                basename='recipes')
+
 urlpatterns = [
-    re_path(r'^auth/', include('djoser.urls.authtoken')),
-
-    path('', include(router.urls)),
+    re_path(r'^jwt/', include('djoser.urls.jwt')),
+    path('register/',
+         UserRegisterViewSet.as_view({'post': 'create'}),
+         name='register',
+         ),
 ]
