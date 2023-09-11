@@ -1,8 +1,6 @@
 from django.contrib import admin
 from orders.models import DeliveryAddress, OrderProduct, Order
 
-admin.site.register(DeliveryAddress)
-
 
 @admin.register(DeliveryAddress)
 class DeliveryAddressAdmin(admin.ModelAdmin):
