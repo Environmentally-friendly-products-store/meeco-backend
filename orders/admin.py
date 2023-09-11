@@ -22,7 +22,6 @@ class OrderProductAdmin(admin.ModelAdmin):
         "order_id",
         "product_id",
         "amount",
-        "street",
         "purchase_price",
     )
 
