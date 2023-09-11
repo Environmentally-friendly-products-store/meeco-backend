@@ -13,6 +13,7 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
         "house",
         "apartment",
     )
+    list_editable = ("owner",)
 
 
 @admin.register(OrderProduct)
@@ -23,6 +24,10 @@ class OrderProductAdmin(admin.ModelAdmin):
         "product_id",
         "amount",
         "purchase_price",
+    )
+    list_editable = (
+        "order_id",
+        "product_id",
     )
 
 
@@ -37,4 +42,8 @@ class OrderAdmin(admin.ModelAdmin):
         "price_total",
         "status",
         "comment",
+    )
+    list_editable = (
+        "customer",
+        "address",
     )
