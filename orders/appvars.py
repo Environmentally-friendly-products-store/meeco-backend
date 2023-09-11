@@ -1,8 +1,8 @@
 # variables for orders app
 
-# Orders table fields
-ORDERS_ARTICLE_ML = 50
-ORDERS_STATUS_ML = 50
+# Order table fields
+ORDER_ARTICLE_ML = 50
+ORDER_STATUS_ML = 50
 
 # DeliveryAddress table fields
 DEL_ADDR_COUNTRY_ML = 50
