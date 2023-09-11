@@ -5,7 +5,7 @@ from orders.models import DeliveryAddress, OrderProduct, Order
 @admin.register(DeliveryAddress)
 class DeliveryAddressAdmin(admin.ModelAdmin):
     list_display = (
-        "id",
+        "pk",
         "owner",
         "country",
         "city",
@@ -18,7 +18,7 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
 @admin.register(OrderProduct)
 class OrderProductAdmin(admin.ModelAdmin):
     list_display = (
-        "id",
+        "pk",
         "order_id",
         "product_id",
         "amount",
@@ -29,7 +29,7 @@ class OrderProductAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
-        "id",
+        "pk",
         "article_number",
         "customer",
         "address",
