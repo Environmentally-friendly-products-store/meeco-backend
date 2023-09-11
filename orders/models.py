@@ -25,7 +25,7 @@ class DeliveryAddress(models.Model):
         verbose_name_plural = "адреса доставки"
 
     def __str__(self):
-        return self.id
+        return self.country
 
 
 class Order(models.Model):
@@ -47,7 +47,7 @@ class Order(models.Model):
         verbose_name_plural = "заказы"
 
     def __str__(self):
-        return self.id
+        return self.article_number
 
 
 class OrderProduct(models.Model):
@@ -62,6 +62,3 @@ class OrderProduct(models.Model):
         ordering = ("order_id",)
         verbose_name = "продукт в составе заказа"
         verbose_name_plural = "продукты в заказе"
-
-    def __str__(self):
-        return self.id
