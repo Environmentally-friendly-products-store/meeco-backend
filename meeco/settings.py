@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'djoser',
+    'imagekit',
     'core.apps.CoreConfig',
     'api.apps.ApiConfig',
     'events.apps.EventsConfig',
@@ -67,6 +68,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'meeco.wsgi.application'
 
 AUTH_USER_MODEL = 'users.User'
+
+DJOSER = {
+    "HIDE_USERS": False,
+    "LOGIN_FIELD": "email",
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -144,3 +150,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MIN_DISCOUNT = 1
+MAX_DISCOUNT = 100
