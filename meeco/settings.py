@@ -1,5 +1,8 @@
 import os
+
 from pathlib import Path
+
+from datetime import timedelta
 
 from dotenv import load_dotenv
 
@@ -21,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'rest_framework',
     'django_filters',
     'djoser',
@@ -63,12 +67,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'meeco.wsgi.application'
 
+AUTH_USER_MODEL = 'users.User'
+
 DJOSER = {
     "HIDE_USERS": False,
     "LOGIN_FIELD": "email",
 }
-
-# AUTH_USER_MODEL = 'users.User'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -113,13 +117,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
 # Internationalization
