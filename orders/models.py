@@ -37,7 +37,10 @@ class Order(models.Model):
     )
     address = models.ForeignKey(DeliveryAddress, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    price_total = models.FloatField()
+    price_total = models.FloatField(
+        blank=True,
+        null=True,
+    )
     status = models.CharField(max_length=VARS.ORDER_STATUS_ML)
     comment = models.TextField()
 
