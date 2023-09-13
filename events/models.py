@@ -3,8 +3,6 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.text import slugify
 
-from django.db.models import UniqueConstraint
-
 
 class Event(models.Model):
     """Модель акций по скидкам."""
@@ -26,7 +24,7 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = slugify(f'{self.name}{self.date_start}')
         super().save(*args, **kwargs)
 
     class Meta:
