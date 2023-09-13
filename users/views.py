@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import AllowAny
@@ -16,16 +15,9 @@ class UserRegisterViewSet(mixins.CreateModelMixin,
     serializer_class = UserCreateSerializer
     permission_classes = (AllowAny,)
 
-    def perform_create(self, serializer):
-        if 'password' in self.request.data:
-            password = make_password(self.request.data['password'])
-        else:
-            password = ''
+    def perform_create(self, serializer) -> None:
         if 'username' in self.request.data:
             username = self.request.data['username']
         else:
             username = 'NoUserName'
-        serializer.save(
-            password=password,
-            username=username
-        )
+        serializer.save(username=username)
