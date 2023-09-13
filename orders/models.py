@@ -11,7 +11,7 @@ class DeliveryAddress(models.Model):
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="deliveryAddress",
+        related_name="deliveryAddresses",
     )
     country = models.CharField(
         max_length=VARS.DEL_ADDR_COUNTRY_ML,
@@ -82,15 +82,16 @@ class OrderProduct(models.Model):
         Order,
         on_delete=models.SET_NULL,
         related_name="orderProducts",
-        null=True,
     )
     product_id = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,
-        null=True,
     )
     amount = models.FloatField()
-    purchase_price = models.FloatField()
+    purchase_price = models.FloatField(
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         ordering = ("order_id",)
