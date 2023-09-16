@@ -47,7 +47,11 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         related_name="orders",
     )
-    address = models.ForeignKey(DeliveryAddress, on_delete=models.SET_NULL, null=True)
+    address = models.ForeignKey(
+        DeliveryAddress,
+        on_delete=models.SET_NULL,
+        null=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     price_total = models.FloatField(
         blank=True,
@@ -74,9 +78,16 @@ class Order(models.Model):
 
 class OrderProduct(models.Model):
     order_id = models.ForeignKey(
-        Order, on_delete=models.SET_NULL, related_name="orderProducts", null=True
+        Order,
+        on_delete=models.SET_NULL,
+        related_name="orderProducts",
+        null=True,
     )
-    product_id = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    product_id = models.ForeignKey(
+        Product,
+        on_delete=models.SET_NULL,
+        null=True,
+    )
     amount = models.FloatField()
     purchase_price = models.FloatField(
         blank=True,
@@ -87,6 +98,12 @@ class OrderProduct(models.Model):
         ordering = ("order_id",)
         verbose_name = "продукт в составе заказа"
         verbose_name_plural = "продукты в заказе"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["order_id", "product_id", "purchase_price"],
+                name="unique_product_in_order",
+            )
+        ]
 
     def __str__(self):
         return f"{self.order_id} - {self.product_id}"
