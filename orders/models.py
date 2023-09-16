@@ -87,3 +87,6 @@ class OrderProduct(models.Model):
         ordering = ("order_id",)
         verbose_name = "продукт в составе заказа"
         verbose_name_plural = "продукты в заказе"
+
+    def __str__(self):
+        return f"{self.order_id} - {self.product_id}"
