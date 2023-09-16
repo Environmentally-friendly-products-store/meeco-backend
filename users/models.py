@@ -16,4 +16,4 @@ class User(AbstractUser):
         verbose_name_plural = "пользователи"
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["first_name", "last_name"]
