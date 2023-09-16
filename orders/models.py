@@ -1,8 +1,8 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 
-from products.models import Product
 from orders import appvars as VARS
+from products.models import Product
 
 User = get_user_model()
 
@@ -47,12 +47,7 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         related_name="orders",
     )
-    address = models.ForeignKey(
-        DeliveryAddress,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-    )
+    address = models.ForeignKey(DeliveryAddress, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     price_total = models.FloatField(
         blank=True,
@@ -79,16 +74,9 @@ class Order(models.Model):
 
 class OrderProduct(models.Model):
     order_id = models.ForeignKey(
-        Order,
-        on_delete=models.SET_NULL,
-        related_name="orderProducts",
-        null=True,
+        Order, on_delete=models.SET_NULL, related_name="orderProducts", null=True
     )
-    product_id = models.ForeignKey(
-        Product,
-        on_delete=models.SET_NULL,
-        null=True,
-    )
+    product_id = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     amount = models.FloatField()
     purchase_price = models.FloatField(
         blank=True,
