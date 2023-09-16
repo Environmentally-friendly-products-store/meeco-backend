@@ -9,6 +9,12 @@ class User(AbstractUser):
     username = models.CharField(
         max_length=150, verbose_name="логин", help_text="Введите логин"
     )
+    first_name = models.CharField(
+        max_length=150, verbose_name="имя пользователя", help_text="Введите имя"
+    )
+    last_name = models.CharField(
+        max_length=150, verbose_name="фамилия пользователя", help_text="Введите фамилию"
+    )
 
     class Meta:
         ordering = ["id"]
