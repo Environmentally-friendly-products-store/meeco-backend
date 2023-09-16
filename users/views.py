@@ -1,7 +1,10 @@
 from django.contrib.auth import get_user_model
-from djoser.serializers import UserCreateSerializer
+from django.shortcuts import get_object_or_404
+from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import mixins, viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -17,3 +20,11 @@ class UserRegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         else:
             username = "NoUserName"
         serializer.save(username=username)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def me(request, *args, **kwargs):
+    user = get_object_or_404(User, pk=request.user.id)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
