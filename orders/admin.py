@@ -29,3 +29,21 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Order, OrderAdmin)
+
+
+@admin.register(OrderProduct)
+class OrderProductAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "product_id",
+        "order_id",
+        "amount",
+        "purchase_price",
+    )
+    list_editable = (
+        "product_id",
+        "order_id",
+        "amount",
+    )
+    search_fields = ("order_id",)
+    empty_value_display = "-пусто-"

@@ -22,13 +22,13 @@ class Product(NameDescriptionModel, DiscountMixin, CreatedAtMixin):
     # )
     event = models.ForeignKey(
         Event,
-        on_delete=models.SET_NULL,
+        blank=True,
         null=True,
+        on_delete=models.SET_NULL,
         verbose_name="Акция",
         help_text="Введите промоакцию",
     )
     price_per_unit = models.FloatField(
-        default=0,
         verbose_name="Цена за штуку",
         help_text="Введите цену за единицу",
     )
@@ -108,6 +108,8 @@ class ProductEvent(models.Model):
 
     product_id = models.ForeignKey(
         Product,
+        blank=True,
+        null=True,
         on_delete=models.CASCADE,
         related_name="product_event",
         verbose_name="Товар",
@@ -120,5 +122,5 @@ class ProductEvent(models.Model):
 
     class Meta:
         verbose_name = "продукт в акции"
-        verbose_name_plural = "продукты а акции"
+        verbose_name_plural = "продукты в акциях"
         UniqueConstraint(fields=["product", "event"], name="unique_product_event")
