@@ -15,6 +15,7 @@ class DeliveryAddress(models.Model):
     )
     country = models.CharField(
         max_length=VARS.DEL_ADDR_COUNTRY_ML,
+        choices=VARS.DEL_ADDR_COUNTRIES,
         blank=True,
         null=True,
     )
@@ -37,15 +38,9 @@ class DeliveryAddress(models.Model):
 
 
 class Order(models.Model):
-    article_number = models.CharField(
-        max_length=VARS.ORDER_ARTICLE_ML,
-        blank=True,
-        null=True,
-    )
     customer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="orders",
     )
     address = models.ForeignKey(
         DeliveryAddress,
@@ -66,14 +61,16 @@ class Order(models.Model):
         blank=True,
         null=True,
     )
+    products = models.ManyToManyField(Product, through="OrderProduct")
 
     class Meta:
+        default_related_name = "orders"
         ordering = ("customer",)
         verbose_name = "заказ"
         verbose_name_plural = "заказы"
 
     def __str__(self):
-        return self.article_number
+        return f"{self.customer}: {self.created_at}"
 
 
 class OrderProduct(models.Model):
