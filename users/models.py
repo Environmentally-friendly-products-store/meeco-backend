@@ -51,7 +51,7 @@ class UserProduct(models.Model):
 
 
 # class Favorite(UserProduct):
-
+#
 #     class Meta:
 #         ordering = ["id"]
 #         verbose_name = "Избранное"
