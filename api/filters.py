@@ -4,7 +4,7 @@ from products.models import Category, Product
 
 
 class ProductFilter(FilterSet):
-    category = filters.ModelMultipleChoiceFielter(
+    category = filters.ModelMultipleChoiceFilter(
         field_name='category__slug',
         to_field_name='slug',
         queryset=Category.objects.all()
