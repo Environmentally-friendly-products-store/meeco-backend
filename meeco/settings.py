@@ -14,7 +14,8 @@ DEBUG = os.getenv("DEBUG", default="False")
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS")
+CSRF_TRUSTED_ORIGINS = ['http://80.87.106.192/',
+                        'http://www.ecome.acceleratorpracticum.ru']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
