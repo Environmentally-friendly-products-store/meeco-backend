@@ -8,7 +8,7 @@ from products.views import ProductViewSet
 app_name = "api"
 
 router = DefaultRouter()
-router.register(r'api/products', ProductViewSet)
+router.register(r'products', ProductViewSet)
 
 
 urlpatterns = [
