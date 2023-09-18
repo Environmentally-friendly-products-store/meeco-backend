@@ -1,0 +1,38 @@
+###
+POST http://127.0.0.1:8000/api/v1/register/
+Content-Type: application/json
+
+{
+  "email": "6509588@mail.ru",
+  "first_name": "Sihuan",
+  "last_name": "Newrise",
+  "password": "4myfreddy"
+}
+
+###
+POST http://127.0.0.1:8000/api/v1/token/login/
+Content-Type: application/json
+
+{
+    "username": "burny",
+    "password": "4myfreddy"
+}
+
+###
+POST http://127.0.0.1:8000/api/v1/orders/
+Content-Type: application/json
+Authorization: token f9299d7ba451b780ca2a67f40532ac49cf6c75ee
+
+{
+  "customer": "1",
+  "address": "#",
+  "created_at": "2023",
+  "status": "new",
+  "comment": "my comment",
+  "products": [{"name": "арбуз"}]
+}
+
+###
+GET http://127.0.0.1:8000/api/v1/
+Content-Type: application/json
+Authorization: token
