@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from django.db.models import Sum
 
-from .models import Product, ShoppingCart, ImageSet
+from .models import Product, ImageSet
+from users.models import ShoppingCart
 
 
 class ShortProductSerializer(serializers.ModelSerializer):

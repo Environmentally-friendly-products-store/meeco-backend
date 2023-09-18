@@ -13,6 +13,7 @@ class Product(NameDescriptionModel, DiscountMixin, CreatedAtMixin):
         on_delete=models.CASCADE,
         verbose_name="Категория",
         help_text="Введите категорию",
+        related_name="category"
     )
     brand = models.CharField(
         max_length=100, verbose_name="Брэнд", help_text="Введите производителя"

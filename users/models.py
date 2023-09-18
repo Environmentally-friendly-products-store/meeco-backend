@@ -44,6 +44,7 @@ class UserProduct(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         help_text="Выберите товар",
+        realted_name='user_product'
     )
 
     class Meta:
