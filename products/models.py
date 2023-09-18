@@ -1,63 +1,65 @@
-from django.contrib.auth import get_user_model
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
 
+from core.models import CreatedAtMixin, DiscountMixin, NameDescriptionModel, SlugMixin
 from events.models import Event
 
-User = get_user_model()
 
-
-class Product(models.Model):
-    name = models.CharField(verbose_name="Название товара", max_length=50)
-    description = models.TextField(verbose_name="Описание товара", max_length=255)
+class Product(NameDescriptionModel, DiscountMixin, CreatedAtMixin):
     category = models.ForeignKey(
         "Category",
-        verbose_name="Категория товара",
         on_delete=models.CASCADE,
+        verbose_name="Категория",
+        help_text="Введите категорию",
     )
-    brand = models.ForeignKey(
-        "Brand", verbose_name="Брэнд товара", on_delete=models.CASCADE
+    brand = models.CharField(
+        max_length=100, verbose_name="Брэнд", help_text="Введите производителя"
     )
+    # brand = models.ForeignKey(
+    #     "Brand", verbose_name="Брэнд", on_delete=models.CASCADE
+    # )
     event = models.ForeignKey(
-        Event, verbose_name="Событие", on_delete=models.SET_NULL, null=True
+        Event,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Акция",
+        help_text="Введите промоакцию",
     )
-    price_per_unit = models.DecimalField(
-        max_digits=10, decimal_places=2, verbose_name="Цена за штуку"
+    price_per_unit = models.FloatField(
+        verbose_name="Цена за штуку",
+        help_text="Введите цену за единицу",
     )
-    discount = models.IntegerField(
-        verbose_name="Скидка в процентах",
-        default=0,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(100),
-        ],
-    )
-    rating = models.DecimalField(
-        verbose_name="Рейтинг товара", max_digits=3, decimal_places=2
-    )
-    created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+    # rating = models.DecimalField(
+    #     verbose_name="Рейтинг товара", max_digits=3, decimal_places=2
+    # )
     view_amount = models.PositiveIntegerField(
-        verbose_name="Количество просмотров", default=0
+        default=0, verbose_name="Количество просмотров"
     )
     buy_amount = models.PositiveIntegerField(
-        verbose_name="Количество покупок", default=0
+        default=0, verbose_name="Количество покупок"
     )
 
     class Meta:
         ordering = ["id"]
-        verbose_name = "Товар"
-        verbose_name_plural = "Товары"
+        verbose_name = "товар"
+        verbose_name_plural = "товары"
 
 
 class ImageSet(models.Model):
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="images", verbose_name="Товар"
+        Product,
+        on_delete=models.CASCADE,
+        related_name="images",
+        verbose_name="Товар",
+        help_text="Введите товар",
     )
     image = ProcessedImageField(
-        upload_to="product_images/", verbose_name="Основное изображение"
+        upload_to="product_images/",
+        verbose_name="Основное изображение",
+        help_text="Загрузите изображение",
     )
     big_image = ImageSpecField(
         source="image",
@@ -78,77 +80,47 @@ class ImageSet(models.Model):
         options={"quality": 70},
     )
 
-
-class Favorite(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name="Пользователь",
-    )
-    product = models.ForeignKey(
-        Product, verbose_name="Товар", on_delete=models.SET_NULL, null=True
-    )
-
     class Meta:
         ordering = ["id"]
-        verbose_name = "Избранное"
-        verbose_name_plural = "Избранное"
-        constraints = [
-            models.UniqueConstraint(fields=["product", "user"], name="unique_favorite")
-        ]
+        verbose_name = "изображение к товару"
+        verbose_name_plural = "изображения к товарам"
 
 
-class ShoppingCart(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Пользователь"
-    )
-    product = models.ForeignKey(
-        Product, verbose_name="Товар", on_delete=models.SET_NULL, null=True
-    )
-    amount = models.IntegerField(verbose_name="Количество", default=1)
-
+class Category(NameDescriptionModel, SlugMixin):
     class Meta:
         ordering = ["id"]
-        verbose_name = "Корзина"
-        verbose_name_plural = "Корзины"
+        verbose_name = "категория"
+        verbose_name_plural = "категории"
 
 
-class Category(models.Model):
-    name = models.CharField(verbose_name="Название категории", max_length=50)
-    description = models.TextField(verbose_name="Описание категории", max_length=255)
-    slug = models.SlugField(unique=True, verbose_name="Слаг")
-
-    class Meta:
-        ordering = ["id"]
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
-
-
-class Brand(models.Model):
-    name = models.CharField(max_length=50, verbose_name="Название бренда")
-    description = models.TextField(verbose_name="Описание бренда", max_length=255)
-    country = models.CharField(max_length=50, verbose_name="Страна бренда")
-    slug = models.SlugField(unique=True, verbose_name="Слаг")
-
-    class Meta:
-        ordering = ["id"]
-        verbose_name = "Бренд"
-        verbose_name_plural = "Бренды"
+# class Brand(NameDescriptionModel):
+#     country = models.CharField(max_length=50, verbose_name="Страна бренда")
+#     slug = models.SlugField(unique=True, verbose_name="Слаг")
+#
+#     class Meta:
+#         ordering = ["id"]
+#         verbose_name = "Бренд"
+#         verbose_name_plural = "Бренды"
 
 
 class ProductEvent(models.Model):
     """Вспомогательная модель, связывающая продукцию и акции."""
 
     product_id = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="product_event"
+        Product,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="product_event",
+        verbose_name="Товар",
     )
     event_id = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
-        verbose_name="акция",
+        verbose_name="Промоакция",
     )
 
     class Meta:
-        verbose_name = "акция продукта"
-        verbose_name_plural = "акции продукции"
+        verbose_name = "продукт в акции"
+        verbose_name_plural = "продукты в акциях"
         UniqueConstraint(fields=["product", "event"], name="unique_product_event")

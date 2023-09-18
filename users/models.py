@@ -1,6 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from products.models import Product
+
+from .managers import MyUserManager
+
 
 class User(AbstractUser):
     email = models.EmailField(
@@ -18,8 +22,49 @@ class User(AbstractUser):
 
     class Meta:
         ordering = ["id"]
-        verbose_name = "пользователя"
+        verbose_name = "пользователь"
         verbose_name_plural = "пользователи"
+
+    objects = MyUserManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
+
+
+class UserProduct(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        help_text="Выберите пользователя",
+    )
+    product = models.ForeignKey(
+        Product,
+        verbose_name="Товар",
+        on_delete=models.SET_NULL,
+        null=True,
+        help_text="Выберите товар",
+    )
+
+    class Meta:
+        abstract = True
+
+
+# class Favorite(UserProduct):
+#
+#     class Meta:
+#         ordering = ["id"]
+#         verbose_name = "Избранное"
+#         verbose_name_plural = "Избранное"
+#         constraints = [
+#             models.UniqueConstraint(fields=["product", "user"], name="unique_favorite")
+#         ]
+
+
+class ShoppingCart(UserProduct):
+    amount = models.IntegerField(verbose_name="Количество", default=0)
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "корзина"
+        verbose_name_plural = "корзины"
