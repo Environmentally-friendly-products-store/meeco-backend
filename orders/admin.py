@@ -1,5 +1,6 @@
 from django.contrib import admin
-from orders.models import DeliveryAddress, OrderProduct, Order
+
+from orders.models import DeliveryAddress, Order, OrderProduct
 
 
 @admin.register(DeliveryAddress)
@@ -35,7 +36,6 @@ class OrderProductAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
         "pk",
-        "article_number",
         "customer",
         "address",
         "created_at",
