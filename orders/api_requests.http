@@ -1,0 +1,50 @@
+###
+POST http://127.0.0.1:8000/api/v1/register/
+Content-Type: application/json
+
+{
+  "email": "6509588@mail.ru",
+  "first_name": "Sihuan",
+  "last_name": "Newrise",
+  "password": "4myfreddy"
+}
+
+###
+POST http://127.0.0.1:8000/api/v1/token/
+Content-Type: application/json
+
+{
+    "email": "6509588@mail.ru",
+    "password": "4myfreddy"
+}
+
+###
+GET http://127.0.0.1:8000/api/v1/users/me/
+Content-Type: application/json
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NjY0OTkzLCJpYXQiOjE2OTUwNjAxOTMsImp0aSI6ImEwYzkwMDBjY2I4MjQ5ZjBhNjllOTk1ZmY5ZTA5YmEwIiwidXNlcl9pZCI6MX0.Z3MOfAjEgKLb23jC-1OzfV7Lu885ntoF8Hh20-iep5o
+
+{
+  "email": "6509588@mail.ru",
+  "first_name": "Sihuan",
+  "last_name": "Newrise",
+  "id": "0"
+}
+
+###
+POST http://127.0.0.1:8000/api/v1/orders/
+Content-Type: application/json
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NjY0MjgyLCJpYXQiOjE2OTUwNTk0ODIsImp0aSI6Ijk5MTIxYTBhMWUxOTQ1MDQ4OThlY2FjOGJlNTg2NGI5IiwidXNlcl9pZCI6MX0.Dm6CS97ZGqIZvF-1Wyr5OAerw3V9QuPwxAg5XMdJVxc
+
+{
+  "customer": "1",
+  "address": "#",
+  "created_at": "2023",
+  "status": "new",
+  "comment": "my comment",
+  "products": [{"name": "арбуз"}]
+}
+
+###
+GET http://127.0.0.1:8000/api/v1/
+Content-Type: application/json
+Authorization: token
