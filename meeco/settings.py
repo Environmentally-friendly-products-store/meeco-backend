@@ -14,6 +14,9 @@ DEBUG = os.environ["DEBUG"] == "TRUE"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
+CSRF_TRUSTED_ORIGINS = ['http://80.87.106.192/',
+                        'http://www.ecome.acceleratorpracticum.ru']
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -151,5 +154,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MIN_DISCOUNT = 1
+MIN_DISCOUNT = 0
 MAX_DISCOUNT = 100

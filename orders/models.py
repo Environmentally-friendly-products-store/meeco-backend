@@ -1,92 +1,81 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import UniqueConstraint
 
+from core.models import CreatedAtMixin
 from orders import appvars as VARS
 from products.models import Product
 
 User = get_user_model()
 
 
-class DeliveryAddress(models.Model):
-    owner = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="deliveryAddresses",
+class Order(CreatedAtMixin):
+    article_number = models.CharField(
+        max_length=VARS.ORDERS_ARTICLE_ML, verbose_name="Артикул"
     )
-    country = models.CharField(
-        max_length=VARS.DEL_ADDR_COUNTRY_ML,
-        choices=VARS.DEL_ADDR_COUNTRIES,
-        blank=True,
-        null=True,
-    )
-    city = models.CharField(max_length=VARS.DEL_ADDR_CITY_ML)
-    street = models.CharField(max_length=VARS.DEL_ADDR_STREET_ML)
-    house = models.CharField(max_length=VARS.DEL_ADDR_HOUSE_ML)
-    apartment = models.CharField(
-        max_length=VARS.DEL_ADDR_APARTMENT_ML,
-        blank=True,
-        null=True,
-    )
-
-    class Meta:
-        ordering = ("owner",)
-        verbose_name = "адрес доставки"
-        verbose_name_plural = "адреса доставки"
-
-    def __str__(self):
-        return self.street
-
-
-class Order(models.Model):
     customer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name="orders",
+        verbose_name="Заказчик",
+        help_text="Укажите заказчика",
     )
-    address = models.ForeignKey(
-        DeliveryAddress,
-        on_delete=models.SET_NULL,
-        null=True,
+    address = models.CharField(
+        max_length=255,
+        verbose_name="Адрес доставки",
+        help_text="Введите адрес доставки",
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    # address = models.ForeignKey(DeliveryAddress, on_delete=models.SET_NULL, null=True)
     price_total = models.FloatField(
         blank=True,
         null=True,
+        verbose_name="Цена заказа",
     )
     status = models.CharField(
         max_length=VARS.ORDER_STATUS_ML,
+        verbose_name="Статус",
+        help_text="Укажите статус",
         blank=True,
         null=True,
     )
     comment = models.TextField(
+        verbose_name="Комментарий заказчика", help_text="Введите комментарий",
         blank=True,
         null=True,
     )
-    products = models.ManyToManyField(Product, through="OrderProduct")
 
     class Meta:
-        default_related_name = "orders"
-        ordering = ("customer",)
+        ordering = ["id"]
         verbose_name = "заказ"
         verbose_name_plural = "заказы"
-
+    
     def __str__(self):
         return f"{self.customer}: {self.created_at}"
 
 
 class OrderProduct(models.Model):
+    """Вспомогательная модель, связывающая продукцию и заказы."""
+
     order_id = models.ForeignKey(
         Order,
         on_delete=models.SET_NULL,
         related_name="orderProducts",
         null=True,
+        verbose_name="Заказ",
     )
     product_id = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,
         null=True,
+        verbose_name="Товар",
     )
-    amount = models.FloatField()
+    amount = models.IntegerField(
+        default=0,
+        verbose_name="Количество",
+        help_text="Введите количество",
+    )
     purchase_price = models.FloatField(
+        verbose_name="Цена за единицу товара в заказе",
         blank=True,
         null=True,
     )
