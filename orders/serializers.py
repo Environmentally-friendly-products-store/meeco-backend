@@ -1,25 +1,25 @@
 from rest_framework import serializers
 
-from orders.appvars import DEL_ADDR_COUNTRIES
-from orders.models import DeliveryAddress, Order, OrderProduct
+# from orders.appvars import DEL_ADDR_COUNTRIES
+# from orders.models import DeliveryAddress
+from orders.models import Order, OrderProduct
 from products.models import Product
 from products.serializers import ShortProductSerializer
 
+# class DeliveryAddressSerializer(serializers.ModelSerializer):
+#     country = serializers.ChoiceField(choices=DEL_ADDR_COUNTRIES)
 
-class DeliveryAddressSerializer(serializers.ModelSerializer):
-    country = serializers.ChoiceField(choices=DEL_ADDR_COUNTRIES)
-
-    class Meta:
-        model = DeliveryAddress
-        fields = (
-            "id",
-            "owner",
-            "country",
-            "city",
-            "street",
-            "house",
-            "apartment",
-        )
+#     class Meta:
+#         model = DeliveryAddress
+#         fields = (
+#             "id",
+#             "owner",
+#             "country",
+#             "city",
+#             "street",
+#             "house",
+#             "apartment",
+#         )
 
 
 class OrderSerializer(serializers.ModelSerializer):

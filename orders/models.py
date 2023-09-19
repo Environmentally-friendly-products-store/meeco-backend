@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import UniqueConstraint
 
 from core.models import CreatedAtMixin
 from orders import appvars as VARS
@@ -39,7 +38,8 @@ class Order(CreatedAtMixin):
         null=True,
     )
     comment = models.TextField(
-        verbose_name="Комментарий заказчика", help_text="Введите комментарий",
+        verbose_name="Комментарий заказчика",
+        help_text="Введите комментарий",
         blank=True,
         null=True,
     )
@@ -48,7 +48,7 @@ class Order(CreatedAtMixin):
         ordering = ["id"]
         verbose_name = "заказ"
         verbose_name_plural = "заказы"
-    
+
     def __str__(self):
         return f"{self.customer}: {self.created_at}"
 
@@ -93,3 +93,26 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return f"{self.order_id} - {self.product_id}"
+
+
+# class DeliveryAddress(models.Model):
+#     owner = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE,
+#         related_name="deliveryAddress",
+#     )
+#     country = models.CharField(
+#         choices=VARS.DEL_ADDR_COUNTRIES,
+#     )
+#     city = models.CharField(
+#         max_length=VARS.DEL_ADDR_CITY_ML,
+#     )
+#     street = models.CharField(
+#         max_length=VARS.DEL_ADDR_STREET_ML,
+#     )
+#     house = models.CharField(
+#         max_length=VARS.DEL_ADDR_HOUSE_ML,
+#     )
+#     apartment = models.CharField(
+#         max_length=VARS.DEL_ADDR_APARTMENT_ML,
+#     )
