@@ -8,13 +8,16 @@ from products.models import Product
 
 class OrderProductSerializer(serializers.ModelSerializer):
     total = serializers.SerializerMethodField()
+    product_name = serializers.StringRelatedField(
+        source="product_id",
+        read_only=True,
+    )
 
     class Meta:
         model = OrderProduct
         fields = (
             "id",
-            "order_id",
-            "product_id",
+            "product_name",
             "amount",
             "purchase_price",
             "total",
