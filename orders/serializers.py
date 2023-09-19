@@ -6,25 +6,9 @@ from orders.models import Order, OrderProduct
 from products.models import Product
 from products.serializers import ShortProductSerializer
 
-# class DeliveryAddressSerializer(serializers.ModelSerializer):
-#     country = serializers.ChoiceField(choices=DEL_ADDR_COUNTRIES)
-
-#     class Meta:
-#         model = DeliveryAddress
-#         fields = (
-#             "id",
-#             "owner",
-#             "country",
-#             "city",
-#             "street",
-#             "house",
-#             "apartment",
-#         )
-
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.StringRelatedField()
-    address = serializers.StringRelatedField()
     products = ShortProductSerializer(
         many=True,
         required=False,
@@ -78,3 +62,19 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
     def get_result(self, obj):
         return obj.amount * obj.purchase_price
+
+
+# class DeliveryAddressSerializer(serializers.ModelSerializer):
+#     country = serializers.ChoiceField(choices=DEL_ADDR_COUNTRIES)
+
+#     class Meta:
+#         model = DeliveryAddress
+#         fields = (
+#             "id",
+#             "owner",
+#             "country",
+#             "city",
+#             "street",
+#             "house",
+#             "apartment",
+#         )

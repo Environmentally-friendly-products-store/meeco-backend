@@ -10,7 +10,7 @@ User = get_user_model()
 
 class Order(CreatedAtMixin):
     article_number = models.CharField(
-        max_length=VARS.ORDERS_ARTICLE_ML, verbose_name="Артикул"
+        max_length=VARS.ORDER_ARTICLE_ML, verbose_name="Артикул"
     )
     customer = models.ForeignKey(
         User,
@@ -24,7 +24,12 @@ class Order(CreatedAtMixin):
         verbose_name="Адрес доставки",
         help_text="Введите адрес доставки",
     )
-    # address = models.ForeignKey(DeliveryAddress, on_delete=models.SET_NULL, null=True)
+    # вариант адресного поля с ссылкой на отдельную таблицу
+    # address = models.ForeignKey(
+    #     "DeliveryAddress",
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    # )
     price_total = models.FloatField(
         blank=True,
         null=True,
@@ -45,7 +50,7 @@ class Order(CreatedAtMixin):
     )
 
     class Meta:
-        ordering = ["id"]
+        ordering = ("id",)
         verbose_name = "заказ"
         verbose_name_plural = "заказы"
 

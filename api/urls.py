@@ -10,7 +10,7 @@ app_name = "api"
 
 router = DefaultRouter()
 router.register(r"products", ProductViewSet)
-router.register(r"products", OrderViewSet)
+router.register(r"orders", OrderViewSet)
 
 
 urlpatterns = [
@@ -19,9 +19,21 @@ urlpatterns = [
         UserRegisterViewSet.as_view({"post": "create"}),
         name="register",
     ),
-    path("token/", views.TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("token/refresh/", views.TokenRefreshView.as_view(), name="token_refresh"),
-    path("token/verify/", views.TokenVerifyView.as_view(), name="token_verify"),
+    path(
+        "token/",
+        views.TokenObtainPairView.as_view(),
+        name="token_obtain_pair",
+    ),
+    path(
+        "token/refresh/",
+        views.TokenRefreshView.as_view(),
+        name="token_refresh",
+    ),
+    path(
+        "token/verify/",
+        views.TokenVerifyView.as_view(),
+        name="token_verify",
+    ),
     path("users/me/", me, name="user_me"),
     path("", include(router.urls)),
 ]
