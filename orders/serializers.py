@@ -1,3 +1,4 @@
+# from django.db.models import Sum
 from rest_framework import serializers
 
 # from orders.appvars import DEL_ADDR_COUNTRIES
@@ -29,6 +30,9 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.StringRelatedField()
+    grand_total = serializers.SerializerMethodField(
+        source="price_total",
+    )
     products = OrderProductSerializer(
         many=True,
         required=False,
@@ -42,11 +46,16 @@ class OrderSerializer(serializers.ModelSerializer):
             "customer",
             "address",
             "created_at",
-            "price_total",
+            "grand_total",
             "status",
             "comment",
             "products",
         )
+
+    # def get_grand_total(self, obj):
+    #     order_id = self.context["request"].order_id
+    #     product_list = OrderProduct.objects.filter(order_id=order_id)
+    #     return product_list.aggregate(Sum("amount" * "purchase_price"))["amount__sum"]
 
     def create(self, validated_data):
         if "products" not in self.initial_data:
