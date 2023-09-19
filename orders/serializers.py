@@ -4,12 +4,29 @@ from rest_framework import serializers
 # from orders.models import DeliveryAddress
 from orders.models import Order, OrderProduct
 from products.models import Product
-from products.serializers import ShortProductSerializer
+
+
+class OrderProductSerializer(serializers.ModelSerializer):
+    total = serializers.SerializerMethodField()
+
+    class Meta:
+        model = OrderProduct
+        fields = (
+            "id",
+            "order_id",
+            "product_id",
+            "amount",
+            "purchase_price",
+            "total",
+        )
+
+    def get_total(self, obj):
+        return obj.amount * obj.purchase_price
 
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.StringRelatedField()
-    products = ShortProductSerializer(
+    products = OrderProductSerializer(
         many=True,
         required=False,
     )
@@ -18,10 +35,11 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = (
             "id",
+            "article_number",
             "customer",
             "address",
             "created_at",
-            "price_result",
+            "price_total",
             "status",
             "comment",
             "products",
@@ -44,24 +62,6 @@ class OrderSerializer(serializers.ModelSerializer):
                 purchase_price=current_product["purchase_price"],
             )
         return order
-
-
-class OrderProductSerializer(serializers.ModelSerializer):
-    result = serializers.SerializerMethodField()
-
-    class Meta:
-        model = OrderProduct
-        fields = (
-            "id",
-            "order_id",
-            "product_id",
-            "amount",
-            "purchase_price",
-            "result",
-        )
-
-    def get_result(self, obj):
-        return obj.amount * obj.purchase_price
 
 
 # class DeliveryAddressSerializer(serializers.ModelSerializer):

@@ -14,19 +14,19 @@ POST http://127.0.0.1:8000/api/v1/token/
 Content-Type: application/json
 
 {
-    "email": "6509588@mail.ru",
-    "password": "4freddy"
+    "email": "kiwi@mail.ru",
+    "password": "4myfreddy"
 }
 
 ###
 GET http://127.0.0.1:8000/api/v1/users/me/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzMwOTY1LCJpYXQiOjE2OTUxMjYxNjUsImp0aSI6IjdjYzcwZmQ0YzhkMTQwZjNiYWUwZDc5MjQ4ZGYwN2UwIiwidXNlcl9pZCI6MX0.i947lFR5svWQo6St_OiPlFY06SWX6w5xTlTz3IU3S6A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzUwNzcxLCJpYXQiOjE2OTUxNDU5NzEsImp0aSI6Ijk4NjJkMmQ3OTNiNDQ2NGY4NmFlNjI4MTc1MTA5ZmNhIiwidXNlcl9pZCI6Mn0.9kley7jighkWVM-XLqrHyw64ZLF_1IR08H6y-A4ih3A
 
 ###
-GET http://127.0.0.1:8000/api/v1/orders/1
+GET http://127.0.0.1:8000/api/v1/orders/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzMwOTY1LCJpYXQiOjE2OTUxMjYxNjUsImp0aSI6IjdjYzcwZmQ0YzhkMTQwZjNiYWUwZDc5MjQ4ZGYwN2UwIiwidXNlcl9pZCI6MX0.i947lFR5svWQo6St_OiPlFY06SWX6w5xTlTz3IU3S6A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzUwNzcxLCJpYXQiOjE2OTUxNDU5NzEsImp0aSI6Ijk4NjJkMmQ3OTNiNDQ2NGY4NmFlNjI4MTc1MTA5ZmNhIiwidXNlcl9pZCI6Mn0.9kley7jighkWVM-XLqrHyw64ZLF_1IR08H6y-A4ih3A
 
 ###
 POST http://127.0.0.1:8000/api/v1/orders/

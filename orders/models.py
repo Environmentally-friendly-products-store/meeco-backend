@@ -10,7 +10,8 @@ User = get_user_model()
 
 class Order(CreatedAtMixin):
     article_number = models.CharField(
-        max_length=VARS.ORDER_ARTICLE_ML, verbose_name="Артикул"
+        max_length=VARS.ORDER_ARTICLE_ML,
+        verbose_name="Артикул",
     )
     customer = models.ForeignKey(
         User,
@@ -59,14 +60,14 @@ class Order(CreatedAtMixin):
 
 
 class OrderProduct(models.Model):
-    """Вспомогательная модель, связывающая продукцию и заказы."""
+    """Вспомогательная модель, связывающая товары и заказы."""
 
     order_id = models.ForeignKey(
         Order,
         on_delete=models.SET_NULL,
-        related_name="orderProducts",
-        null=True,
+        related_name="products",
         verbose_name="Заказ",
+        null=True,
     )
     product_id = models.ForeignKey(
         Product,
