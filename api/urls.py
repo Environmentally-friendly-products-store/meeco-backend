@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt import views
 
 from orders.views import OrderViewSet
-from products.views import ProductViewSet
+from products.views import CategoryViewSet, ProductViewSet
 from users.views import UserRegisterViewSet, me
 
 app_name = "api"
@@ -11,6 +11,7 @@ app_name = "api"
 router = DefaultRouter()
 router.register(r"products", ProductViewSet)
 router.register(r"orders", OrderViewSet)
+router.register(r"categories", CategoryViewSet)
 
 
 urlpatterns = [
