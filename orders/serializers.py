@@ -1,17 +1,17 @@
+from django.db.models import Sum
 from rest_framework import serializers
 
-# from orders.appvars import DEL_ADDR_COUNTRIES
-# from orders.models import DeliveryAddress
 from orders.models import Order, OrderProduct
 from products.models import Product
 
 
 class OrderProductSerializer(serializers.ModelSerializer):
-    total = serializers.SerializerMethodField()
+    item_total = serializers.SerializerMethodField()
     product_name = serializers.StringRelatedField(
         source="product_id",
         read_only=True,
     )
+    purchase_price = serializers.FloatField()
 
     class Meta:
         model = OrderProduct
@@ -20,20 +20,20 @@ class OrderProductSerializer(serializers.ModelSerializer):
             "product_name",
             "amount",
             "purchase_price",
-            "total",
+            "item_total",
         )
 
-    def get_total(self, obj):
-        return obj.amount * obj.purchase_price
+    def get_item_total(self, obj):
+        return round(obj.amount * obj.purchase_price, 2)
 
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.StringRelatedField()
-    price_total = serializers.SerializerMethodField()
     products = OrderProductSerializer(
         many=True,
         required=False,
     )
+    price_total = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
@@ -41,20 +41,16 @@ class OrderSerializer(serializers.ModelSerializer):
             "id",
             "article_number",
             "customer",
-            "address",
             "created_at",
-            "price_total",
-            "status",
+            "address",
             "comment",
+            "status",
+            "price_total",
             "products",
         )
 
     def get_price_total(self, obj):
-        products = OrderProduct.objects.filter(order_id=obj.order_id)
-        price_total = 0
-        for product in products:
-            price_total += float(product.amount) * float(product.purchase_price)
-        return price_total
+        return obj.products.aggregate(Sum("item_total"))["item_total__sum"]
 
     def create(self, validated_data):
         if "products" not in self.initial_data:

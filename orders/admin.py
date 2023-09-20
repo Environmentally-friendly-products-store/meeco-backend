@@ -39,6 +39,7 @@ class OrderProductAdmin(admin.ModelAdmin):
         "order_id",
         "amount",
         "purchase_price",
+        "item_total",
     )
     list_editable = (
         "product_id",

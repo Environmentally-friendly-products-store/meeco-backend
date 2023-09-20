@@ -10,7 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", default="MyTestKey")
 
-DEBUG = os.getenv("DEBUG", False) == "True"
+# DEBUG = os.getenv("DEBUG", False) == "True"
+DEBUG = os.getenv("DEBUG", default="False")
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
@@ -117,7 +118,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
-    "COERCE_DECIMAL_TO_STRING": False,
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
@@ -125,6 +125,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "COERCE_DECIMAL_TO_STRING": False,
     "PAGE_SIZE": 12,
 }
 
