@@ -5,8 +5,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from api.filters import ProductFilter
 from api.pagination import Pagination
 from api.permissions import IsAdminOrReadOnly
-from .models import Product
-from .serializers import ShortProductSerializer, FullProductSerializer
+from .models import Product, Category
+from .serializers import (ShortProductSerializer, FullProductSerializer,
+                          ShortCategorySerializer, FullCategorySerializer)
 
 
 class ProductViewSet(ReadOnlyModelViewSet):
@@ -20,4 +21,16 @@ class ProductViewSet(ReadOnlyModelViewSet):
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return FullProductSerializer
+        return self.serializer_class
+
+
+class CategoryViewSet(ReadOnlyModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = ShortCategorySerializer
+    permission_classes = (IsAdminOrReadOnly,)
+    pagination_class = None
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return FullCategorySerializer
         return self.serializer_class

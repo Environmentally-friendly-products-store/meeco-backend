@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.db.models import Sum
 
-from .models import Product, ImageSet
+from .models import Category, Product, ImageSet
 from users.models import ShoppingCart
 
 
@@ -117,3 +117,26 @@ class FullProductSerializer(serializers.ModelSerializer):
                 amount = cart_items.aggregate(Sum('amount'))['amount__sum']
                 return amount
         return 0
+
+
+class FullCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = (
+            'id',
+            'name',
+            'description',
+            'slug'
+        )
+
+
+class ShortCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = (
+            'id',
+            'name',
+            'description'
+        )
