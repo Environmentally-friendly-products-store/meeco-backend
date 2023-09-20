@@ -17,7 +17,7 @@ class OrderAdmin(admin.ModelAdmin):
         "article_number",
         "customer",
         "address",
-        "order_total",
+        "price_total",
         "status",
         "comment",
         "created_at",

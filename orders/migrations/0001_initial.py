@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "order_total",
+                    "price_total",
                     models.DecimalField(
                         blank=True,
                         decimal_places=2,
