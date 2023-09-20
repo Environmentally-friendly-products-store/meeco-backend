@@ -3,7 +3,8 @@ from django.db.models import UniqueConstraint
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
 
-from core.models import CreatedAtMixin, DiscountMixin, NameDescriptionModel, SlugMixin
+from core.models import (CreatedAtMixin, DiscountMixin,
+                         NameDescriptionModel, SlugMixin)
 from events.models import Event
 
 
@@ -124,4 +125,5 @@ class ProductEvent(models.Model):
     class Meta:
         verbose_name = "продукт в акции"
         verbose_name_plural = "продукты в акциях"
-        UniqueConstraint(fields=["product", "event"], name="unique_product_event")
+        UniqueConstraint(fields=["product", "event"],
+                         name="unique_product_event")
