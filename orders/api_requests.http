@@ -26,7 +26,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 ###
 GET http://127.0.0.1:8000/api/v1/orders/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzUwNzcxLCJpYXQiOjE2OTUxNDU5NzEsImp0aSI6Ijk4NjJkMmQ3OTNiNDQ2NGY4NmFlNjI4MTc1MTA5ZmNhIiwidXNlcl9pZCI6Mn0.9kley7jighkWVM-XLqrHyw64ZLF_1IR08H6y-A4ih3A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODAzOTg3LCJpYXQiOjE2OTUxOTkxODcsImp0aSI6IjBiNmM2MmI5YTAxZjRiYTU5NjRhODZhYjg2OTJiYmYzIiwidXNlcl9pZCI6Mn0.AFPljwRHdP_EuWIRDO4Z3xXk6Dcdk7YFzWeywzBUr_U
 
 ###
 POST http://127.0.0.1:8000/api/v1/orders/
