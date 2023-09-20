@@ -1,8 +1,15 @@
 # variables for orders app
 
 # Order table fields
+ORDER_ADDRESS_ML = 255
 ORDER_ARTICLE_ML = 50
 ORDER_STATUS_ML = 50
+ORDER_TOTAL_MDIGIT = 10
+ORDER_TOTAL_DECIMAL = 2
+
+# Order table fields
+ORD_PROD_PRICE_MDIGIT = 10
+ORD_PROD_PRICE_DECIMAL = 2
 
 # DeliveryAddress table fields
 DEL_ADDR_COUNTRIES = (

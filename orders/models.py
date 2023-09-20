@@ -21,7 +21,7 @@ class Order(CreatedAtMixin):
         help_text="Укажите заказчика",
     )
     address = models.CharField(
-        max_length=255,
+        max_length=VARS.ORDER_ADDRESS_ML,
         verbose_name="Адрес доставки",
         help_text="Введите адрес доставки",
     )
@@ -31,10 +31,12 @@ class Order(CreatedAtMixin):
     #     on_delete=models.SET_NULL,
     #     null=True,
     # )
-    price_total = models.FloatField(
+    grand_total = models.DecimalField(
+        verbose_name="Сумма заказа",
+        max_digits=VARS.ORDER_TOTAL_MDIGIT,
+        decimal_places=VARS.ORDER_TOTAL_DECIMAL,
         blank=True,
         null=True,
-        verbose_name="Цена заказа",
     )
     status = models.CharField(
         max_length=VARS.ORDER_STATUS_ML,
@@ -80,8 +82,10 @@ class OrderProduct(models.Model):
         verbose_name="Количество",
         help_text="Введите количество",
     )
-    purchase_price = models.FloatField(
+    purchase_price = models.DecimalField(
         verbose_name="Цена за единицу товара в заказе",
+        max_digits=VARS.ORD_PROD_PRICE_MDIGIT,
+        decimal_places=VARS.ORD_PROD_PRICE_DECIMAL,
         blank=True,
         null=True,
     )

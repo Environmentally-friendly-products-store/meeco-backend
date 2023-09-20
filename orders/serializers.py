@@ -1,4 +1,3 @@
-# from django.db.models import Sum
 from rest_framework import serializers
 
 # from orders.appvars import DEL_ADDR_COUNTRIES
@@ -30,9 +29,7 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.StringRelatedField()
-    grand_total = serializers.SerializerMethodField(
-        source="price_total",
-    )
+    grand_total = serializers.SerializerMethodField()
     products = OrderProductSerializer(
         many=True,
         required=False,
