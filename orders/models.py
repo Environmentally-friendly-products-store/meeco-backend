@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import UniqueConstraint
 
 from core.models import CreatedAtMixin
 from orders import appvars as VARS
@@ -11,7 +10,8 @@ User = get_user_model()
 
 class Order(CreatedAtMixin):
     article_number = models.CharField(
-        max_length=VARS.ORDERS_ARTICLE_ML, verbose_name="Артикул"
+        max_length=VARS.ORDER_ARTICLE_ML,
+        verbose_name="Артикул",
     )
     customer = models.ForeignKey(
         User,
@@ -21,15 +21,22 @@ class Order(CreatedAtMixin):
         help_text="Укажите заказчика",
     )
     address = models.CharField(
-        max_length=255,
+        max_length=VARS.ORDER_ADDRESS_ML,
         verbose_name="Адрес доставки",
         help_text="Введите адрес доставки",
     )
-    # address = models.ForeignKey(DeliveryAddress, on_delete=models.SET_NULL, null=True)
-    price_total = models.FloatField(
+    # вариант адресного поля с ссылкой на отдельную таблицу
+    # address = models.ForeignKey(
+    #     "DeliveryAddress",
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    # )
+    order_total = models.DecimalField(
+        verbose_name="Сумма заказа",
+        max_digits=VARS.ORDER_TOTAL_MDIGIT,
+        decimal_places=VARS.ORDER_TOTAL_DECIMAL,
         blank=True,
         null=True,
-        verbose_name="Цена заказа",
     )
     status = models.CharField(
         max_length=VARS.ORDER_STATUS_ML,
@@ -39,29 +46,30 @@ class Order(CreatedAtMixin):
         null=True,
     )
     comment = models.TextField(
-        verbose_name="Комментарий заказчика", help_text="Введите комментарий",
+        verbose_name="Комментарий заказчика",
+        help_text="Введите комментарий",
         blank=True,
         null=True,
     )
 
     class Meta:
-        ordering = ["id"]
+        ordering = ("id",)
         verbose_name = "заказ"
         verbose_name_plural = "заказы"
-    
+
     def __str__(self):
         return f"{self.customer}: {self.created_at}"
 
 
 class OrderProduct(models.Model):
-    """Вспомогательная модель, связывающая продукцию и заказы."""
+    """Вспомогательная модель, связывающая товары и заказы."""
 
     order_id = models.ForeignKey(
         Order,
         on_delete=models.SET_NULL,
-        related_name="orderProducts",
-        null=True,
+        related_name="products",
         verbose_name="Заказ",
+        null=True,
     )
     product_id = models.ForeignKey(
         Product,
@@ -74,8 +82,10 @@ class OrderProduct(models.Model):
         verbose_name="Количество",
         help_text="Введите количество",
     )
-    purchase_price = models.FloatField(
+    purchase_price = models.DecimalField(
         verbose_name="Цена за единицу товара в заказе",
+        max_digits=VARS.ORD_PROD_PRICE_MDIGIT,
+        decimal_places=VARS.ORD_PROD_PRICE_DECIMAL,
         blank=True,
         null=True,
     )
@@ -93,3 +103,26 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return f"{self.order_id} - {self.product_id}"
+
+
+# class DeliveryAddress(models.Model):
+#     owner = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE,
+#         related_name="addresses",
+#     )
+#     country = models.CharField(
+#         choices=VARS.DEL_ADDR_COUNTRIES,
+#     )
+#     city = models.CharField(
+#         max_length=VARS.DEL_ADDR_CITY_ML,
+#     )
+#     street = models.CharField(
+#         max_length=VARS.DEL_ADDR_STREET_ML,
+#     )
+#     house = models.CharField(
+#         max_length=VARS.DEL_ADDR_HOUSE_ML,
+#     )
+#     apartment = models.CharField(
+#         max_length=VARS.DEL_ADDR_APARTMENT_ML,
+#     )

@@ -1,31 +1,36 @@
 from rest_framework import serializers
 
-from orders.appvars import DEL_ADDR_COUNTRIES
-from orders.models import DeliveryAddress, Order, OrderProduct
+# from orders.appvars import DEL_ADDR_COUNTRIES
+# from orders.models import DeliveryAddress
+from orders.models import Order, OrderProduct
 from products.models import Product
-from products.serializers import ShortProductSerializer
 
 
-class DeliveryAddressSerializer(serializers.ModelSerializer):
-    country = serializers.ChoiceField(choices=DEL_ADDR_COUNTRIES)
+class OrderProductSerializer(serializers.ModelSerializer):
+    total = serializers.SerializerMethodField()
+    product_name = serializers.StringRelatedField(
+        source="product_id",
+        read_only=True,
+    )
 
     class Meta:
-        model = DeliveryAddress
+        model = OrderProduct
         fields = (
             "id",
-            "owner",
-            "country",
-            "city",
-            "street",
-            "house",
-            "apartment",
+            "product_name",
+            "amount",
+            "purchase_price",
+            "total",
         )
+
+    def get_total(self, obj):
+        return obj.amount * obj.purchase_price
 
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.StringRelatedField()
-    address = serializers.StringRelatedField()
-    products = ShortProductSerializer(
+    # order_total = serializers.SerializerMethodField()
+    products = OrderProductSerializer(
         many=True,
         required=False,
     )
@@ -34,14 +39,20 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = (
             "id",
+            "article_number",
             "customer",
             "address",
             "created_at",
-            "price_result",
+            "order_total",
             "status",
             "comment",
             "products",
         )
+
+    # def get_order_total(self, obj):
+    #     order_id = self.context["request"].order_id
+    #     product_list = OrderProduct.objects.filter(order_id=order_id)
+    #     return product_list.aggregate(Sum("amount" * "purchase_price"))["amount__sum"]
 
     def create(self, validated_data):
         if "products" not in self.initial_data:
@@ -62,19 +73,17 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
 
-class OrderProductSerializer(serializers.ModelSerializer):
-    result = serializers.SerializerMethodField()
+# class DeliveryAddressSerializer(serializers.ModelSerializer):
+#     country = serializers.ChoiceField(choices=DEL_ADDR_COUNTRIES)
 
-    class Meta:
-        model = OrderProduct
-        fields = (
-            "id",
-            "order_id",
-            "product_id",
-            "amount",
-            "purchase_price",
-            "result",
-        )
-
-    def get_result(self, obj):
-        return obj.amount * obj.purchase_price
+#     class Meta:
+#         model = DeliveryAddress
+#         fields = (
+#             "id",
+#             "owner",
+#             "country",
+#             "city",
+#             "street",
+#             "house",
+#             "apartment",
+#         )
