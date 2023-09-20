@@ -10,12 +10,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", default="MyTestKey")
 
-DEBUG = os.getenv("DEBUG", default="False")
+DEBUG = os.getenv("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
-CSRF_TRUSTED_ORIGINS = ['http://80.87.106.192/',
-                        'http://www.ecome.acceleratorpracticum.ru']
+CSRF_TRUSTED_ORIGINS = [
+    "http://80.87.106.192/",
+    "http://www.ecome.acceleratorpracticum.ru",
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -115,6 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
+    "COERCE_DECIMAL_TO_STRING": False,
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],

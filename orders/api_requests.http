@@ -21,7 +21,7 @@ Content-Type: application/json
 ###
 GET http://127.0.0.1:8000/api/v1/users/me/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzUwNzcxLCJpYXQiOjE2OTUxNDU5NzEsImp0aSI6Ijk4NjJkMmQ3OTNiNDQ2NGY4NmFlNjI4MTc1MTA5ZmNhIiwidXNlcl9pZCI6Mn0.9kley7jighkWVM-XLqrHyw64ZLF_1IR08H6y-A4ih3A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODE3NjcyLCJpYXQiOjE2OTUyMTI4NzIsImp0aSI6ImY5M2ZiOWJkMjNhYTQ1ZTNiNDg4M2NlNjMwZTIxMDdkIiwidXNlcl9pZCI6Mn0.-oaJ1S2sDta2OPGryvlfD8TQYoGV7mbdIJScpwgYJUY
 
 ###
 GET http://127.0.0.1:8000/api/v1/orders/

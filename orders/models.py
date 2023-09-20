@@ -91,7 +91,7 @@ class OrderProduct(models.Model):
     )
 
     class Meta:
-        ordering = ("order_id",)
+        ordering = ("product_id",)
         verbose_name = "продукт в составе заказа"
         verbose_name_plural = "продукты в заказе"
         constraints = [

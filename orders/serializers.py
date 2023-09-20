@@ -29,7 +29,7 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.StringRelatedField()
-    # price_total = serializers.SerializerMethodField()
+    price_total = serializers.SerializerMethodField()
     products = OrderProductSerializer(
         many=True,
         required=False,
@@ -49,10 +49,12 @@ class OrderSerializer(serializers.ModelSerializer):
             "products",
         )
 
-    # def get_price_total(self, obj):
-    #     order_id = self.context["request"].order_id
-    #     product_list = OrderProduct.objects.filter(order_id=order_id)
-    #     return product_list.aggregate(Sum("amount" * "purchase_price"))["amount__sum"]
+    def get_price_total(self, obj):
+        products = OrderProduct.objects.filter(order_id=obj.order_id)
+        price_total = 0
+        for product in products:
+            price_total += float(product.amount) * float(product.purchase_price)
+        return price_total
 
     def create(self, validated_data):
         if "products" not in self.initial_data:
