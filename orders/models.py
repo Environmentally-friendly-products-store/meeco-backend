@@ -31,7 +31,7 @@ class Order(CreatedAtMixin):
     #     on_delete=models.SET_NULL,
     #     null=True,
     # )
-    order_total = models.DecimalField(
+    price_total = models.DecimalField(
         verbose_name="Сумма заказа",
         max_digits=VARS.ORDER_TOTAL_MDIGIT,
         decimal_places=VARS.ORDER_TOTAL_DECIMAL,
