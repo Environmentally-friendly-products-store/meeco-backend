@@ -40,9 +40,11 @@ class DiscountMixin(models.Model):
     discount = models.PositiveSmallIntegerField(
         "cкидка",
         blank=True,
-        help_text="Введите целое число от 1 до 100",
+        default=0,
+        help_text="Введите целое число от 0 до 100",
         validators=[
-            MinValueValidator(settings.MIN_DISCOUNT, "Скидка должна быть больше нуля"),
+            MinValueValidator(settings.MIN_DISCOUNT,
+                              "Скидка должна быть больше нуля"),
             MaxValueValidator(
                 settings.MAX_DISCOUNT,
                 f"Скидка не должна превышать\
