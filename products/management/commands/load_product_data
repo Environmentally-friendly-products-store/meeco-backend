@@ -1,0 +1,33 @@
+from django.core.management.base import BaseCommand
+from products.models import Product, Category, ImageSet
+
+
+class Command(BaseCommand):
+    help = 'Download data from folder to db'
+
+    def handle(self, *args, **options):
+        self.import_products()
+
+    def import_products(self, file='./data/test_prod_data.csv'):
+        with open(file, 'r') as f:
+            data = f.readlines()
+        for item in data:
+            if Category.objects.filter(
+                name=item.split(sep=',')[4].strip()
+            ).exists():
+                category = Category.objects.get(
+                    name=item.split(sep=',')[4].strip()
+                )
+            else:
+                category = Category.objects.create(
+                    name=item.split(sep=',')[4].strip(),
+                    description=item.split(sep=',')[4].strip()
+                )
+            Product.objects.get_or_create(
+                name=item.split(sep=',')[0],
+                description=item.split(sep=',')[1],
+                brand=item.split(sep=',')[2],
+                price_per_unit=item.split(sep=',')[3],
+                category=category.id,
+            )
+            ImageSet.objects.create(product=)
