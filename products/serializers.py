@@ -1,8 +1,9 @@
-from rest_framework import serializers
 from django.db.models import Sum
+from rest_framework import serializers
 
-from .models import Category, Product, ImageSet
 from users.models import ShoppingCart
+
+from .models import Category, ImageSet, Product
 
 
 class ShortProductSerializer(serializers.ModelSerializer):
@@ -15,16 +16,16 @@ class ShortProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id',
-            'name',
-            'price_per_unit',
-            'preview_image',
-            'category',
-            'brand',
-            'event',
-            'is_in_shopping_cart',
+            "id",
+            "name",
+            "price_per_unit",
+            "preview_image",
+            "category",
+            "brand",
+            "event",
+            "is_in_shopping_cart",
             # 'is_favorited',
-            'amount'
+            "amount",
         )
 
     def get_preview_image(self, obj):
@@ -33,23 +34,24 @@ class ShortProductSerializer(serializers.ModelSerializer):
         return None
 
     def get_amount(self, obj):
-        user = self.context['request'].user
+        user = self.context["request"].user
 
         if not user.is_anonymous:
             if ShoppingCart.objects.filter(user=user).exists():
-                cart_items = ShoppingCart.objects.filter(
-                    user=user, product=obj)
-                amount = cart_items.aggregate(Sum('amount'))['amount__sum']
+                cart_items = ShoppingCart.objects.filter(user=user, product=obj)
+                amount = cart_items.aggregate(Sum("amount"))["amount__sum"]
                 return amount
         return 0
 
     def get_is_in_shopping_cart(self, obj):
-        user = self.context['request'].user
+        user = self.context["request"].user
 
         return (
             user.is_authenticated
             and ShoppingCart.objects.filter(user=user, product=obj).exists()
         )
+
+
 #     def get_is_favorited(self, obj):
 #     user = self.context['request'].user
 
@@ -60,24 +62,26 @@ class ShortProductSerializer(serializers.ModelSerializer):
 
 
 class ImageSetSerializer(serializers.ModelSerializer):
-    big_image = serializers.ImageField(source='big_image.url')
-    preview_image = serializers.ImageField(source='preview_image.url')
-    image_thumbnail = serializers.ImageField(source='image_thumbnail.url')
+    big_image = serializers.ImageField(source="big_image.url")
+    preview_image = serializers.ImageField(source="preview_image.url")
+    image_thumbnail = serializers.ImageField(source="image_thumbnail.url")
 
     class Meta:
         model = ImageSet
-        fields = ('big_image', 'preview_image', 'image_thumbnail')
+        fields = ("big_image", "preview_image", "image_thumbnail")
 
     def get_image_url(self, obj, image_type):
-        return f'/media/CACHE/product_images/{getattr(obj, image_type).name}'\
-            if getattr(obj, image_type) else None
+        return (
+            f"/media/CACHE/product_images/{getattr(obj, image_type).name}"
+            if getattr(obj, image_type)
+            else None
+        )
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['big_image'] = self.get_image_url(instance, 'big_image')
-        data['preview_image'] = self.get_image_url(instance, 'preview_image')
-        data['image_thumbnail'] = self.get_image_url(instance,
-                                                     'image_thumbnail')
+        data["big_image"] = self.get_image_url(instance, "big_image")
+        data["preview_image"] = self.get_image_url(instance, "preview_image")
+        data["image_thumbnail"] = self.get_image_url(instance, "image_thumbnail")
         return data
 
 
@@ -90,21 +94,21 @@ class FullProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id',
-            'price_per_unit',
-            'name',
-            'description',
-            'images',
+            "id",
+            "price_per_unit",
+            "name",
+            "description",
+            "images",
             # 'is_favorited',
-            'is_in_shopping_cart',
-            'category',
-            'brand',
-            'event',
-            'amount'
+            "is_in_shopping_cart",
+            "category",
+            "brand",
+            "event",
+            "amount",
         )
 
     def get_is_in_shopping_cart(self, obj):
-        user = self.context['request'].user
+        user = self.context["request"].user
 
         return (
             user.is_authenticated
@@ -112,35 +116,23 @@ class FullProductSerializer(serializers.ModelSerializer):
         )
 
     def get_amount(self, obj):
-        user = self.context['request'].user
+        user = self.context["request"].user
 
         if not user.is_anonymous:
             if ShoppingCart.objects.filter(user=user).exists():
-                cart_items = ShoppingCart.objects.filter(
-                    user=user, product=obj)
-                amount = cart_items.aggregate(Sum('amount'))['amount__sum']
+                cart_items = ShoppingCart.objects.filter(user=user, product=obj)
+                amount = cart_items.aggregate(Sum("amount"))["amount__sum"]
                 return amount
         return 0
 
 
 class FullCategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
-        fields = (
-            'id',
-            'name',
-            'description',
-            'slug'
-        )
+        fields = ("id", "name", "description", "slug")
 
 
 class ShortCategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
-        fields = (
-            'id',
-            'name',
-            'description'
-        )
+        fields = ("id", "name", "description")
