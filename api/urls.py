@@ -4,7 +4,7 @@ from rest_framework_simplejwt import views
 
 from orders.views import OrderViewSet
 from products.views import CategoryViewSet, ProductViewSet
-from users.views import UserRegisterViewSet, me
+from users.views import ShoppingCartViewSet, UserRegisterViewSet, me
 
 app_name = "api"
 
@@ -36,5 +36,13 @@ urlpatterns = [
         name="token_verify",
     ),
     path("users/me/", me, name="user_me"),
+    # path(
+    #     'products/<int:product_id>/favorite/',
+    #     FavoriteView.as_view(),
+    # ),
+    path(
+        "products/<int:product_id>/shopping_cart/",
+        ShoppingCartViewSet.as_view(),
+    ),
     path("", include(router.urls)),
 ]

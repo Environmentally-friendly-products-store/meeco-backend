@@ -44,7 +44,7 @@ class UserProduct(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         help_text="Выберите товар",
-        related_name='user_product'
+        related_name="user_product",
     )
 
     class Meta:
@@ -52,7 +52,7 @@ class UserProduct(models.Model):
 
 
 # class Favorite(UserProduct):
-#
+
 #     class Meta:
 #         ordering = ["id"]
 #         verbose_name = "Избранное"
@@ -64,6 +64,7 @@ class UserProduct(models.Model):
 
 class ShoppingCart(UserProduct):
     amount = models.IntegerField(verbose_name="Количество", default=0)
+    # Заменить на PositiveSmallIntegerField
 
     class Meta:
         ordering = ["id"]

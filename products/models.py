@@ -3,8 +3,7 @@ from django.db.models import UniqueConstraint
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
 
-from core.models import (CreatedAtMixin, DiscountMixin,
-                         NameDescriptionModel, SlugMixin)
+from core.models import CreatedAtMixin, DiscountMixin, NameDescriptionModel, SlugMixin
 from events.models import Event
 
 
@@ -14,7 +13,7 @@ class Product(NameDescriptionModel, DiscountMixin, CreatedAtMixin):
         on_delete=models.CASCADE,
         verbose_name="Категория",
         help_text="Введите категорию",
-        related_name="category"
+        related_name="category",
     )
     brand = models.CharField(
         max_length=100, verbose_name="Брэнд", help_text="Введите производителя"
@@ -125,5 +124,4 @@ class ProductEvent(models.Model):
     class Meta:
         verbose_name = "продукт в акции"
         verbose_name_plural = "продукты в акциях"
-        UniqueConstraint(fields=["product", "event"],
-                         name="unique_product_event")
+        UniqueConstraint(fields=["product", "event"], name="unique_product_event")
