@@ -66,6 +66,7 @@ class OrderSerializer(serializers.ModelSerializer):
             )
             OrderProduct.objects.create(
                 order_id=order,
+                customer=self.user,
                 product_id=current_product,
                 amount=current_product["amount"],
                 purchase_price=current_product["purchase_price"],
