@@ -83,15 +83,20 @@ class OrderProduct(models.Model):
         help_text="Введите количество",
     )
     purchase_price = models.DecimalField(
-        verbose_name="Цена за единицу товара в заказе",
+        verbose_name="Цена за единицу",
         max_digits=VARS.ORD_PROD_PRICE_MDIGIT,
         decimal_places=VARS.ORD_PROD_PRICE_DECIMAL,
         blank=True,
         null=True,
     )
+    item_total = models.FloatField(
+        verbose_name="Стоимость позиции",
+        blank=True,
+        null=True,
+    )
 
     class Meta:
-        ordering = ("order_id",)
+        ordering = ("product_id",)
         verbose_name = "продукт в составе заказа"
         verbose_name_plural = "продукты в заказе"
         constraints = [
