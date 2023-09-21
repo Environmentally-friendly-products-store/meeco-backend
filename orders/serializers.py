@@ -1,4 +1,5 @@
 from django.db.models import Sum
+from djoser.serializers import UserSerializer
 from rest_framework import serializers
 
 from orders.models import Order, OrderProduct
@@ -28,7 +29,7 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    customer = serializers.StringRelatedField()
+    customer = UserSerializer()
     products = OrderProductSerializer(
         many=True,
         required=False,
@@ -41,6 +42,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "id",
             "article_number",
             "customer",
+            "contact_phone_number",
             "created_at",
             "address",
             "comment",
@@ -69,19 +71,3 @@ class OrderSerializer(serializers.ModelSerializer):
                 purchase_price=current_product["purchase_price"],
             )
         return order
-
-
-# class DeliveryAddressSerializer(serializers.ModelSerializer):
-#     country = serializers.ChoiceField(choices=DEL_ADDR_COUNTRIES)
-
-#     class Meta:
-#         model = DeliveryAddress
-#         fields = (
-#             "id",
-#             "owner",
-#             "country",
-#             "city",
-#             "street",
-#             "house",
-#             "apartment",
-#         )

@@ -20,17 +20,17 @@ class Order(CreatedAtMixin):
         verbose_name="Заказчик",
         help_text="Укажите заказчика",
     )
+    contact_phone_number = models.CharField(
+        max_length=VARS.ORDER_PHONE_ML,
+        verbose_name="Контактный номер телефона",
+        blank=True,
+        null=True,
+    )
     address = models.CharField(
         max_length=VARS.ORDER_ADDRESS_ML,
         verbose_name="Адрес доставки",
         help_text="Введите адрес доставки",
     )
-    # вариант адресного поля с ссылкой на отдельную таблицу
-    # address = models.ForeignKey(
-    #     "DeliveryAddress",
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    # )
     price_total = models.DecimalField(
         verbose_name="Сумма заказа",
         max_digits=VARS.ORDER_TOTAL_MDIGIT,
@@ -108,26 +108,3 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return f"{self.order_id} - {self.product_id}"
-
-
-# class DeliveryAddress(models.Model):
-#     owner = models.ForeignKey(
-#         User,
-#         on_delete=models.CASCADE,
-#         related_name="addresses",
-#     )
-#     country = models.CharField(
-#         choices=VARS.DEL_ADDR_COUNTRIES,
-#     )
-#     city = models.CharField(
-#         max_length=VARS.DEL_ADDR_CITY_ML,
-#     )
-#     street = models.CharField(
-#         max_length=VARS.DEL_ADDR_STREET_ML,
-#     )
-#     house = models.CharField(
-#         max_length=VARS.DEL_ADDR_HOUSE_ML,
-#     )
-#     apartment = models.CharField(
-#         max_length=VARS.DEL_ADDR_APARTMENT_ML,
-#     )
