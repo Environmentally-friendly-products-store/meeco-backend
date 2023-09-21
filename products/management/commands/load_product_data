@@ -30,4 +30,3 @@ class Command(BaseCommand):
                 price_per_unit=item.split(sep=',')[3],
                 category=category.id,
             )
-            ImageSet.objects.create(product=)
