@@ -64,5 +64,5 @@ jobs:
             sudo docker-compose rm -f backend
             sudo docker pull ${{ env.BACKEND_IMAGE }}
             sudo docker-compose up -d
-            sudo docker-compose exec backend python manage.py migrate --noinput
+          #  sudo docker-compose exec backend python manage.py migrate --noinput
             
