@@ -61,8 +61,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             sudo docker-compose stop
-            sudo docker-compose rm -f backend
+            sudo docker system prune -a
             sudo docker pull ${{ env.BACKEND_IMAGE }}
+            sudo docker pull ${{ env.FRONTEND_IMAGE }}
             sudo docker-compose up -d
-          #  sudo docker-compose exec backend python manage.py migrate --noinput
-            
