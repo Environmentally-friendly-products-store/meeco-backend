@@ -2,6 +2,7 @@ name: ecome backend workflow
 on: [push]
 env:
   BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/ecome_backend:v1
+  FRONTEND_IMAGE: ${{  secrets.DOCKER_USERNAME  }}/ecome_frontend:v1
   
 jobs:
   # tests:
