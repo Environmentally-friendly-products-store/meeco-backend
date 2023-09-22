@@ -15,9 +15,11 @@ class ProductEventInline(admin.TabularInline):
 class EventAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     inlines = (ProductEventInline,)
-    list_display = ("id", "name", "description", "discount", "date_start", "date_end")
+    list_display = ("id", "name", "description", "image", "discount",
+                    "date_start", "date_end")
     list_filter = ("name", "discount", "date_start", "date_end")
-    list_editable = ("name", "description", "discount", "date_start", "date_end")
+    list_editable = ("name", "description", "discount",
+                     "date_start", "date_end")
     search_fields = ("name",)
     empty_value_display = "-пусто-"
 
