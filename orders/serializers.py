@@ -6,13 +6,20 @@ from orders.models import Order, OrderProduct
 from products.models import Product
 
 
+class ItemTotalCalc(serializers.Field):
+    """Поле для вычисления стоимости позиции в заказе."""
+
+    def to_representation(self, value):
+        return value
+
+    def to_internal_value(self, obj):
+        return round(obj.amount * obj.purchase_price, 2)
+
+
 class OrderProductSerializer(serializers.ModelSerializer):
-    item_total = serializers.SerializerMethodField()
-    product_name = serializers.StringRelatedField(
-        source="product_id",
-        read_only=True,
-    )
+    product_name = serializers.StringRelatedField(source="product_id")
     purchase_price = serializers.FloatField()
+    item_total = ItemTotalCalc()
 
     class Meta:
         model = OrderProduct
@@ -23,13 +30,16 @@ class OrderProductSerializer(serializers.ModelSerializer):
             "purchase_price",
             "item_total",
         )
-
-    def get_item_total(self, obj):
-        return round(obj.amount * obj.purchase_price, 2)
+        read_only_fields = (
+            "product_name",
+            "item_total",
+        )
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    customer = UserSerializer()
+    article_number = serializers.CharField(required=False)
+    customer = UserSerializer(default=serializers.CurrentUserDefault())
+    delivery_address = serializers.CharField(source="address")
     products = OrderProductSerializer(
         many=True,
         required=False,
@@ -44,11 +54,15 @@ class OrderSerializer(serializers.ModelSerializer):
             "customer",
             "contact_phone_number",
             "created_at",
-            "address",
+            "delivery_address",
             "comment",
             "status",
             "price_total",
             "products",
+        )
+        read_only_fields = (
+            "customer",
+            "price_total",
         )
 
     def get_price_total(self, obj):

@@ -9,3 +9,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     pagination_class = Pagination
+
+    def perform_create(self, serializer):
+        serializer.save(customer=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(customer=self.request.user)
