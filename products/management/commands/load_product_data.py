@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from products.models import Product, Category
-from core.utils import cyrrilic_slugmaker
+from core.utils import cyrillic_slugmaker
 
 
 class Command(BaseCommand):
