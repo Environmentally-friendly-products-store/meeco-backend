@@ -39,6 +39,7 @@ def me(request, *args, **kwargs):
 # class FavoriteView(UserProductViewSet):
 #     queryset = Favorite.objects.all()
 #     serializer = FavoriteSerializer
+#     permission_classes = (IsAuthenticated,)
 #     message = 'избранное'
 #     message_plural = 'избранном'
 #     name = "favorite"
@@ -47,6 +48,7 @@ def me(request, *args, **kwargs):
 class ShoppingCartViewSet(UserProductViewSet):
     queryset = ShoppingCart.objects.all()
     serializer = ShoppingCartSerializer
+    permission_classes = (IsAuthenticated,)
     message = "список покупок"
     message_plural = "списке покупок"
     name = "shopping_card"
@@ -69,7 +71,7 @@ class ShoppingCartViewSet(UserProductViewSet):
                 {"Ошибка": "Количество для изменения не может быть меньше 1"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        ShoppingCart.objects.filter(user=request.user.id, product=product_id).update(
+        self.queryset.objects.filter(user=user_id, product=product_id).update(
             amount=amount
         )
-        return self.get_return_page(product_id, amount)
+        return self._get_return_page(user_id, product_id, amount)

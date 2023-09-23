@@ -1,12 +1,8 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from api.filters import ProductFilter
-from api.pagination import Pagination
 from api.permissions import IsAdminOrReadOnly
 
 from .models import Event
-
 from .serializers import FullEventSerializer, ShortEventSerializer
 
 

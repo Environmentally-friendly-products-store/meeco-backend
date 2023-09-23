@@ -43,8 +43,9 @@ class DiscountMixin(models.Model):
         default=0,
         help_text="Введите целое число от 0 до 100",
         validators=[
-            MinValueValidator(settings.MIN_DISCOUNT,
-                              "Скидка должна быть больше или равна нулю"),
+            MinValueValidator(
+                settings.MIN_DISCOUNT, "Скидка должна быть больше или равна нулю"
+            ),
             MaxValueValidator(
                 settings.MAX_DISCOUNT,
                 f"Скидка не должна превышать\
