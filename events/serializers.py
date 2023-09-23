@@ -14,7 +14,8 @@ class FullEventSerializer(serializers.ModelSerializer):
             "discount",
             "date_start",
             "date_end",
-            "slug")
+            "slug",
+        )
 
 
 class ShortEventSerializer(serializers.ModelSerializer):
@@ -27,5 +28,5 @@ class ShortEventSerializer(serializers.ModelSerializer):
             "image",
             "discount",
             "date_start",
-            "date_end"
-            )
+            "date_end",
+        )

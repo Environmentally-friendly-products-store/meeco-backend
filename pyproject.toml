@@ -27,6 +27,7 @@ select = [
     "B",  # flake8-bugbear
 ]
 ignore = [
+    "B905",
     "E501",  # line too long, handled by black
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex

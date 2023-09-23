@@ -1,17 +1,38 @@
-def cyrillic_slugmaker(string):
+def cyrillic_slug_maker(string):
     symbols = (
-        u"абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ ",
+        "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ ",
         (
-            *list(u'abvgdee'), 'zh', *list(u'zijklmnoprstuf'), 'kh', 'z', 'ch',
-            'sh', 'sh', '',
-            'y', '', 'e', 'yu', 'ya', *list(u'ABVGDEE'), 'ZH',
-            *list(u'ZIJKLMNOPRSTUF'), 'KH', 'Z', 'CH', 'SH', 'SH',
-            *list(u'_Y_E'), 'YU', 'YA', '_'
-        )
+            *list("abvgdee"),
+            "zh",
+            *list("zijklmnoprstuf"),
+            "kh",
+            "z",
+            "ch",
+            "sh",
+            "sh",
+            "",
+            "y",
+            "",
+            "e",
+            "yu",
+            "ya",
+            *list("ABVGDEE"),
+            "ZH",
+            *list("ZIJKLMNOPRSTUF"),
+            "KH",
+            "Z",
+            "CH",
+            "SH",
+            "SH",
+            *list("_Y_E"),
+            "YU",
+            "YA",
+            "_",
+        ),
     )
 
-    coding_dict = {source: dest for source, dest in zip(*symbols)}
+    coding_dict = dict(zip(*symbols))
     fin = []
     for item in string:
         fin.append(coding_dict.get(item, item))
-    return ''.join(fin)
+    return "".join(fin)
