@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
-from products.models import Product, Category, ImageSet
+from products.models import Product, Category
+from core.utils import cyrrilic_slugmaker
 
 
 class Command(BaseCommand):
@@ -12,21 +13,23 @@ class Command(BaseCommand):
         with open(file, 'r') as f:
             data = f.readlines()
         for item in data:
+            datalist = item.split(sep=',')
             if Category.objects.filter(
-                name=item.split(sep=',')[4].strip()
+                name=datalist[4].strip()
             ).exists():
                 category = Category.objects.get(
-                    name=item.split(sep=',')[4].strip()
+                    name=datalist[4].strip()
                 )
             else:
                 category = Category.objects.create(
-                    name=item.split(sep=',')[4].strip(),
-                    description=item.split(sep=',')[4].strip()
+                    name=datalist[4].strip(),
+                    description=datalist[4].strip(),
+                    slug=cyrrilic_slugmaker(datalist[4].strip())
                 )
             Product.objects.get_or_create(
-                name=item.split(sep=',')[0],
-                description=item.split(sep=',')[1],
-                brand=item.split(sep=',')[2],
-                price_per_unit=item.split(sep=',')[3],
+                name=datalist[0],
+                description=datalist[1],
+                brand=datalist[2],
+                price_per_unit=datalist[3],
                 category=category.id,
             )
