@@ -72,7 +72,7 @@ class ImageSetSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj, image_type):
         return (
-            f"/media/CACHE/product_images/{getattr(obj, image_type).name}"
+            getattr(obj, image_type).url
             if getattr(obj, image_type)
             else None
         )
