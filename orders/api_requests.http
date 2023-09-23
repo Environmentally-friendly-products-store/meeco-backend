@@ -40,6 +40,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 }
 
 ###
-GET http://127.0.0.1:8000/api/v1/
+GET http://127.0.0.1:8000/api/v1/orders/6/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzMwOTY1LCJpYXQiOjE2OTUxMjYxNjUsImp0aSI6IjdjYzcwZmQ0YzhkMTQwZjNiYWUwZDc5MjQ4ZGYwN2UwIiwidXNlcl9pZCI6MX0.i947lFR5svWQo6St_OiPlFY06SWX6w5xTlTz3IU3S6A
+
+###
+PATCH http://127.0.0.1:8000/api/v1/orders/6/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzMwOTY1LCJpYXQiOjE2OTUxMjYxNjUsImp0aSI6IjdjYzcwZmQ0YzhkMTQwZjNiYWUwZDc5MjQ4ZGYwN2UwIiwidXNlcl9pZCI6MX0.i947lFR5svWQo6St_OiPlFY06SWX6w5xTlTz3IU3S6A
+
+{
+  "status": "Собирается",
+  "article_number": "5"
+  # "comment": "Хочу доставку после 10:00",
+  # "contact_phone_number": "",
+  # "delivery_address": "Ленивка, д.2"
+  # "products": [
+  #   {
+  #     "id": 0,
+  #     "amount": 12,
+  #     "price_per_unit": 1200
+  #   }
+  # ]
+}
