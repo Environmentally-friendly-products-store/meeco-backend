@@ -34,7 +34,6 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzMwOTY1LCJpYXQiOjE2OTUxMjYxNjUsImp0aSI6IjdjYzcwZmQ0YzhkMTQwZjNiYWUwZDc5MjQ4ZGYwN2UwIiwidXNlcl9pZCI6MX0.i947lFR5svWQo6St_OiPlFY06SWX6w5xTlTz3IU3S6A
 
 {
-  "article_number": "666",
   "comment": "Хочу доставку после 18:00",
   "contact_phone_number": "+79354987523",
   "delivery_address": "603005, г. Нижний Новгород, пл. Минина и Пожарского, д.5 (вход в арке)"

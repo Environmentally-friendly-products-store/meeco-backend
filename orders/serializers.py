@@ -1,9 +1,10 @@
+from collections import OrderedDict
+
 from django.db.models import Sum
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
 
 from orders.models import Order, OrderProduct
-from products.models import Product
 
 
 class ItemTotalCalc(serializers.Field):
@@ -37,7 +38,10 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    article_number = serializers.CharField(required=False)
+    article_number = serializers.CharField(
+        required=False,
+        default="",
+    )
     customer = UserSerializer(default=serializers.CurrentUserDefault())
     delivery_address = serializers.CharField(source="address")
     products = OrderProductSerializer(
@@ -65,24 +69,30 @@ class OrderSerializer(serializers.ModelSerializer):
             "price_total",
         )
 
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        return OrderedDict(
+            [(key, result[key]) for key in result if result[key] not in [None, ""]]
+        )
+
     def get_price_total(self, obj):
         return obj.products.aggregate(Sum("item_total"))["item_total__sum"]
 
-    def create(self, validated_data):
-        if "products" not in self.initial_data:
-            order = Order.objects.create(**validated_data)
-            return order
-        products = validated_data.pop("products")
-        order = Order.objects.create(**validated_data)
-        for product in products:
-            current_product, status = Product.objects.get_or_create(
-                **product,
-            )
-            OrderProduct.objects.create(
-                order_id=order,
-                customer=self.user,
-                product_id=current_product,
-                amount=current_product["amount"],
-                purchase_price=current_product["purchase_price"],
-            )
-        return order
+    # def create(self, validated_data):
+    #     if "products" not in self.initial_data:
+    #         order = Order.objects.create(**validated_data)
+    #         return order
+    #     products = validated_data.pop("products")
+    #     order = Order.objects.create(**validated_data)
+    #     for product in products:
+    #         current_product, status = Product.objects.get_or_create(
+    #             **product,
+    #         )
+    #         OrderProduct.objects.create(
+    #             order_id=order,
+    #             customer=self.user,
+    #             product_id=current_product,
+    #             amount=current_product["amount"],
+    #             purchase_price=current_product["purchase_price"],
+    #         )
+    #     return order
