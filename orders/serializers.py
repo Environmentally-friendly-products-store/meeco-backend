@@ -40,18 +40,17 @@ class OrderSerializer(serializers.ModelSerializer):
     article_number = serializers.CharField(
         allow_null=True,
         required=False,
-        # default="",
     )
     customer = UserSerializer(
         default=serializers.CurrentUserDefault(),
         read_only=True,
     )
     delivery_address = serializers.CharField(source="address")
+    price_total = serializers.SerializerMethodField()
     products = OrderProductSerializer(
         required=False,
         many=True,
     )
-    price_total = serializers.SerializerMethodField()
 
     class Meta:
         model = Order

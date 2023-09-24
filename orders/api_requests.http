@@ -29,9 +29,14 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODAzOTg3LCJpYXQiOjE2OTUxOTkxODcsImp0aSI6IjBiNmM2MmI5YTAxZjRiYTU5NjRhODZhYjg2OTJiYmYzIiwidXNlcl9pZCI6Mn0.AFPljwRHdP_EuWIRDO4Z3xXk6Dcdk7YFzWeywzBUr_U
 
 ###
+GET http://127.0.0.1:8000/api/v1/orders/my/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODAzOTg3LCJpYXQiOjE2OTUxOTkxODcsImp0aSI6IjBiNmM2MmI5YTAxZjRiYTU5NjRhODZhYjg2OTJiYmYzIiwidXNlcl9pZCI6Mn0.AFPljwRHdP_EuWIRDO4Z3xXk6Dcdk7YFzWeywzBUr_U
+
+###
 POST http://127.0.0.1:8000/api/v1/orders/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzMwOTY1LCJpYXQiOjE2OTUxMjYxNjUsImp0aSI6IjdjYzcwZmQ0YzhkMTQwZjNiYWUwZDc5MjQ4ZGYwN2UwIiwidXNlcl9pZCI6MX0.i947lFR5svWQo6St_OiPlFY06SWX6w5xTlTz3IU3S6A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODAzOTg3LCJpYXQiOjE2OTUxOTkxODcsImp0aSI6IjBiNmM2MmI5YTAxZjRiYTU5NjRhODZhYjg2OTJiYmYzIiwidXNlcl9pZCI6Mn0.AFPljwRHdP_EuWIRDO4Z3xXk6Dcdk7YFzWeywzBUr_U
 
 {
   # "comment": "Хочу доставку после 11:00",
@@ -39,7 +44,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
   "delivery_address": "вход в арке",
   "products": [
     {
-      "product_id": 1,
+      "product_id": 3,
       "amount": 1,
       "purchase_price": 200.0
     },

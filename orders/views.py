@@ -13,12 +13,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     pagination_class = Pagination
     permission_classes = [permissions.IsAuthenticated]
 
-    @action(
-        detail=False,
-        methods=["get"],
-    )
+    @action(detail=False, url_path="my")
     def current_user_orders(self, request):
-        queryset = self.get_queryset().filter(user=request.user)
+        queryset = self.get_queryset().filter(customer=request.user)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 

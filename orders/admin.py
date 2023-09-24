@@ -24,7 +24,7 @@ class OrderAdmin(admin.ModelAdmin):
     )
     list_filter = ("article_number", "customer", "status", "created_at")
     list_editable = ("status",)
-    search_fields = ("article_number",)
+    search_fields = ("price_total",)
     empty_value_display = "-пусто-"
 
 
