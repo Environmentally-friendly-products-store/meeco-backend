@@ -3,16 +3,11 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from api.permissions import IsAdminOrReadOnly
 
 from .models import Event
-from .serializers import FullEventSerializer, ShortEventSerializer
+from .serializers import FullEventSerializer
 
 
 class EventViewSet(ReadOnlyModelViewSet):
     queryset = Event.objects.all()
-    serializer_class = ShortEventSerializer
+    serializer_class = FullEventSerializer
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = None
-
-    def get_serializer_class(self):
-        if self.action == "retrieve":
-            return FullEventSerializer
-        return self.serializer_class
