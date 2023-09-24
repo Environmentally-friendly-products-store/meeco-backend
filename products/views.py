@@ -9,7 +9,6 @@ from .models import Category, Product
 from .serializers import (
     FullCategorySerializer,
     FullProductSerializer,
-    ShortCategorySerializer,
     ShortProductSerializer,
 )
 
@@ -30,11 +29,6 @@ class ProductViewSet(ReadOnlyModelViewSet):
 
 class CategoryViewSet(ReadOnlyModelViewSet):
     queryset = Category.objects.all()
-    serializer_class = ShortCategorySerializer
+    serializer_class = FullCategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = None
-
-    def get_serializer_class(self):
-        if self.action == "retrieve":
-            return FullCategorySerializer
-        return self.serializer_class

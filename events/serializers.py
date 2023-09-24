@@ -16,17 +16,3 @@ class FullEventSerializer(serializers.ModelSerializer):
             "date_end",
             "slug",
         )
-
-
-class ShortEventSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Event
-        fields = (
-            "id",
-            "name",
-            "description",
-            "image",
-            "discount",
-            "date_start",
-            "date_end",
-        )

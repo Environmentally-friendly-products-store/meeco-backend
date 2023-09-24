@@ -130,9 +130,3 @@ class FullCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ("id", "name", "description", "slug")
-
-
-class ShortCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ("id", "name", "description")
