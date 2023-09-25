@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.import_products()
 
-    def import_products(self, file="./data/test_prod_data.tsv"):
+    def import_products(self, file="./test_prod_data.tsv"):
         with open(file, encoding='utf-8') as f:
             data = f.readlines()
         for item in data:
