@@ -3,15 +3,24 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from api.pagination import Pagination
+from api.permissions import IsOwnerOrReadOnly
 from orders.models import Order
-from orders.serializers import OrderSerializer
+from orders.serializers import OrderListSerializer, OrderSerializer
 
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.prefetch_related("customer").all()
-    serializer_class = OrderSerializer
     pagination_class = Pagination
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes_by_action = {
+        "create": [permissions.AllowAny],
+        "list": [permissions.IsAdminUser],
+        "current_user_orders": [IsOwnerOrReadOnly],
+    }
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return OrderListSerializer
+        return OrderSerializer
 
     @action(detail=False, url_path="my")
     def current_user_orders(self, request):
@@ -29,3 +38,12 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     # def perform_update(self, serializer):
     #     serializer.save(customer=self.request.user)
+
+    def get_permissions(self):
+        try:
+            return [
+                permission()
+                for permission in self.permission_classes_by_action[self.action]
+            ]
+        except KeyError:
+            return [permission() for permission in self.permission_classes]

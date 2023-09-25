@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-from django.db.models import Sum
+from django.db.models import Count, Sum
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
 
@@ -36,7 +36,13 @@ class OrderProductSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderListSerializer(serializers.ModelSerializer):
+    """
+    Для отображения списка заказов как текущего пользователя, так и всех заказов в системе.
+    Используется сокращенный набор полей.
+
+    """
+
     article_number = serializers.CharField(
         allow_null=True,
         required=False,
@@ -122,3 +128,35 @@ class OrderSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class OrderSerializer(OrderListSerializer):
+    """
+    Используется для создания нового заказа, просмотра, обновления информации
+    по конкретному заказу и его удаления.
+
+    """
+
+    customer = serializers.HiddenField(
+        default=serializers.CurrentUserDefault(),
+    )
+    products = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Order
+        fields = (
+            "id",
+            "contact_phone_number",
+            "delivery_address",
+            "comment",
+            "status",
+            "price_total",
+            "products",
+        )
+        read_only_fields = (
+            "price_total",
+            "products",
+        )
+
+    def get_products(self, obj):
+        return obj.products.aggregate(Count("id"))["id__count"]

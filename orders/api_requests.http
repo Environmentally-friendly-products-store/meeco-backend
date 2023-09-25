@@ -14,8 +14,8 @@ POST http://127.0.0.1:8000/api/v1/token/
 Content-Type: application/json
 
 {
-    "email": "kiwi@mail.ru",
-    "password": "4myfreddy"
+    "email": "asd@mail.ru",
+    "password": "4freddy"
 }
 
 ###
@@ -31,7 +31,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 ###
 GET http://127.0.0.1:8000/api/v1/orders/my/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODAzOTg3LCJpYXQiOjE2OTUxOTkxODcsImp0aSI6IjBiNmM2MmI5YTAxZjRiYTU5NjRhODZhYjg2OTJiYmYzIiwidXNlcl9pZCI6Mn0.AFPljwRHdP_EuWIRDO4Z3xXk6Dcdk7YFzWeywzBUr_U
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODAzOTg3LCJpYXQiOjE2OTUxOTkxODcsImp0aSI6IjBiNmM2MmI5YTAxZjRiYTU5NjRhODZhYjg2OTJiYmYzIiwidXNlcl9pZCI6Mn0.AFPljwRHdP_EuWIRDO4Z3xXk6Dcdk7YFzWeywzBUr_U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2MjQ4NzQ0LCJpYXQiOjE2OTU2NDM5NDQsImp0aSI6ImVlMTcwZjBmZDllMzRjZjZhY2M2ODQxYjM0NDUxZjNjIiwidXNlcl9pZCI6MX0.FoXLTUuh8dEuDK_6Dt8uptEbnnzNkS_ZARjauBkTAjw
 
 ###
 POST http://127.0.0.1:8000/api/v1/orders/
