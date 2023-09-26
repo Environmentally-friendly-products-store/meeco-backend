@@ -1,6 +1,7 @@
 from django_filters.rest_framework import FilterSet, filters
 
 from products.models import Category, Product
+from events.models import Event
 
 
 class ProductFilter(FilterSet):
@@ -9,11 +10,16 @@ class ProductFilter(FilterSet):
         to_field_name="slug",
         queryset=Category.objects.all(),
     )
+    event = filters.ModelMultipleChoiceFilter(
+        field_name="event__slug",
+        to_field_name="slug",
+        queryset=Event.objects.all(),
+    )
     is_in_shopping_cart = filters.BooleanFilter(method="get_is_in_shopping_cart")
 
     class Meta:
         model = Product
-        fields = ("category", "is_in_shopping_cart")
+        fields = ("category", "is_in_shopping_cart", "event")
 
     def get_is_in_shopping_cart(self, queryset, name, value):
         user = self.request.user

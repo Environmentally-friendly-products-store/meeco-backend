@@ -104,24 +104,24 @@ class Category(NameDescriptionModel, SlugMixin):
 #         verbose_name_plural = "Бренды"
 
 
-class ProductEvent(models.Model):
-    """Вспомогательная модель, связывающая продукцию и акции."""
+# class ProductEvent(models.Model):
+#     """Вспомогательная модель, связывающая продукцию и акции."""
 
-    product_id = models.ForeignKey(
-        Product,
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        related_name="product_event",
-        verbose_name="Товар",
-    )
-    event_id = models.ForeignKey(
-        Event,
-        on_delete=models.CASCADE,
-        verbose_name="Промоакция",
-    )
+#     product_id = models.ForeignKey(
+#         Product,
+#         blank=True,
+#         null=True,
+#         on_delete=models.CASCADE,
+#         related_name="product_event",
+#         verbose_name="Товар",
+#     )
+#     event_id = models.ForeignKey(
+#         Event,
+#         on_delete=models.CASCADE,
+#         verbose_name="Промоакция",
+#     )
 
-    class Meta:
-        verbose_name = "продукт в акции"
-        verbose_name_plural = "продукты в акциях"
-        UniqueConstraint(fields=["product", "event"], name="unique_product_event")
+#     class Meta:
+#         verbose_name = "продукт в акции"
+#         verbose_name_plural = "продукты в акциях"
+#         UniqueConstraint(fields=["product", "event"], name="unique_product_event")
