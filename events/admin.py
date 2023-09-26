@@ -1,20 +1,20 @@
 from django.contrib import admin
 
-from products.models import ProductEvent
+# from products.models import ProductEvent
 
 from .models import Event
 
 
-class ProductEventInline(admin.TabularInline):
-    model = ProductEvent
-    min_num = 1
-    max_num = 200
-    extra = 1
+# class ProductEventInline(admin.TabularInline):
+#     model = ProductEvent
+#     min_num = 1
+#     max_num = 200
+#     extra = 1
 
 
 class EventAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    inlines = (ProductEventInline,)
+    # inlines = (ProductEventInline,)
     list_display = (
         "id",
         "name",
@@ -33,16 +33,16 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Event, EventAdmin)
 
 
-@admin.register(ProductEvent)
-class ProductEventAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "product_id",
-        "event_id",
-    )
-    list_editable = (
-        "product_id",
-        "event_id",
-    )
-    search_fields = ("event_id",)
-    empty_value_display = "-пусто-"
+# @admin.register(ProductEvent)
+# class ProductEventAdmin(admin.ModelAdmin):
+#     list_display = (
+#         "id",
+#         "product_id",
+#         "event_id",
+#     )
+#     list_editable = (
+#         "product_id",
+#         "event_id",
+#     )
+#     search_fields = ("event_id",)
+#     empty_value_display = "-пусто-"
