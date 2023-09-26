@@ -12,9 +12,10 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.prefetch_related("customer").all()
     pagination_class = Pagination
     permission_classes_by_action = {
-        "create": [permissions.AllowAny],
-        "list": [permissions.IsAdminUser],
         "current_user_orders": [IsOwnerOrReadOnly],
+        "list": [permissions.IsAdminUser],
+        "retrieve": [IsOwnerOrReadOnly],
+        "create": [permissions.IsAuthenticatedOrReadOnly],
     }
 
     def get_serializer_class(self):

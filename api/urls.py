@@ -11,7 +11,7 @@ app_name = "api"
 
 router = DefaultRouter()
 router.register(r"products", ProductViewSet)
-router.register(r"orders", OrderViewSet, basename="orders")
+router.register(r"orders", OrderViewSet)
 router.register(r"categories", CategoryViewSet)
 router.register(r"events", EventViewSet)
 
