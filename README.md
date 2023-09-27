@@ -21,7 +21,7 @@
 ```
 cd backend
 py 3.11 -m venv venv
-source venv/bin/activate
+source venv/Scripts/activate
 pip install --upgrade pip
 pip install requirements.txt
 ```
