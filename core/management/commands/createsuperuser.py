@@ -23,9 +23,8 @@ class Command(createsuperuser.Command):
         last_name = options.get("last_name")
 
         if not password or not email or not first_name or not last_name:
-            raise CommandError(
-                "--email, --password, --first_name and --last_name are required options"
-            )
+            raise CommandError("--email, --password, --first_name and\
+                                --last_name are required options")
 
         user_data = {
             "password": password,

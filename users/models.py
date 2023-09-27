@@ -8,16 +8,19 @@ from .managers import MyUserManager
 
 class User(AbstractUser):
     email = models.EmailField(
-        max_length=254, unique=True, verbose_name="email", help_text="Введите email"
+        max_length=254, unique=True,
+        verbose_name="email", help_text="Введите email"
     )
     username = models.CharField(
         max_length=150, verbose_name="логин", help_text="Введите логин"
     )
     first_name = models.CharField(
-        max_length=150, verbose_name="имя пользователя", help_text="Введите имя"
+        max_length=150, verbose_name="имя пользователя",
+        help_text="Введите имя"
     )
     last_name = models.CharField(
-        max_length=150, verbose_name="фамилия пользователя", help_text="Введите фамилию"
+        max_length=150, verbose_name="фамилия пользователя",
+        help_text="Введите фамилию"
     )
 
     class Meta:
@@ -58,7 +61,8 @@ class UserProduct(models.Model):
 #         verbose_name = "Избранное"
 #         verbose_name_plural = "Избранное"
 #         constraints = [
-#             models.UniqueConstraint(fields=["product", "user"], name="unique_favorite")
+#             models.UniqueConstraint(fields=["product", "user"],
+#             name="unique_favorite")
 #         ]
 
 

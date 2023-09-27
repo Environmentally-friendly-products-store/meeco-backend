@@ -52,11 +52,13 @@ class UserProductViewSet(APIView):
             )
         self.queryset.get(user=user_id, product=product).delete()
         return Response(
-            {"Ошибка": "Товар успешно удален"}, status=status.HTTP_204_NO_CONTENT
+            {"Ошибка": "Товар успешно удален"},
+            status=status.HTTP_204_NO_CONTENT
         )
 
     @staticmethod
-    def _get_return_page(user_id: int, product_id: int, amount: int = 1) -> Response:
+    def _get_return_page(user_id: int,
+                         product_id: int, amount: int = 1) -> Response:
         return_page = (
             Product.objects.filter(pk=product_id)
             .values(
@@ -80,7 +82,9 @@ class UserProductViewSet(APIView):
         return Response(return_page, status=status.HTTP_201_CREATED)
 
     @staticmethod
-    def _get_data_to_save(user_id: int, model_id: int, name: str) -> dict[str, int]:
+    def _get_data_to_save(user_id: int,
+                          model_id: int,
+                          name: str) -> dict[str, int]:
         match name:
             case "favorite":
                 return {"user": user_id, "product": model_id}

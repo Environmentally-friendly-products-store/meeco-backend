@@ -1,9 +1,9 @@
 from django.db import models
-from django.db.models import UniqueConstraint
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
 
-from core.models import CreatedAtMixin, DiscountMixin, NameDescriptionModel, SlugMixin
+from core.models import (CreatedAtMixin, DiscountMixin, NameDescriptionModel,
+                         SlugMixin)
 from events.models import Event
 
 
@@ -102,26 +102,3 @@ class Category(NameDescriptionModel, SlugMixin):
 #         ordering = ["id"]
 #         verbose_name = "Бренд"
 #         verbose_name_plural = "Бренды"
-
-
-# class ProductEvent(models.Model):
-#     """Вспомогательная модель, связывающая продукцию и акции."""
-
-#     product_id = models.ForeignKey(
-#         Product,
-#         blank=True,
-#         null=True,
-#         on_delete=models.CASCADE,
-#         related_name="product_event",
-#         verbose_name="Товар",
-#     )
-#     event_id = models.ForeignKey(
-#         Event,
-#         on_delete=models.CASCADE,
-#         verbose_name="Промоакция",
-#     )
-
-#     class Meta:
-#         verbose_name = "продукт в акции"
-#         verbose_name_plural = "продукты в акциях"
-#         UniqueConstraint(fields=["product", "event"], name="unique_product_event")
