@@ -12,6 +12,7 @@ class Order(CreatedAtMixin):
     article_number = models.CharField(
         max_length=VARS.ORDER_ARTICLE_ML,
         verbose_name="Артикул",
+        null=True,
     )
     customer = models.ForeignKey(
         User,
@@ -30,6 +31,7 @@ class Order(CreatedAtMixin):
         max_length=VARS.ORDER_ADDRESS_ML,
         verbose_name="Адрес доставки",
         help_text="Введите адрес доставки",
+        null=True,
     )
     price_total = models.DecimalField(
         verbose_name="Сумма заказа",
