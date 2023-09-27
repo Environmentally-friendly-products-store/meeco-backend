@@ -10,9 +10,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", default="MyTestKey")
 
-DEBUG = os.getenv("DEBUG", default="False")
+DEBUG = os.getenv("DEBUG", default=False)
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://80.87.106.192/",
+    "http://www.ecome.acceleratorpracticum.ru",
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -23,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework_simplejwt",
     "rest_framework",
+    "corsheaders",
     "django_filters",
     "djoser",
     "imagekit",
@@ -39,6 +48,8 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -119,6 +130,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "COERCE_DECIMAL_TO_STRING": False,
     "PAGE_SIZE": 12,
 }
 
@@ -151,5 +163,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MIN_DISCOUNT = 1
+MIN_DISCOUNT = 0
 MAX_DISCOUNT = 100

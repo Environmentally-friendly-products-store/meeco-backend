@@ -1,17 +1,12 @@
-from django.contrib.auth import get_user_model
-from djoser.serializers import UserCreateSerializer
-from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
+from core.serializers import UserProductSerializer
+from users.models import ShoppingCart
 
-User = get_user_model()
+# class FavoriteSerializer(UserProductSerializer):
+#     class Meta(UserProductSerializer.Meta):
+#         model = Favorite
 
 
-class CustomCreateSerializer(UserCreateSerializer):
-    email = serializers.EmailField(
-        validators=[
-            UniqueValidator(
-                queryset=User.objects.all(),
-                message="Пользователь с таким email уже зарегистрирован",
-            )
-        ]
-    )
+class ShoppingCartSerializer(UserProductSerializer):
+    class Meta:
+        model = ShoppingCart
+        fields = ["user", "product", "amount"]
