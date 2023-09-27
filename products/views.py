@@ -6,11 +6,8 @@ from api.pagination import Pagination
 from api.permissions import IsAdminOrReadOnly
 
 from .models import Category, Product
-from .serializers import (
-    FullCategorySerializer,
-    FullProductSerializer,
-    ShortProductSerializer,
-)
+from .serializers import (FullCategorySerializer, FullProductSerializer,
+                          ShortProductSerializer)
 
 
 class ProductViewSet(ReadOnlyModelViewSet):

@@ -27,7 +27,8 @@ class OrderProductSerializer(serializers.ModelSerializer):
         return round(obj.amount * obj.purchase_price, 2)
 
     def create(self, validated_data):
-        item_total = validated_data.get("amount") * validated_data.get("purchase_price")
+        item_total = validated_data.get(
+            "amount") * validated_data.get("purchase_price")
         validated_data.update(
             {
                 "item_total": item_total,
@@ -38,9 +39,8 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 class OrderListSerializer(serializers.ModelSerializer):
     """
-    Для отображения списка заказов как текущего пользователя, так и всех заказов в системе.
-    Используется сокращенный набор полей.
-
+    Для отображения списка заказов как текущего пользователя,
+    так и всех заказов в системе. Используется сокращенный набор полей.
     """
 
     article_number = serializers.CharField(
@@ -122,7 +122,8 @@ class OrderListSerializer(serializers.ModelSerializer):
             products = validated_data.pop("products")
             lst = []
             for product in products:
-                current_product, status = OrderProduct.objects.get_or_create(**product)
+                current_product, status = OrderProduct.objects.get_or_create(
+                    **product)
                 lst.append(current_product)
             instance.products.set(lst)
 
