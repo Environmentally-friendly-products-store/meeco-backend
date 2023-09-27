@@ -5,7 +5,6 @@ from .models import Event
 # from products.models import ProductEvent
 
 
-
 # class ProductEventInline(admin.TabularInline):
 #     model = ProductEvent
 #     min_num = 1

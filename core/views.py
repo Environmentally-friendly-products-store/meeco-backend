@@ -94,3 +94,4 @@ class UserProductViewSet(APIView):
                     "product": model_id,
                     "amount": 1,
                 }
+        return {}
