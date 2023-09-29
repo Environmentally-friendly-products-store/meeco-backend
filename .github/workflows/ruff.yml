@@ -9,4 +9,4 @@ jobs:
         with:
 #          src: "./src"
           version: 0.0.259
-          args: --ignore E501
+          args: --ignore E501 --exclude */migrations/
