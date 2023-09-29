@@ -28,7 +28,7 @@ select = [
 ]
 ignore = [
     "B905",
-    "E501",  # line too long, handled by black
+#    "E501",  # line too long, handled by black
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
 ]
@@ -58,6 +58,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "meeco/settings.py"
 ]
 per-file-ignores = {}
 
