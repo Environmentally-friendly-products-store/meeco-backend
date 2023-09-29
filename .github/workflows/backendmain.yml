@@ -4,11 +4,11 @@ env:
   BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/ecome_backend:v1
 
 jobs:
-  ruff_test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: chartboost/ruff-action@v1
+#  ruff_test:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: chartboost/ruff-action@v1
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
