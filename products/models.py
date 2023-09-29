@@ -2,8 +2,12 @@ from django.db import models
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
 
-from core.models import (CreatedAtMixin, DiscountMixin, NameDescriptionModel,
-                         SlugMixin)
+from core.models import (
+    CreatedAtMixin,
+    DiscountMixin,
+    NameDescriptionModel,
+    SlugMixin,
+)
 from events.models import Event
 
 

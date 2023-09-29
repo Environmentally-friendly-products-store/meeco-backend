@@ -11,7 +11,7 @@ class Command(BaseCommand):
         self.import_products()
 
     def import_products(self, file="./data/test_prod_data.tsv"):
-        with open(file, encoding='utf-8') as f:
+        with open(file, encoding="utf-8") as f:
             data = f.readlines()
         for item in data:
             datalist = item.split(sep="	")

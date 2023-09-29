@@ -38,8 +38,7 @@ class ShortProductSerializer(serializers.ModelSerializer):
 
         if not user.is_anonymous:
             if ShoppingCart.objects.filter(user=user).exists():
-                cart_items = ShoppingCart.objects.filter(
-                    user=user, product=obj)
+                cart_items = ShoppingCart.objects.filter(user=user, product=obj)
                 amount = cart_items.aggregate(Sum("amount"))["amount__sum"]
                 return amount
         return 0
@@ -73,9 +72,7 @@ class ImageSetSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj, image_type):
         return (
-            getattr(obj, image_type).url
-            if getattr(obj, image_type)
-            else None
+            getattr(obj, image_type).url if getattr(obj, image_type) else None
         )
 
     def to_representation(self, instance):
@@ -83,7 +80,8 @@ class ImageSetSerializer(serializers.ModelSerializer):
         data["big_image"] = self.get_image_url(instance, "big_image")
         data["preview_image"] = self.get_image_url(instance, "preview_image")
         data["image_thumbnail"] = self.get_image_url(
-            instance, "image_thumbnail")
+            instance, "image_thumbnail"
+        )
         return data
 
 
@@ -122,8 +120,7 @@ class FullProductSerializer(serializers.ModelSerializer):
 
         if not user.is_anonymous:
             if ShoppingCart.objects.filter(user=user).exists():
-                cart_items = ShoppingCart.objects.filter(
-                    user=user, product=obj)
+                cart_items = ShoppingCart.objects.filter(user=user, product=obj)
                 amount = cart_items.aggregate(Sum("amount"))["amount__sum"]
                 return amount
         return 0
