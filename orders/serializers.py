@@ -27,8 +27,9 @@ class OrderProductSerializer(serializers.ModelSerializer):
         return round(obj.amount * obj.purchase_price, 2)
 
     def create(self, validated_data):
-        item_total = validated_data.get(
-            "amount") * validated_data.get("purchase_price")
+        item_total = validated_data.get("amount") * validated_data.get(
+            "purchase_price"
+        )
         validated_data.update(
             {
                 "item_total": item_total,
@@ -123,7 +124,8 @@ class OrderListSerializer(serializers.ModelSerializer):
             lst = []
             for product in products:
                 current_product, status = OrderProduct.objects.get_or_create(
-                    **product)
+                    **product
+                )
                 lst.append(current_product)
             instance.products.set(lst)
 

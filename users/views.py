@@ -71,5 +71,8 @@ class ShoppingCartViewSet(UserProductViewSet):
                 {"Ошибка": "Количество для изменения не может быть меньше 1"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        self.queryset.filter(user=user_id, product=product_id).update(amount=amount)
+
+        self.queryset.filter(user=user_id, product=product_id).update(
+            amount=amount
+        )
         return self._get_return_page(user_id, product_id, amount)
