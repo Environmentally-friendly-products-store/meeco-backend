@@ -3,9 +3,11 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt import views
 
 from events.views import EventViewSet
-from orders.views import OrderViewSet
+from orders.views import CartAPI, OrderViewSet
 from products.views import CategoryViewSet, ProductViewSet
-from users.views import ShoppingCartViewSet, UserRegisterViewSet, me
+
+# from users.views import ShoppingCartViewSet
+from users.views import UserRegisterViewSet, me
 
 app_name = "api"
 
@@ -41,9 +43,10 @@ urlpatterns = [
     #     'products/<int:product_id>/favorite/',
     #     FavoriteView.as_view(),
     # ),
-    path(
-        "products/<int:product_id>/shopping_cart/",
-        ShoppingCartViewSet.as_view(),
-    ),
+    # path(
+    #     "products/<int:product_id>/shopping_cart/",
+    #     ShoppingCartViewSet.as_view(),
+    # ),
+    path("cart", CartAPI.as_view(), name="cart"),
     path("", include(router.urls)),
 ]

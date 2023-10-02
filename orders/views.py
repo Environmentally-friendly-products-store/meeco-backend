@@ -1,9 +1,11 @@
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from api.pagination import Pagination
 from api.permissions import IsOwnerOrReadOnly
+from orders.cart import Cart
 from orders.models import Order
 from orders.serializers import OrderListSerializer, OrderSerializer
 
@@ -48,3 +50,40 @@ class OrderViewSet(viewsets.ModelViewSet):
             ]
         except KeyError:
             return [permission() for permission in self.permission_classes]
+
+
+class CartAPI(APIView):
+    def get(self, request, format=None):
+        cart = Cart(request)
+
+        return Response(
+            {
+                "data": list(cart.__iter__()),
+                "cart_total_price": cart.get_total_price(),
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    def post(self, request, **kwargs):
+        cart = Cart(request)
+
+        if "remove" in request.data:
+            product = request.data["product"]
+            cart.remove(product)
+
+        elif "clear" in request.data:
+            cart.clear()
+
+        else:
+            product = request.data
+            cart.add(
+                product=product["product"],
+                amount=product["amount"],
+                overide_amount=product["overide_amount"]
+                if "overide_amount" in product
+                else False,
+            )
+
+        return Response(
+            {"message": "корзина обновлена"}, status=status.HTTP_202_ACCEPTED
+        )
