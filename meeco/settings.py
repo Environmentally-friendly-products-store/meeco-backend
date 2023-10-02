@@ -20,7 +20,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_URLS_REGEX = r'^/api/.*$'
+CORS_URLS_REGEX = r"^/api/.*$"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -165,3 +165,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MIN_DISCOUNT = 0
 MAX_DISCOUNT = 100
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
