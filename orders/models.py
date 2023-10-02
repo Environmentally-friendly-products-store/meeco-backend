@@ -55,12 +55,15 @@ class Order(CreatedAtMixin):
     )
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("-created_at",)
         verbose_name = "заказ"
         verbose_name_plural = "заказы"
 
     def __str__(self):
-        return f"{self.customer}: {self.created_at}"
+        return f"Order {self.id}"
+
+    def get_price_total(self):
+        return sum(item.get_item_total() for item in self.items.all())
 
 
 class OrderProduct(models.Model):
@@ -76,11 +79,12 @@ class OrderProduct(models.Model):
     product_id = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,
-        null=True,
+        related_name="order_products",
         verbose_name="Товар",
+        null=True,
     )
     amount = models.IntegerField(
-        default=0,
+        default=1,
         verbose_name="Количество",
         help_text="Введите количество",
     )
@@ -109,4 +113,7 @@ class OrderProduct(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.order_id} - {self.product_id}"
+        return f"{self.id}"
+
+    def get_item_total(self):
+        return self.purchase_price * self.amount
