@@ -166,4 +166,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MIN_DISCOUNT = 0
 MAX_DISCOUNT = 100
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# easy perseption: days * hours * minutes * seconds
+SESSION_COOKIE_AGE = 2 * 24 * 60 * 60

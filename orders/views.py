@@ -5,9 +5,9 @@ from rest_framework.views import APIView
 
 from api.pagination import Pagination
 from api.permissions import IsOwnerOrReadOnly
-from orders.cart import Cart
 from orders.models import Order
 from orders.serializers import OrderListSerializer, OrderSerializer
+from orders.services import Cart
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -52,38 +52,74 @@ class OrderViewSet(viewsets.ModelViewSet):
             return [permission() for permission in self.permission_classes]
 
 
-class CartAPI(APIView):
-    def get(self, request, format=None):
+class CartListAPI(APIView):
+    """
+    Multi API to handle cart operations
+    """
+
+    def get(self, request):
         cart = Cart(request)
 
         return Response(
             {
                 "data": list(cart.__iter__()),
                 "cart_total_price": cart.get_total_price(),
+                # "DEBUG": f"{request.user}, s-key: {cart.session.session_key}"
+                # "DEBUG": f"{request.session.items()}",
             },
             status=status.HTTP_200_OK,
         )
 
-    def post(self, request, **kwargs):
+    def post(self, request):
         cart = Cart(request)
-
-        if "remove" in request.data:
-            product = request.data["product"]
-            cart.remove(product)
-
-        elif "clear" in request.data:
-            cart.clear()
-
+        if "amount" not in request.data.keys():
+            cart.add(product_id=request.data["product"])
         else:
-            product = request.data
             cart.add(
-                product=product["product"],
-                amount=product["amount"],
-                overide_amount=product["overide_amount"]
-                if "overide_amount" in product
-                else False,
+                product_id=request.data["product"],
+                amount=request.data["amount"],
             )
 
         return Response(
-            {"message": "корзина обновлена"}, status=status.HTTP_202_ACCEPTED
+            {"message": "cart is updated"},
+            status=status.HTTP_202_ACCEPTED,
+        )
+
+    def delete(self, request):
+        cart = Cart(request)
+        cart.clear()
+
+        return Response(
+            {"message": "cart  is cleared"},
+            status=status.HTTP_204_NO_CONTENT,
+        )
+
+
+class CartDetailAPI(APIView):
+    """
+    Single API to handle cart operations
+    """
+
+    message = "cart details updated"
+
+    def patch(self, request, **kwargs):
+        cart = Cart(request)
+        cart.add(
+            product_id=kwargs["pk"],
+            amount=request.data["amount"],
+            overide_amount=True,
+        )
+
+        return Response(
+            {"message": self.message},
+            status=status.HTTP_205_RESET_CONTENT,
+        )
+
+    def delete(self, request, **kwargs):
+        cart = Cart(request)
+        cart.remove(kwargs["pk"])
+
+        return Response(
+            {"message": self.message},
+            status=status.HTTP_204_NO_CONTENT,
         )

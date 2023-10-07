@@ -1,0 +1,39 @@
+### get current cart
+GET http://127.0.0.1:8000/cart
+Content-Type: application/json
+
+### add one product to cart
+POST http://127.0.0.1:8000/cart
+Content-Type: application/json
+
+{
+  "product": 1
+}
+
+### add multi products to cart
+POST http://127.0.0.1:8000/cart
+Content-Type: application/json
+
+{
+  "product": 2,
+  "amount": 3
+}
+
+### clear cart
+DELETE http://127.0.0.1:8000/cart
+Content-Type: application/json
+
+
+
+
+### modify product quantity in cart
+PATCH http://127.0.0.1:8000/cart/2
+Content-Type: application/json
+
+{
+  "amount": 3
+}
+
+### remove product from cart
+DELETE http://127.0.0.1:8000/cart/1
+Content-Type: application/json
