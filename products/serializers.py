@@ -8,8 +8,8 @@ from .models import Category, ImageSet, Product
 
 class ShortProductSerializer(serializers.ModelSerializer):
     preview_image = serializers.SerializerMethodField()
-    amount = serializers.SerializerMethodField()
-    is_in_shopping_cart = serializers.SerializerMethodField()
+    # amount = serializers.SerializerMethodField()
+    # is_in_shopping_cart = serializers.SerializerMethodField()
     category = serializers.StringRelatedField(read_only=True)
     # is_favorited = serializers.SerializerMethodField()
 
@@ -23,9 +23,9 @@ class ShortProductSerializer(serializers.ModelSerializer):
             "category",
             "brand",
             "event",
-            "is_in_shopping_cart",
+            # "is_in_shopping_cart",
             # 'is_favorited',
-            "amount",
+            # "amount",
         )
 
     def get_preview_image(self, obj):
@@ -33,15 +33,15 @@ class ShortProductSerializer(serializers.ModelSerializer):
             return obj.images.first().preview_image.url
         return None
 
-    def get_amount(self, obj):
-        user = self.context["request"].user
+    # def get_amount(self, obj):
+    #     user = self.context["request"].user
 
-        if not user.is_anonymous:
-            if ShoppingCart.objects.filter(user=user).exists():
-                cart_items = ShoppingCart.objects.filter(user=user, product=obj)
-                amount = cart_items.aggregate(Sum("amount"))["amount__sum"]
-                return amount
-        return 0
+    #     if not user.is_anonymous:
+    #         if ShoppingCart.objects.filter(user=user).exists():
+    #             cart_items = ShoppingCart.objects.filter(user=user, product=obj)
+    #             amount = cart_items.aggregate(Sum("amount"))["amount__sum"]
+    #             return amount
+    #     return 0
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context["request"].user

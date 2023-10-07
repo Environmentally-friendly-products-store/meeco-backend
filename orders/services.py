@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from orders import appvars as VARS
 from orders.models import OrderProduct, Product
-from orders.serializers import ProductSerializer
+from products.serializers import ShortProductSerializer
 
 
 class Cart:
@@ -42,7 +42,9 @@ class Cart:
         products = Product.objects.filter(id__in=product_ids)
         cart = self.cart.copy()
         for product in products:
-            cart[str(product.id)]["product"] = ProductSerializer(product).data
+            cart[str(product.id)]["product"] = ShortProductSerializer(
+                product
+            ).data
         for item in cart.values():
             item["price"] = Decimal(item["price"])
             item["total_price"] = item["price"] * item["amount"]

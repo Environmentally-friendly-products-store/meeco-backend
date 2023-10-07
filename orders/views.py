@@ -57,6 +57,8 @@ class CartListAPI(APIView):
     Multi API to handle cart operations
     """
 
+    permission_classes = [permissions.AllowAny]
+
     def get(self, request):
         cart = Cart(request)
 
@@ -100,6 +102,7 @@ class CartDetailAPI(APIView):
     Single API to handle cart operations
     """
 
+    permission_classes = [permissions.AllowAny]
     message = "cart details updated"
 
     def patch(self, request, **kwargs):

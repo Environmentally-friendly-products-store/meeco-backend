@@ -1,18 +1,21 @@
 ### get current cart
-GET http://127.0.0.1:8000/cart
+GET http://127.0.0.1:8000/api/v1/cart
 Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
 
 ### add one product to cart
-POST http://127.0.0.1:8000/cart
+POST http://127.0.0.1:8000/api/v1/cart
 Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
 
 {
-  "product": 1
+  "product": 2
 }
 
 ### add multi products to cart
-POST http://127.0.0.1:8000/cart
+POST http://127.0.0.1:8000/api/v1/cart
 Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
 
 {
   "product": 2,
@@ -20,20 +23,25 @@ Content-Type: application/json
 }
 
 ### clear cart
-DELETE http://127.0.0.1:8000/cart
+DELETE http://127.0.0.1:8000/api/v1/cart
 Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
+
+
 
 
 
 
 ### modify product quantity in cart
-PATCH http://127.0.0.1:8000/cart/2
+PATCH http://127.0.0.1:8000/api/v1/cart/2
 Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
 
 {
-  "amount": 3
+  "amount": 1
 }
 
 ### remove product from cart
-DELETE http://127.0.0.1:8000/cart/1
+DELETE http://127.0.0.1:8000/api/v1/cart/2
 Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
