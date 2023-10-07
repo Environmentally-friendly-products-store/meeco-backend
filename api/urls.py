@@ -4,7 +4,7 @@ from rest_framework_simplejwt import views
 
 from events.views import EventViewSet
 from orders.views import OrderViewSet
-from products.views import CategoryViewSet, ProductViewSet
+from products.views import BrandViewSet, CategoryViewSet, ProductViewSet
 from users.views import ShoppingCartViewSet, UserRegisterViewSet, me
 
 app_name = "api"
@@ -14,6 +14,7 @@ router.register(r"products", ProductViewSet)
 router.register(r"orders", OrderViewSet)
 router.register(r"categories", CategoryViewSet)
 router.register(r"events", EventViewSet)
+router.register(r"brands", BrandViewSet)
 
 urlpatterns = [
     path(

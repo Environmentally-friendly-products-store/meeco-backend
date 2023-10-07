@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from users.models import ShoppingCart
 
-from .models import Category, ImageSet, Product
+from .models import Brand, Category, ImageSet, Product
 
 
 class ShortProductSerializer(serializers.ModelSerializer):
@@ -71,17 +71,13 @@ class ImageSetSerializer(serializers.ModelSerializer):
         fields = ("big_image", "preview_image", "image_thumbnail")
 
     def get_image_url(self, obj, image_type):
-        return (
-            getattr(obj, image_type).url if getattr(obj, image_type) else None
-        )
+        return getattr(obj, image_type).url if getattr(obj, image_type) else None
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data["big_image"] = self.get_image_url(instance, "big_image")
         data["preview_image"] = self.get_image_url(instance, "preview_image")
-        data["image_thumbnail"] = self.get_image_url(
-            instance, "image_thumbnail"
-        )
+        data["image_thumbnail"] = self.get_image_url(instance, "image_thumbnail")
         return data
 
 
@@ -129,4 +125,10 @@ class FullProductSerializer(serializers.ModelSerializer):
 class FullCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = ("id", "name", "description", "slug")
+
+
+class FullBrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
         fields = ("id", "name", "description", "slug")
