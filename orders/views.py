@@ -1,55 +1,51 @@
-from rest_framework import permissions, status, viewsets
-from rest_framework.decorators import action
+from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.pagination import Pagination
 from api.permissions import IsOwnerOrReadOnly
-from orders.models import Order
-from orders.serializers import OrderListSerializer, OrderSerializer
+from orders.models import Order, OrderProduct
+from orders.serializers import OrderSerializer
 from orders.services import Cart
 
 
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.prefetch_related("customer").all()
-    pagination_class = Pagination
-    permission_classes_by_action = {
-        "current_user_orders": [IsOwnerOrReadOnly],
-        "list": [permissions.IsAdminUser],
-        "retrieve": [IsOwnerOrReadOnly],
-        "create": [permissions.IsAuthenticatedOrReadOnly],
-    }
+class OrderAPIView(APIView):
+    """
+    API to handle order operations
+    """
 
-    def get_serializer_class(self):
-        if self.action == "list":
-            return OrderListSerializer
-        return OrderSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
-    @action(detail=False, url_path="my")
-    def current_user_orders(self, request):
-        queryset = self.get_queryset().filter(customer=request.user)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+    def get(self, request):
+        qs = Order.objects.filter(customer=request.user)
+        serializer = OrderSerializer(qs, many=True)
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({"request": self.request})
-        return context
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
 
-    def perform_create(self, serializer):
+    def post(self, request):
+        cart = Cart(request)
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            order = Order.objects.create(**serializer.data)
+            for product, data in cart:
+                OrderProduct.objects.create(
+                    order_id=order.id,
+                    product_id=product["id"],
+                    amount=data["amount"],
+                    purchase_price=data["price"],
+                    item_total=data["total_price"],
+                )
+            cart.clear()
+            # order_created.delay(order.id)
+            self.request.session["order_id"] = order.id
         serializer.save(customer=self.request.user)
 
-    # def perform_update(self, serializer):
-    #     serializer.save(customer=self.request.user)
-
-    def get_permissions(self):
-        try:
-            return [
-                permission()
-                for permission in self.permission_classes_by_action[self.action]
-            ]
-        except KeyError:
-            return [permission() for permission in self.permission_classes]
+        return Response(
+            {"message": "order created"},
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class CartListAPI(APIView):

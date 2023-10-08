@@ -1,83 +1,16 @@
 ###
-POST http://127.0.0.1:8000/api/v1/register/
-Content-Type: application/json
-
-{
-  "email": "kiwi@mail.ru",
-  "first_name": "Kiwi",
-  "last_name": "Newrise",
-  "password": "4myfreddy"
-}
-
-###
-POST http://127.0.0.1:8000/api/v1/token/
-Content-Type: application/json
-
-{
-    "email": "kiwi@mail.ru",
-    "password": "4myfreddy"
-}
-
-###
-GET http://127.0.0.1:8000/api/v1/users/me/
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODE3NjcyLCJpYXQiOjE2OTUyMTI4NzIsImp0aSI6ImY5M2ZiOWJkMjNhYTQ1ZTNiNDg4M2NlNjMwZTIxMDdkIiwidXNlcl9pZCI6Mn0.-oaJ1S2sDta2OPGryvlfD8TQYoGV7mbdIJScpwgYJUY
-
-###
 GET http://127.0.0.1:8000/api/v1/orders/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODAzOTg3LCJpYXQiOjE2OTUxOTkxODcsImp0aSI6IjBiNmM2MmI5YTAxZjRiYTU5NjRhODZhYjg2OTJiYmYzIiwidXNlcl9pZCI6Mn0.AFPljwRHdP_EuWIRDO4Z3xXk6Dcdk7YFzWeywzBUr_U
-
-###
-GET http://127.0.0.1:8000/api/v1/orders/my/
-Content-Type: application/json
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODAzOTg3LCJpYXQiOjE2OTUxOTkxODcsImp0aSI6IjBiNmM2MmI5YTAxZjRiYTU5NjRhODZhYjg2OTJiYmYzIiwidXNlcl9pZCI6Mn0.AFPljwRHdP_EuWIRDO4Z3xXk6Dcdk7YFzWeywzBUr_U
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2MjQ4NzQ0LCJpYXQiOjE2OTU2NDM5NDQsImp0aSI6ImVlMTcwZjBmZDllMzRjZjZhY2M2ODQxYjM0NDUxZjNjIiwidXNlcl9pZCI6MX0.FoXLTUuh8dEuDK_6Dt8uptEbnnzNkS_ZARjauBkTAjw
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzA4OTEzLCJpYXQiOjE2OTY3MDQxMTMsImp0aSI6ImU4NWJlOTUzNTFjNDRmMzA4NDM1ODBjMjkwMWExNWVjIiwidXNlcl9pZCI6Mn0.eikWDeldPQGdiYdzTfFXO4H5E-iTJ8QW9CtHyyNXCKw
 
 ###
 POST http://127.0.0.1:8000/api/v1/orders/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1ODAzOTg3LCJpYXQiOjE2OTUxOTkxODcsImp0aSI6IjBiNmM2MmI5YTAxZjRiYTU5NjRhODZhYjg2OTJiYmYzIiwidXNlcl9pZCI6Mn0.AFPljwRHdP_EuWIRDO4Z3xXk6Dcdk7YFzWeywzBUr_U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
 
 {
-  # "comment": "Хочу доставку после 11:00",
-  # "contact_phone_number": "+79354987523",
-  "delivery_address": "вход в арке",
-  "products": [
-    {
-      "product_id": 3,
-      "amount": 1,
-      "purchase_price": 200.0
-    },
-    {
-      "product_id": 2,
-      "amount": 5,
-      "purchase_price": 100.0
-    }
-  ]
-}
-
-###
-GET http://127.0.0.1:8000/api/v1/orders/2/
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzMwOTY1LCJpYXQiOjE2OTUxMjYxNjUsImp0aSI6IjdjYzcwZmQ0YzhkMTQwZjNiYWUwZDc5MjQ4ZGYwN2UwIiwidXNlcl9pZCI6MX0.i947lFR5svWQo6St_OiPlFY06SWX6w5xTlTz3IU3S6A
-
-###
-PATCH http://127.0.0.1:8000/api/v1/orders/15/
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NzMwOTY1LCJpYXQiOjE2OTUxMjYxNjUsImp0aSI6IjdjYzcwZmQ0YzhkMTQwZjNiYWUwZDc5MjQ4ZGYwN2UwIiwidXNlcl9pZCI6MX0.i947lFR5svWQo6St_OiPlFY06SWX6w5xTlTz3IU3S6A
-
-{
-  # "status": "Собирается",
-  # "article_number": "5",
-  # "comment": "Хочу доставку после 10:00",
-  # "contact_phone_number": "",
-  # "delivery_address": "Ленивка, д.2",
-  "products": [
-    {
-      "product_id": 1,
-      "amount": 1,
-      "purchase_price": 200.0
-    }
-  ]
+  "comment": "Хочу доставку после 11:00",
+  "contact_phone_number": "+79354987523",
+  "delivery_address": "вход в арке"
 }
