@@ -97,7 +97,7 @@ class Category(NameDescriptionModel, SlugMixin):
 
 
 class Brand(NameDescriptionModel, SlugMixin):
-    country = models.CharField(max_length=50, verbose_name="Страна бренда")
+    country = models.CharField(max_length=30, verbose_name="Страна бренда")
 
     class Meta:
         ordering = ["id"]
