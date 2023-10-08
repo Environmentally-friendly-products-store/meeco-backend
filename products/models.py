@@ -19,10 +19,13 @@ class Product(NameDescriptionModel, DiscountMixin, CreatedAtMixin):
         help_text="Введите категорию",
         related_name="category",
     )
-    brand = models.CharField(
-        max_length=100, verbose_name="Брэнд", help_text="Введите производителя"
+    brand = models.ForeignKey(
+        "Brand",
+        verbose_name="Брэнд",
+        on_delete=models.CASCADE,
+        help_text="Введите производителя",
+        related_name="brand",
     )
-    brand = models.ForeignKey("Brand", verbose_name="Брэнд", on_delete=models.CASCADE)
     event = models.ForeignKey(
         Event,
         blank=True,
