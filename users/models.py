@@ -43,34 +43,40 @@ class UserProduct(models.Model):
         verbose_name="Пользователь",
         help_text="Выберите пользователя",
     )
+
+    class Meta:
+        abstract = True
+
+
+class Favorite(UserProduct):
     product = models.ForeignKey(
         Product,
         verbose_name="Товар",
         on_delete=models.SET_NULL,
         null=True,
         help_text="Выберите товар",
-        related_name="user_product",
+        related_name="favorite_product",
     )
 
     class Meta:
-        abstract = True
-
-
-# class Favorite(UserProduct):
-
-#     class Meta:
-#         ordering = ["id"]
-#         verbose_name = "Избранное"
-#         verbose_name_plural = "Избранное"
-#         constraints = [
-#             models.UniqueConstraint(fields=["product", "user"],
-#             name="unique_favorite")
-#         ]
+        ordering = ["id"]
+        verbose_name = "Избранное"
+        verbose_name_plural = "Избранное"
+        constraints = [
+            models.UniqueConstraint(fields=["product", "user"], name="unique_favorite")
+        ]
 
 
 class ShoppingCart(UserProduct):
-    amount = models.IntegerField(verbose_name="Количество", default=0)
-    # Заменить на PositiveSmallIntegerField
+    product = models.ForeignKey(
+        Product,
+        verbose_name="Товар",
+        on_delete=models.SET_NULL,
+        null=True,
+        help_text="Выберите товар",
+        related_name="shopping_cart_product",
+    )
+    amount = models.PositiveSmallIntegerField(verbose_name="Количество", default=0)
 
     class Meta:
         ordering = ["id"]
