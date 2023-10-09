@@ -49,28 +49,27 @@ class UserProduct(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         help_text="Выберите товар",
-        related_name="user_product",
     )
 
     class Meta:
         abstract = True
 
 
-# class Favorite(UserProduct):
+class Favorite(UserProduct):
+    UserProduct.product.related_name = "favorite_product"
 
-#     class Meta:
-#         ordering = ["id"]
-#         verbose_name = "Избранное"
-#         verbose_name_plural = "Избранное"
-#         constraints = [
-#             models.UniqueConstraint(fields=["product", "user"],
-#             name="unique_favorite")
-#         ]
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "Избранное"
+        verbose_name_plural = "Избранное"
+        constraints = [
+            models.UniqueConstraint(fields=["product", "user"], name="unique_favorite")
+        ]
 
 
 class ShoppingCart(UserProduct):
-    amount = models.IntegerField(verbose_name="Количество", default=0)
-    # Заменить на PositiveSmallIntegerField
+    UserProduct.product.related_name = "shopping_cart_product"
+    amount = models.PositiveSmallIntegerField(verbose_name="Количество", default=0)
 
     class Meta:
         ordering = ["id"]

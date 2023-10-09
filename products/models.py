@@ -22,7 +22,7 @@ class Product(NameDescriptionModel, DiscountMixin, CreatedAtMixin):
     brand = models.CharField(
         max_length=100, verbose_name="Брэнд", help_text="Введите производителя"
     )
-    brand = models.ForeignKey("Brand", verbose_name="Брэнд", on_delete=models.CASCADE)
+    # brand = models.ForeignKey("Brand", verbose_name="Брэнд", on_delete=models.CASCADE)
     event = models.ForeignKey(
         Event,
         blank=True,
@@ -97,9 +97,11 @@ class Category(NameDescriptionModel, SlugMixin):
 
 
 class Brand(NameDescriptionModel, SlugMixin):
-    country = models.CharField(max_length=30, verbose_name="Страна бренда")
+    country = models.CharField(
+        max_length=30, verbose_name="Страна происхождения бренда"
+    )
 
     class Meta:
         ordering = ["id"]
-        verbose_name = "Бренд"
-        verbose_name_plural = "Бренды"
+        verbose_name = "бренд"
+        verbose_name_plural = "бренды"

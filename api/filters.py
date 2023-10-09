@@ -15,9 +15,7 @@ class ProductFilter(FilterSet):
         to_field_name="slug",
         queryset=Event.objects.all(),
     )
-    is_in_shopping_cart = filters.BooleanFilter(
-        method="get_is_in_shopping_cart"
-    )
+    is_in_shopping_cart = filters.BooleanFilter(method="get_is_in_shopping_cart")
 
     class Meta:
         model = Product
