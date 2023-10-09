@@ -5,9 +5,7 @@ from rest_framework_simplejwt import views
 from events.views import EventViewSet
 from orders.views import CartDetailAPI, CartListAPI, OrderAPIView
 from products.views import CategoryViewSet, ProductViewSet
-
-# from users.views import ShoppingCartViewSet
-from users.views import UserRegisterViewSet, me
+from users.views import ShoppingCartViewSet, UserRegisterViewSet, me
 
 app_name = "api"
 
@@ -42,10 +40,10 @@ urlpatterns = [
     #     'products/<int:product_id>/favorite/',
     #     FavoriteView.as_view(),
     # ),
-    # path(
-    #     "products/<int:product_id>/shopping_cart/",
-    #     ShoppingCartViewSet.as_view(),
-    # ),
+    path(
+        "products/<int:product_id>/shopping_cart/",
+        ShoppingCartViewSet.as_view(),
+    ),
     path("cart", CartListAPI.as_view(), name="cart-list"),
     path("cart/<int:pk>", CartDetailAPI.as_view(), name="cart-detail"),
     path("orders/", OrderAPIView.as_view(), name="orders"),
