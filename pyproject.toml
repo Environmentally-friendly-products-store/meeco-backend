@@ -58,6 +58,8 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "meeco/settings.py",
+    "*/migrations/"
 ]
 per-file-ignores = {}
 

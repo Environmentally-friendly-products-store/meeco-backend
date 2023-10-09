@@ -1,9 +1,9 @@
 from django.db.models import Sum
 from rest_framework import serializers
 
-from users.models import ShoppingCart
+from users.models import Favorite, ShoppingCart
 
-from .models import Category, ImageSet, Product
+from .models import Brand, Category, ImageSet, Product
 
 
 class ShortProductSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class ShortProductSerializer(serializers.ModelSerializer):
     amount = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
     category = serializers.StringRelatedField(read_only=True)
-    # is_favorited = serializers.SerializerMethodField()
+    is_favorite = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -24,7 +24,7 @@ class ShortProductSerializer(serializers.ModelSerializer):
             "brand",
             "event",
             "is_in_shopping_cart",
-            # 'is_favorited',
+            "is_favorite",
             "amount",
         )
 
@@ -38,8 +38,7 @@ class ShortProductSerializer(serializers.ModelSerializer):
 
         if not user.is_anonymous:
             if ShoppingCart.objects.filter(user=user).exists():
-                cart_items = ShoppingCart.objects.filter(
-                    user=user, product=obj)
+                cart_items = ShoppingCart.objects.filter(user=user, product=obj)
                 amount = cart_items.aggregate(Sum("amount"))["amount__sum"]
                 return amount
         return 0
@@ -52,14 +51,13 @@ class ShortProductSerializer(serializers.ModelSerializer):
             and ShoppingCart.objects.filter(user=user, product=obj).exists()
         )
 
+    def get_is_favorite(self, obj):
+        user = self.context["request"].user
 
-#     def get_is_favorited(self, obj):
-#     user = self.context['request'].user
-
-#     return (
-#         user.is_authenticated
-#         and Favorite.objects.filter(user=user, product=obj).exists()
-#     )
+        return (
+            user.is_authenticated
+            and Favorite.objects.filter(user=user, product=obj).exists()
+        )
 
 
 class ImageSetSerializer(serializers.ModelSerializer):
@@ -72,18 +70,13 @@ class ImageSetSerializer(serializers.ModelSerializer):
         fields = ("big_image", "preview_image", "image_thumbnail")
 
     def get_image_url(self, obj, image_type):
-        return (
-            getattr(obj, image_type).url
-            if getattr(obj, image_type)
-            else None
-        )
+        return getattr(obj, image_type).url if getattr(obj, image_type) else None
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data["big_image"] = self.get_image_url(instance, "big_image")
         data["preview_image"] = self.get_image_url(instance, "preview_image")
-        data["image_thumbnail"] = self.get_image_url(
-            instance, "image_thumbnail")
+        data["image_thumbnail"] = self.get_image_url(instance, "image_thumbnail")
         return data
 
 
@@ -92,6 +85,7 @@ class FullProductSerializer(serializers.ModelSerializer):
     amount = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
     category = serializers.StringRelatedField(read_only=True)
+    is_favorite = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -101,7 +95,7 @@ class FullProductSerializer(serializers.ModelSerializer):
             "name",
             "description",
             "images",
-            # 'is_favorited',
+            "is_favorite",
             "is_in_shopping_cart",
             "category",
             "brand",
@@ -122,14 +116,27 @@ class FullProductSerializer(serializers.ModelSerializer):
 
         if not user.is_anonymous:
             if ShoppingCart.objects.filter(user=user).exists():
-                cart_items = ShoppingCart.objects.filter(
-                    user=user, product=obj)
+                cart_items = ShoppingCart.objects.filter(user=user, product=obj)
                 amount = cart_items.aggregate(Sum("amount"))["amount__sum"]
                 return amount
         return 0
+
+    def get_is_favorite(self, obj):
+        user = self.context["request"].user
+
+        return (
+            user.is_authenticated
+            and Favorite.objects.filter(user=user, product=obj).exists()
+        )
 
 
 class FullCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ("id", "name", "description", "slug")
+
+
+class FullBrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ("id", "name", "description", "country", "slug")

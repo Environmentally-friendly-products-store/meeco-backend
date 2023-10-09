@@ -25,8 +25,13 @@ class EventAdmin(admin.ModelAdmin):
         "date_end",
     )
     list_filter = ("name", "discount", "date_start", "date_end")
-    list_editable = ("name", "description", "discount",
-                     "date_start", "date_end")
+    list_editable = (
+        "name",
+        "description",
+        "discount",
+        "date_start",
+        "date_end",
+    )
     search_fields = ("name",)
     empty_value_display = "-пусто-"
 

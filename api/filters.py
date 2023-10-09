@@ -15,8 +15,8 @@ class ProductFilter(FilterSet):
         to_field_name="slug",
         queryset=Event.objects.all(),
     )
-    is_in_shopping_cart = filters.BooleanFilter(
-        method="get_is_in_shopping_cart")
+    is_in_shopping_cart = filters.BooleanFilter(method="get_is_in_shopping_cart")
+    is_favorite = filters.BooleanFilter(method="get_is_favorite")
 
     class Meta:
         model = Product
@@ -26,6 +26,14 @@ class ProductFilter(FilterSet):
         user = self.request.user
 
         if value and not user.is_anonymous:
-            return queryset.filter(user_product__user=user)
+            return queryset.filter(shopping_cart_product__user=user)
+
+        return queryset
+
+    def get_is_favorite(self, queryset, name, value):
+        user = self.request.user
+
+        if value and not user.is_anonymous:
+            return queryset.filter(favorite_product__user=user)
 
         return queryset
