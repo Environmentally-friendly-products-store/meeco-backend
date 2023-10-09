@@ -71,7 +71,6 @@ class CartProductSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "price_per_unit",
             "preview_image",
             "category",
             "brand",

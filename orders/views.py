@@ -58,18 +58,32 @@ class CartListAPI(APIView):
     def get(self, request):
         cart = Cart(request)
 
+        if request.user.is_authenticated:
+            if not cart:
+                return Response(
+                    {
+                        "message": "no cart in session, please, "
+                        "use ShoppingCart endpoint for DB cart"
+                    },
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+            cart.build_cart(request.user)
+            return Response(
+                {"message": "cart uploaded to DB"},
+                status=status.HTTP_201_CREATED,
+            )
+
         return Response(
             {
                 "data": list(cart.__iter__()),
                 "cart_total_price": cart.get_total_price(),
-                # "DEBUG": f"{request.user}, s-key: {cart.session.session_key}"
-                # "DEBUG": f"{request.session.items()}",
             },
             status=status.HTTP_200_OK,
         )
 
     def post(self, request):
         cart = Cart(request)
+
         if "amount" not in request.data.keys():
             cart.add(product_id=request.data["product"])
         else:

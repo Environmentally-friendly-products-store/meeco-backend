@@ -1,8 +1,9 @@
 from decimal import Decimal
 
 from orders import appvars as VARS
-from orders.models import OrderProduct, Product
+from orders.models import Product
 from orders.serializers import CartProductSerializer
+from users.models import ShoppingCart
 
 
 class Cart:
@@ -63,18 +64,29 @@ class Cart:
         del self.session[VARS.CART_SESSION_ID]
         self.session.modified = True
 
-    def build_order(self, order_id):
-        # products = []
-        for product_id, data in self.items():
-            # products.append(
-            OrderProduct.objects.create(
-                order_id=order_id,
-                product_id=product_id,
-                amount=data["amount"],
-                purchase_price=data["price"],
-                item_total=data["total_price"],
+    def build_cart(self, user):
+        """
+        Перенос корзины залогиненного пользователя из гостевой сессии в
+        таблицу БД. Если в корзине есть совпадающие товары, то их количество
+        суммируется, цена обновляется.
+        """
+        ids = list(
+            ShoppingCart.objects.filter(user=user).values_list(
+                "product_id", flat=True
             )
-        # )
-        # order.items.bulk_create(items)
+        )
+        for product_id, data in self.cart.items():
+            product = Product.objects.get(id=int(product_id))
+            if product.id in ids:
+                item = ShoppingCart.objects.get(product=product)
+                item.amount += data["amount"]
+                item.price = data["price"]
+                item.save()
+            else:
+                ShoppingCart.objects.create(
+                    user=user,
+                    product=product,
+                    amount=data["amount"],
+                    price=data["price"],
+                )
         self.clear()
-        # return order_id

@@ -1,7 +1,7 @@
 ### get current cart
 GET http://127.0.0.1:8000/api/v1/cart
 Content-Type: application/json
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
 
 ### add one product to cart
 POST http://127.0.0.1:8000/api/v1/cart
@@ -9,7 +9,7 @@ Content-Type: application/json
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
 
 {
-  "product": 2
+  "product": 3
 }
 
 ### add multi products to cart
@@ -18,7 +18,7 @@ Content-Type: application/json
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
 
 {
-  "product": 2,
+  "product": 1,
   "amount": 3
 }
 
