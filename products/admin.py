@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Category, ImageSet, Product
+from products.models import Brand, Category, ImageSet, Product
 
 
 @admin.register(Product)
@@ -61,7 +61,15 @@ class CategoryAdmin(admin.ModelAdmin):
     empty_value_display = "-пусто-"
 
 
-# @admin.register(Brand)
-# class BrandAdmin(admin.ModelAdmin):
-#     prepopulated_fields = {'slug': ('name',)}
-#     list_display = ("id", "country", "slug")
+@admin.register(Brand)
+class BrandAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ("id", "name", "description", "country", "slug")
+    list_editable = (
+        "name",
+        "description",
+        "country",
+    )
+    list_filter = ("name",)
+    search_fields = ("name",)
+    empty_value_display = "-пусто-"
