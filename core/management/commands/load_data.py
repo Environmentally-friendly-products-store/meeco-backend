@@ -9,6 +9,7 @@ from products.models import Brand, Category, ImageSet, Product
 
 
 class Command(BaseCommand):
+    blank_list = [None, "", " "]
     help = "Download data from tsv file to db"
 
     def add_arguments(self, parser):
@@ -41,7 +42,7 @@ class Command(BaseCommand):
             help="Выбор модели изображений",
         )
         parser.add_argument(
-            "-с",
+            "-c",
             "--category",
             action="store_true",
             default=False,
@@ -67,9 +68,11 @@ class Command(BaseCommand):
         if options["product"]:
             self.import_products(file=filepath)
         elif options["all"]:
-            self.import_all(file=filepath)
+            # self.import_all(file=filepath)
+            self.stdout.write(self.style.ERROR("Method not available"))
         elif options["image"]:
-            self.import_images(file=filepath)
+            # self.import_images(file=filepath)
+            self.stdout.write(self.style.ERROR("Method not available"))
         elif options["category"]:
             self.import_categories(file=filepath)
         elif options["brand"]:
@@ -81,9 +84,9 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Finished"))
 
     def get_or_create_category(self, name, description=None, slug=None):
-        if description is None:
+        if description in self.blank_list:
             description = name
-        if slug is None:
+        if slug in self.blank_list:
             slug = cyrillic_slug_maker(name)
         if Category.objects.filter(name=name).exists():
             category = Category.objects.get(name=name)
@@ -98,9 +101,9 @@ class Command(BaseCommand):
     def get_or_create_brand(
         self, name, description=None, slug=None, country="Eastasia"
     ):
-        if description is None:
+        if description in self.blank_list:
             description = name
-        if slug is None:
+        if slug in self.blank_list:
             slug = cyrillic_slug_maker(name)
         if Brand.objects.filter(name=name).exists():
             brand = Brand.objects.get(name=name)
@@ -120,9 +123,9 @@ class Command(BaseCommand):
         date_start="1970-1-1",
         date_end="2077-1-1",
     ):
-        if description is None:
+        if description in self.blank_list:
             description = name
-        if slug is None:
+        if slug in self.blank_list:
             slug = cyrillic_slug_maker(name)
         if Event.objects.filter(name=name).exists():
             event = Event.objects.get(name=name)
@@ -206,7 +209,7 @@ class Command(BaseCommand):
             self.get_or_create_category(
                 name=datalist[0][:30],
                 description=datalist[1][:255],
-                slug=datalist[0][:30],
+                slug=datalist[2][:30],
             )
 
     def import_brands(self, file):
@@ -217,7 +220,7 @@ class Command(BaseCommand):
             self.get_or_create_brand(
                 name=datalist[0][:30],
                 description=datalist[1][:255],
-                slug=datalist[0][:30],
+                slug=datalist[2][:30],
                 country=datalist[0][:50],
             )
 
@@ -229,7 +232,7 @@ class Command(BaseCommand):
             self.create_event(
                 name=datalist[0][:30],
                 description=datalist[1][:255],
-                slug=datalist[0][:30],
+                slug=datalist[2][:30],
                 discount=int(datalist[3][:30]),
                 image=datalist[4],
                 date_start=datalist[5],
