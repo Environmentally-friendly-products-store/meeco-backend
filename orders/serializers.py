@@ -58,6 +58,19 @@ class OrderSerializer(serializers.ModelSerializer):
             "products_count",
         )
 
+    def create(self, validated_data):
+        if "products" not in self.initial_data:
+            order = Order.objects.create(**validated_data)
+            return order
+
+        # products = validated_data.pop("products")
+        # order = Order.objects.create(**validated_data)
+        # for product in products:
+        #     OrderProduct.objects.create(
+        #         product=current_product, order=order
+        #     )
+        # return order
+
 
 class CartProductSerializer(serializers.ModelSerializer):
     preview_image = serializers.SerializerMethodField()
