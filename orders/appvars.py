@@ -27,3 +27,4 @@ DEL_ADDR_APARTMENT_ML = 10
 
 # Making session keys
 CART_SESSION_ID = "cart"
+ORDER_SESSION_ID = "order_id"

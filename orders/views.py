@@ -2,10 +2,9 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.permissions import IsOwnerOrReadOnly
-from orders.models import Order, OrderProduct
+from orders.models import Order
 from orders.serializers import OrderSerializer
-from orders.services import Cart
+from orders.services.cart import Cart
 
 
 class OrderAPIView(APIView):
@@ -13,39 +12,39 @@ class OrderAPIView(APIView):
     API to handle order operations
     """
 
-    permission_classes = [IsOwnerOrReadOnly]
+    # permission_classes = [IsOwnerOrReadOnly]
 
     def get(self, request):
         qs = Order.objects.filter(customer=request.user)
         serializer = OrderSerializer(qs, many=True)
 
-        return Response(
-            serializer.data,
-            status=status.HTTP_200_OK,
-        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        cart = Cart(request)
-        serializer = OrderSerializer(data=request.data)
-        if serializer.is_valid():
-            order = Order.objects.create(**serializer.data)
-            for product, data in cart:
-                OrderProduct.objects.create(
-                    order_id=order.id,
-                    product_id=product["id"],
-                    amount=data["amount"],
-                    purchase_price=data["price"],
-                    item_total=data["total_price"],
-                )
-            cart.clear()
-            # order_created.delay(order.id)
-            self.request.session["order_id"] = order.id
-        serializer.save(customer=self.request.user)
+    # def post(self, request):
+    #     serializer = OrderSerializer(data=request.data, partial=True)
+    #     if serializer.is_valid():
+    #         serializer.save(customer=self.request.user)
 
-        return Response(
-            {"message": "order created"},
-            status=status.HTTP_201_CREATED,
-        )
+    #         order = Order.objects.create(**serializer.data)
+    #         db_cart = ShoppingCart.objects.filter(user=request.user)
+    #         print(db_cart)
+    #         for product, data in cart:
+    #             OrderProduct.objects.create(
+    #                 order_id=order.id,
+    #                 product_id=product["id"],
+    #                 amount=data["amount"],
+    #                 purchase_price=data["price"],
+    #                 item_total=data["total_price"],
+    #             )
+    #         cart.clear()
+    #         # order_created.delay(order.id)
+    #         self.request.session[VARS.ORDER_SESSION_ID] = order.id
+
+    #         return Response(
+    #             {"message": "order created"},
+    #             status=status.HTTP_201_CREATED,
+    #         )
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CartListAPI(APIView):

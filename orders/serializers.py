@@ -1,42 +1,44 @@
-from decimal import Decimal
+# from decimal import Decimal
 
-from django.db.models import Count, Sum
+
 from rest_framework import serializers
 
 from orders.models import Order, OrderProduct
 from products.models import Product
 
 
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = (
+            "id",
+            "name",
+            "description",
+        )
+
+
 class OrderProductSerializer(serializers.ModelSerializer):
-    product_name = serializers.StringRelatedField(source="product_id")
-    purchase_price = serializers.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-    )
-    item_total = serializers.SerializerMethodField()
+    product = ProductSerializer(required=False)
+    # product_name = serializers.StringRelatedField(source="product.name")
 
     class Meta:
         model = OrderProduct
         fields = (
-            "id",
-            "product_name",
+            "product",
+            # "product_name",
             "amount",
             "purchase_price",
             "item_total",
         )
-        read_only_fields = ("item_total",)
-
-    def get_item_total(self, obj):
-        return Decimal(obj.amount * obj.purchase_price)
 
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.HiddenField(
         default=serializers.CurrentUserDefault(),
     )
-    delivery_address = serializers.CharField(source="address")
-    price_total = serializers.SerializerMethodField()
-    products_count = serializers.SerializerMethodField()
+    products = OrderProductSerializer(
+        source="order_products", many=True, required=False
+    )
 
     class Meta:
         model = Order
@@ -44,22 +46,17 @@ class OrderSerializer(serializers.ModelSerializer):
             "id",
             "customer",
             "contact_phone_number",
-            "delivery_address",
+            "address",
             "comment",
             "status",
             "price_total",
             "products_count",
+            "products",
         )
         read_only_fields = (
             "price_total",
             "products_count",
         )
-
-    def get_price_total(self, obj):
-        return obj.products.aggregate(Sum("item_total"))["item_total__sum"]
-
-    def get_products_count(self, obj):
-        return obj.products.aggregate(Count("id"))["id__count"]
 
 
 class CartProductSerializer(serializers.ModelSerializer):

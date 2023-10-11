@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Count
 
 from core.models import CreatedAtMixin
 from orders import appvars as VARS
@@ -53,6 +54,7 @@ class Order(CreatedAtMixin):
         blank=True,
         null=True,
     )
+    products = models.ManyToManyField(Product, through="OrderProduct")
 
     class Meta:
         ordering = ("-created_at",)
@@ -62,21 +64,30 @@ class Order(CreatedAtMixin):
     def __str__(self):
         return f"Order {self.id}"
 
+    @property
+    def products_count(self):
+        return self.products.aggregate(Count("id"))["id__count"]
+
+    @property
     def get_price_total(self):
-        return sum(item.get_item_total() for item in self.items.all())
+        return 0
+
+    def save(self, *args, **kwargs):
+        self.price_total = self.get_price_total
+        super().save(*args, **kwargs)
 
 
 class OrderProduct(models.Model):
     """Вспомогательная модель, связывающая товары и заказы."""
 
-    order_id = models.ForeignKey(
+    order = models.ForeignKey(
         Order,
         on_delete=models.SET_NULL,
-        related_name="products",
+        related_name="order_products",
         verbose_name="Заказ",
         null=True,
     )
-    product_id = models.ForeignKey(
+    product = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,
         related_name="order_products",
@@ -95,8 +106,10 @@ class OrderProduct(models.Model):
         blank=True,
         null=True,
     )
-    item_total = models.FloatField(
+    item_total = models.DecimalField(
         verbose_name="Стоимость позиции",
+        max_digits=VARS.ORD_PROD_PRICE_MDIGIT,
+        decimal_places=VARS.ORD_PROD_PRICE_DECIMAL,
         blank=True,
         null=True,
     )
@@ -115,5 +128,10 @@ class OrderProduct(models.Model):
     def __str__(self):
         return f"{self.id}"
 
+    @property
     def get_item_total(self):
-        return self.purchase_price * self.amount
+        return self.amount * self.purchase_price
+
+    def save(self, *args, **kwargs):
+        self.item_total = self.get_item_total
+        super().save(*args, **kwargs)

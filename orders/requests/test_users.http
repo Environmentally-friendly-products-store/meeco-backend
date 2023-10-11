@@ -14,8 +14,8 @@ POST http://127.0.0.1:8000/api/v1/token/
 Content-Type: application/json
 
 {
-    "email": "kiwi@mail.ru",
-    "password": "4myfreddy"
+    "email": "asd@mail.ru",
+    "password": "4freddy"
 }
 
 ###
