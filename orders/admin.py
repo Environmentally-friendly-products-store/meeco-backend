@@ -8,7 +8,7 @@ class OrderProductLine(admin.TabularInline):
     min_num = 1
     max_num = 200
     extra = 1
-    raw_id_fields = ["product"]
+    raw_id_fields = ["product_id"]
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -36,16 +36,16 @@ admin.site.register(Order, OrderAdmin)
 class OrderProductAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "product",
-        "order",
+        "product_id",
+        "order_id",
         "amount",
         "purchase_price",
         "item_total",
     )
     list_editable = (
-        "product",
-        "order",
+        "product_id",
+        "order_id",
         "amount",
     )
-    search_fields = ("order",)
+    search_fields = ("order_id",)
     empty_value_display = "-пусто-"

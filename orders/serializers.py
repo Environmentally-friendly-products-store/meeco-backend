@@ -1,6 +1,3 @@
-# from decimal import Decimal
-
-
 from rest_framework import serializers
 
 from orders.models import Order, OrderProduct
@@ -18,18 +15,19 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class OrderProductSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(required=False)
+    product_id = ProductSerializer()
     # product_name = serializers.StringRelatedField(source="product.name")
 
     class Meta:
         model = OrderProduct
         fields = (
-            "product",
+            "product_id",
             # "product_name",
             "amount",
             "purchase_price",
             "item_total",
         )
+        read_only_fields = ("item_total",)
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -47,29 +45,20 @@ class OrderSerializer(serializers.ModelSerializer):
             "customer",
             "contact_phone_number",
             "address",
-            "comment",
-            "status",
             "price_total",
+            "status",
+            "comment",
             "products_count",
             "products",
         )
         read_only_fields = (
             "price_total",
             "products_count",
+            "products",
         )
 
     def create(self, validated_data):
-        if "products" not in self.initial_data:
-            order = Order.objects.create(**validated_data)
-            return order
-
-        # products = validated_data.pop("products")
-        # order = Order.objects.create(**validated_data)
-        # for product in products:
-        #     OrderProduct.objects.create(
-        #         product=current_product, order=order
-        #     )
-        # return order
+        return super().create(validated_data)
 
 
 class CartProductSerializer(serializers.ModelSerializer):

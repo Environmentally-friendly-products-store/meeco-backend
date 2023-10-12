@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Count
@@ -70,7 +72,7 @@ class Order(CreatedAtMixin):
 
     @property
     def get_price_total(self):
-        return 0
+        return Decimal(0)
 
     def save(self, *args, **kwargs):
         self.price_total = self.get_price_total
@@ -80,14 +82,14 @@ class Order(CreatedAtMixin):
 class OrderProduct(models.Model):
     """Вспомогательная модель, связывающая товары и заказы."""
 
-    order = models.ForeignKey(
+    order_id = models.ForeignKey(
         Order,
         on_delete=models.SET_NULL,
         related_name="order_products",
         verbose_name="Заказ",
         null=True,
     )
-    product = models.ForeignKey(
+    product_id = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,
         related_name="order_products",
