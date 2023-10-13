@@ -48,25 +48,26 @@ class CartListAPI(APIView):
     Multi API to handle cart operations
     """
 
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [~permissions.IsAuthenticated]
 
     def get(self, request):
         cart = Cart(request)
 
-        if request.user.is_authenticated:
-            if not cart:
-                return Response(
-                    {
-                        "message": "no cart in session, please, "
-                        "use ShoppingCart endpoint for DB cart"
-                    },
-                    status=status.HTTP_204_NO_CONTENT,
-                )
-            cart.build_cart(request.user)
-            return Response(
-                {"message": "cart uploaded to DB"},
-                status=status.HTTP_201_CREATED,
-            )
+        # Эта часть кода работает только, когда  есть permission
+        # if request.user.is_authenticated:
+        #     if not cart:
+        #         return Response(
+        #             {
+        #                 "message": "no cart in session, please, "
+        #                 "use ShoppingCart endpoint for DB cart"
+        #             },
+        #             status=status.HTTP_204_NO_CONTENT,
+        #         )
+        #     cart.build_cart(request.user)
+        #     return Response(
+        #         {"message": "cart uploaded to DB"},
+        #         status=status.HTTP_201_CREATED,
+        #     )
 
         return Response(
             {
@@ -107,7 +108,7 @@ class CartDetailAPI(APIView):
     Single API to handle cart operations
     """
 
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [~permissions.IsAuthenticated]
     message = "cart details updated"
 
     def patch(self, request, **kwargs):
