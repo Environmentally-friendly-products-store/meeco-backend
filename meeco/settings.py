@@ -10,7 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", default="MyTestKey")
 
-DEBUG = os.getenv("DEBUG", default=False)
+DEBUG = True
+
+#os.getenv("DEBUG", default=False)
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
@@ -133,9 +135,14 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',  # Specify field filtering
+        'rest_framework.filters.OrderingFilter',  # Sorting backend
+    ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "COERCE_DECIMAL_TO_STRING": False,
     "PAGE_SIZE": 12,
+
 }
 
 SIMPLE_JWT = {
