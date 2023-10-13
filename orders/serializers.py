@@ -15,13 +15,13 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class OrderProductSerializer(serializers.ModelSerializer):
-    product_id = ProductSerializer()
+    product = ProductSerializer(source="product_id")
     # product_name = serializers.StringRelatedField(source="product.name")
 
     class Meta:
         model = OrderProduct
         fields = (
-            "product_id",
+            "product",
             # "product_name",
             "amount",
             "purchase_price",
@@ -45,9 +45,9 @@ class OrderSerializer(serializers.ModelSerializer):
             "customer",
             "contact_phone_number",
             "address",
-            "price_total",
             "status",
             "comment",
+            "price_total",
             "products_count",
             "products",
         )

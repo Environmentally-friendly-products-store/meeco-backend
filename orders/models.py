@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Sum
 
 from core.models import CreatedAtMixin
 from orders import appvars as VARS
@@ -72,7 +72,11 @@ class Order(CreatedAtMixin):
 
     @property
     def get_price_total(self):
-        return Decimal(0)
+        return Decimal(
+            self.products.aggregate(total=Sum("order_products__item_total"))[
+                "total"
+            ]
+        )
 
     def save(self, *args, **kwargs):
         self.price_total = self.get_price_total
