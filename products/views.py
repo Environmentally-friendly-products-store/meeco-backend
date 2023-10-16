@@ -5,9 +5,13 @@ from api.filters import ProductFilter
 from api.pagination import Pagination
 from api.permissions import IsAdminOrReadOnly
 
-from .models import Category, Product
-from .serializers import (FullCategorySerializer, FullProductSerializer,
-                          ShortProductSerializer)
+from .models import Brand, Category, Product
+from .serializers import (
+    FullBrandSerializer,
+    FullCategorySerializer,
+    FullProductSerializer,
+    ShortProductSerializer,
+)
 
 
 class ProductViewSet(ReadOnlyModelViewSet):
@@ -27,5 +31,12 @@ class ProductViewSet(ReadOnlyModelViewSet):
 class CategoryViewSet(ReadOnlyModelViewSet):
     queryset = Category.objects.all()
     serializer_class = FullCategorySerializer
+    permission_classes = (IsAdminOrReadOnly,)
+    pagination_class = None
+
+
+class BrandViewSet(ReadOnlyModelViewSet):
+    queryset = Brand.objects.all()
+    serializer_class = FullBrandSerializer
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = None

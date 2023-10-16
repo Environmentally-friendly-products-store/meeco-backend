@@ -30,9 +30,7 @@ class SlugMixin(models.Model):
 
 
 class CreatedAtMixin(models.Model):
-    created_at = models.DateTimeField(
-        verbose_name="Дата создания",
-        auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
 
     class Meta:
         abstract = True
@@ -47,7 +45,7 @@ class DiscountMixin(models.Model):
         validators=[
             MinValueValidator(
                 settings.MIN_DISCOUNT,
-                "Скидка должна быть больше или равна нулю"
+                "Скидка должна быть больше или равна нулю",
             ),
             MaxValueValidator(
                 settings.MAX_DISCOUNT,

@@ -9,8 +9,8 @@ from rest_framework.response import Response
 
 from core.views import UserProductViewSet
 from products.models import Product
-from users.models import ShoppingCart
-from users.serializers import ShoppingCartSerializer
+from users.models import Favorite, ShoppingCart
+from users.serializers import FavoriteSerializer, ShoppingCartSerializer
 
 User = get_user_model()
 
@@ -30,19 +30,19 @@ class UserRegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def me(request, *args, **kwargs):
+def me(request: Request, *args, **kwargs):
     user = get_object_or_404(User, pk=request.user.id)
     serializer = UserSerializer(user)
     return Response(serializer.data)
 
 
-# class FavoriteView(UserProductViewSet):
-#     queryset = Favorite.objects.all()
-#     serializer = FavoriteSerializer
-#     permission_classes = (IsAuthenticated,)
-#     message = 'избранное'
-#     message_plural = 'избранном'
-#     name = "favorite"
+class FavoriteView(UserProductViewSet):
+    queryset = Favorite.objects.all()
+    serializer = FavoriteSerializer
+    permission_classes = (IsAuthenticated,)
+    message = "избранное"
+    message_plural = "избранном"
+    name = "favorite"
 
 
 class ShoppingCartViewSet(UserProductViewSet):
@@ -71,7 +71,6 @@ class ShoppingCartViewSet(UserProductViewSet):
                 {"Ошибка": "Количество для изменения не может быть меньше 1"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        self.queryset.objects.filter(user=user_id, product=product_id).update(
-            amount=amount
-        )
+
+        self.queryset.filter(user=user_id, product=product_id).update(amount=amount)
         return self._get_return_page(user_id, product_id, amount)
