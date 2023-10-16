@@ -34,9 +34,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "article_number",
-                    models.CharField(
-                        max_length=50, null=True, verbose_name="Артикул"
-                    ),
+                    models.CharField(max_length=50, null=True, verbose_name="Артикул"),
                 ),
                 (
                     "contact_phone_number",

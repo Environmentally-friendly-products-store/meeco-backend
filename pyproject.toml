@@ -1,5 +1,5 @@
 [tool.black]
-line-length = 80
+line-length = 88
 target-version = ['py311']
 include = '\.pyi?$'
 exclude = '''
@@ -58,10 +58,12 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "meeco/settings.py",
+    "*/migrations/"
 ]
 per-file-ignores = {}
 
-line-length = 80
+line-length = 88
 
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
