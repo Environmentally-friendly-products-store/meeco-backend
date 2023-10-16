@@ -78,17 +78,13 @@ class Order(CreatedAtMixin):
             ]
         )
 
-    def save(self, *args, **kwargs):
-        self.price_total = self.get_price_total
-        super().save(*args, **kwargs)
-
 
 class OrderProduct(models.Model):
     """Вспомогательная модель, связывающая товары и заказы."""
 
     order_id = models.ForeignKey(
         Order,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name="order_products",
         verbose_name="Заказ",
         null=True,

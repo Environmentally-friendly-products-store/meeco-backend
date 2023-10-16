@@ -5,6 +5,7 @@ def build_order(db_cart, order_id):
     """
     Перенос корзины залогиненного пользователя в заказ и её удаление.
     """
+    total = 0
     for item in db_cart:
         order = Order.objects.get(id=order_id)
         product = Product.objects.get(id=item.product_id)
@@ -14,5 +15,7 @@ def build_order(db_cart, order_id):
             "amount": item.amount,
             "purchase_price": item.price,
         }
-        OrderProduct.objects.create(**data)
+        record = OrderProduct.objects.create(**data)
+        total += record.item_total
     db_cart.delete()
+    return total

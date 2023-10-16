@@ -11,7 +11,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3NjI0MjYwLCJpYXQiOjE2OTcwMTk0NjAsImp0aSI6ImM4NTRlYzAwZWRhYzQzZDdhNmNmYjA3NDY0MGY2NDFkIiwidXNlcl9pZCI6MX0.q5ZjP7f3mssMDh7n3f9gosRAjvf7V4fkmpBkdyUJgyk
 
 {
-  "comment": "Хочу доставку 5:00",
-  "contact_phone_number": "+79031234568",
+  "comment": "Самовывоз",
+  "contact_phone_number": "+7 903 123-45-68",
   "address": "МСК"
 }

@@ -1,4 +1,5 @@
 from rest_framework import permissions, status
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -11,7 +12,7 @@ from orders.services.orders import build_order
 from users.models import ShoppingCart
 
 
-class OrderAPIView(APIView):
+class OrderAPIView(APIView, LimitOffsetPagination):
     """
     API to handle order operations
     """
@@ -20,9 +21,9 @@ class OrderAPIView(APIView):
 
     def get(self, request):
         qs = Order.objects.filter(customer=request.user)
-        serializer = OrderSerializer(qs, many=True)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginated_qs = self.paginate_queryset(qs, request, view=self)
+        serializer = OrderSerializer(paginated_qs, many=True)
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request):
         db_cart = ShoppingCart.objects.filter(user=request.user.id)
@@ -35,10 +36,14 @@ class OrderAPIView(APIView):
         if serializer.is_valid():
             serializer.save(customer=self.request.user)
             order_id = serializer.data["id"]
-            build_order(db_cart, order_id)
-            # order_created.delay(order.id)
+
+            # order_created.delay(order_id)
             self.request.session[VARS.ORDER_SESSION_ID] = order_id
-            new_order = OrderSerializer(Order.objects.get(id=order_id))
+
+            order_instance = Order.objects.get(id=order_id)
+            order_instance.price_total = build_order(db_cart, order_id)
+            order_instance.save()
+            new_order = OrderSerializer(order_instance)
             return Response(new_order.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -49,25 +54,25 @@ class CartListAPI(APIView):
     """
 
     permission_classes = [~permissions.IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         cart = Cart(request)
 
-        # Эта часть кода работает только, когда  есть permission
-        # if request.user.is_authenticated:
-        #     if not cart:
-        #         return Response(
-        #             {
-        #                 "message": "no cart in session, please, "
-        #                 "use ShoppingCart endpoint for DB cart"
-        #             },
-        #             status=status.HTTP_204_NO_CONTENT,
-        #         )
-        #     cart.build_cart(request.user)
-        #     return Response(
-        #         {"message": "cart uploaded to DB"},
-        #         status=status.HTTP_201_CREATED,
-        #     )
+        if request.user.is_authenticated:
+            if not cart:
+                return Response(
+                    {
+                        "message": "no cart in session, please, "
+                        "use ShoppingCart endpoint for DB cart"
+                    },
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+            cart.build_cart(request.user)
+            return Response(
+                {"message": "cart uploaded to DB"},
+                status=status.HTTP_201_CREATED,
+            )
 
         return Response(
             {
