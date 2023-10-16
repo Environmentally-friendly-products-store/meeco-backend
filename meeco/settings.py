@@ -15,10 +15,16 @@ DEBUG = os.getenv("DEBUG", default=False)
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
 # CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS")
+<<<<<<< HEAD
 CSRF_TRUSTED_ORIGINS=["http://www.ecome.acceleratorpracticum.ru",
                       "https://www.ecome.acceleratorpracticum.ru",
                       "http://www.test-ecome.acceleratorpracticum.ru",
                       "https://www.test-ecome.acceleratorpracticum.ru"]
+=======
+
+CSRF_TRUSTED_ORIGINS=['http://www.ecome.acceleratorpracticum.ru',
+    'http://www.test-ecome.acceleratorpracticum.ru:81']
+>>>>>>> d8beb35c7390a38fa8c4067d645b2aa994dfac19
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r"^/api/.*$"
