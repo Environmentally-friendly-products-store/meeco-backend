@@ -41,7 +41,7 @@ class OrderAPIView(APIView, LimitOffsetPagination):
             self.request.session[VARS.ORDER_SESSION_ID] = order_id
 
             order_instance = Order.objects.get(id=order_id)
-            order_instance.price_total = build_order(db_cart, order_id)
+            order_instance.price_total = build_order(db_cart, order_instance)
             order_instance.save()
             new_order = OrderSerializer(order_instance)
             return Response(new_order.data, status=status.HTTP_201_CREATED)

@@ -1,21 +1,20 @@
-from orders.models import Order, OrderProduct, Product
+from orders.models import OrderProduct, Product
 
 
-def build_order(db_cart, order_id):
+def build_order(db_cart, order_instance):
     """
     Перенос корзины залогиненного пользователя в заказ и её удаление.
     """
-    total = 0
+    order_total = 0
     for item in db_cart:
-        order = Order.objects.get(id=order_id)
-        product = Product.objects.get(id=item.product_id)
+        product_instance = Product.objects.get(id=item.product_id)
         data = {
-            "order_id": order,
-            "product_id": product,
+            "order_id": order_instance,
+            "product_id": product_instance,
             "amount": item.amount,
             "purchase_price": item.price,
         }
         record = OrderProduct.objects.create(**data)
-        total += record.item_total
+        order_total += record.item_total
     db_cart.delete()
-    return total
+    return order_total
