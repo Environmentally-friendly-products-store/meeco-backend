@@ -167,3 +167,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MIN_DISCOUNT = 0
 MAX_DISCOUNT = 100
+
+# easy perseption: days * hours * minutes * seconds
+SESSION_COOKIE_AGE = 2 * 24 * 60 * 60

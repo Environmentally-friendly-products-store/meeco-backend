@@ -77,6 +77,7 @@ class ShoppingCart(UserProduct):
         related_name="shopping_cart_product",
     )
     amount = models.PositiveSmallIntegerField(verbose_name="Количество", default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
         ordering = ["id"]
