@@ -1,5 +1,8 @@
+from decimal import Decimal
+
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Count, Sum
 
 from core.models import CreatedAtMixin
 from orders import appvars as VARS
@@ -53,14 +56,27 @@ class Order(CreatedAtMixin):
         blank=True,
         null=True,
     )
+    products = models.ManyToManyField(Product, through="OrderProduct")
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("-created_at",)
         verbose_name = "заказ"
         verbose_name_plural = "заказы"
 
     def __str__(self):
-        return f"{self.customer}: {self.created_at}"
+        return f"Order {self.id}"
+
+    @property
+    def products_count(self):
+        return self.products.aggregate(Count("id"))["id__count"]
+
+    @property
+    def get_price_total(self):
+        return Decimal(
+            self.products.aggregate(total=Sum("order_products__item_total"))[
+                "total"
+            ]
+        )
 
 
 class OrderProduct(models.Model):
@@ -68,19 +84,20 @@ class OrderProduct(models.Model):
 
     order_id = models.ForeignKey(
         Order,
-        on_delete=models.SET_NULL,
-        related_name="products",
+        on_delete=models.CASCADE,
+        related_name="order_products",
         verbose_name="Заказ",
         null=True,
     )
     product_id = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,
-        null=True,
+        related_name="order_products",
         verbose_name="Товар",
+        null=True,
     )
     amount = models.IntegerField(
-        default=0,
+        default=1,
         verbose_name="Количество",
         help_text="Введите количество",
     )
@@ -91,8 +108,10 @@ class OrderProduct(models.Model):
         blank=True,
         null=True,
     )
-    item_total = models.FloatField(
+    item_total = models.DecimalField(
         verbose_name="Стоимость позиции",
+        max_digits=VARS.ORD_PROD_PRICE_MDIGIT,
+        decimal_places=VARS.ORD_PROD_PRICE_DECIMAL,
         blank=True,
         null=True,
     )
@@ -109,4 +128,12 @@ class OrderProduct(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.order_id} - {self.product_id}"
+        return f"{self.id}"
+
+    @property
+    def get_item_total(self):
+        return self.amount * self.purchase_price
+
+    def save(self, *args, **kwargs):
+        self.item_total = self.get_item_total
+        super().save(*args, **kwargs)
