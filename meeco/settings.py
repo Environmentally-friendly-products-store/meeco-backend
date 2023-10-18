@@ -14,10 +14,9 @@ DEBUG = os.getenv("DEBUG", default=False)
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://80.87.106.192/",
-    "http://www.ecome.acceleratorpracticum.ru",
-]
+# CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS")
+CSRF_TRUSTED_ORIGINS=["https://ecome.acceleratorpracticum.ru",
+                      "https://test-ecome.acceleratorpracticum.ru"]
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r"^/api/.*$"
@@ -166,3 +165,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MIN_DISCOUNT = 0
 MAX_DISCOUNT = 100
+
+# easy perseption: days * hours * minutes * seconds
+SESSION_COOKIE_AGE = 2 * 24 * 60 * 60
