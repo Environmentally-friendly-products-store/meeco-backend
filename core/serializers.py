@@ -12,3 +12,11 @@ class UserProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = ["user", "product"]
+
+
+SLUG_MODEL_FIELDS = ("name", "slug")
+
+
+class SlugModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = SLUG_MODEL_FIELDS
