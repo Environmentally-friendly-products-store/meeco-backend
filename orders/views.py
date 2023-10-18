@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from api.permissions import IsOwnerOrReadOnly
 from orders import appvars as VARS
 from orders.models import Order
-from orders.serializers import OrderSerializer
+from orders.serializers import DBCartSerializer, OrderSerializer
 from orders.services.cart import Cart
 from orders.services.orders import build_order
 from users.models import ShoppingCart
@@ -53,27 +53,27 @@ class CartListAPI(APIView):
     Multi API to handle cart operations
     """
 
-    permission_classes = [~permissions.IsAuthenticated]
-    # permission_classes = [permissions.AllowAny]
+    # permission_classes = [~permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        cart = Cart(request)
-
-        if request.user.is_authenticated:
-            if not cart:
+        if not request.user.is_anonymous:
+            db_cart = ShoppingCart.objects.filter(user=request.user)
+            if not db_cart:
                 return Response(
-                    {
-                        "message": "no cart in session, please, "
-                        "use ShoppingCart endpoint for DB cart"
-                    },
+                    {"message": "DB cart is empty"},
                     status=status.HTTP_204_NO_CONTENT,
                 )
-            cart.build_cart(request.user)
+            serializer = DBCartSerializer(db_cart, many=True)
             return Response(
-                {"message": "cart uploaded to DB"},
-                status=status.HTTP_201_CREATED,
+                {
+                    "data": serializer.data,
+                    "cart_total_price": 0,
+                },
+                status=status.HTTP_200_OK,
             )
 
+        cart = Cart(request)
         return Response(
             {
                 "data": list(cart.__iter__()),
@@ -91,6 +91,7 @@ class CartListAPI(APIView):
             cart.add(
                 product_id=request.data["product"],
                 amount=request.data["amount"],
+                overide_amount=True,
             )
 
         return Response(
