@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from products.models import Product
-from users.models import ShoppingCart
+from users.models import Favorite, ShoppingCart
 
 User = get_user_model()
 
@@ -73,10 +73,11 @@ class UserProductViewSet(APIView):
         is_in_shopping_cart = ShoppingCart.objects.filter(
             user=user_id, product=product_id
         ).exists()
-        # is_favorited =
+        is_favorite = Favorite.objects.filter(user=user_id, product=product_id).exists()
         return_page.update(
             amount=amount,
             is_in_shopping_cart=is_in_shopping_cart,
+            is_favorite=is_favorite,
         )
         return Response(return_page, status=status.HTTP_201_CREATED)
 

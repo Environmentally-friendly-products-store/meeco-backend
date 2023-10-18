@@ -1,18 +1,29 @@
-from rest_framework import serializers
+from core.serializers import SLUG_MODEL_FIELDS, SlugModelSerializer
+from events.models import Event
 
-from .models import Event
 
-
-class FullEventSerializer(serializers.ModelSerializer):
-    class Meta:
+class ShortEventSerializer(SlugModelSerializer):
+    class Meta(SlugModelSerializer.Meta):
         model = Event
-        fields = (
+
+
+class FullEventSerializer(ShortEventSerializer):
+    class Meta(ShortEventSerializer.Meta):
+        fields = SLUG_MODEL_FIELDS + (
             "id",
-            "name",
+            "description",
+            "discount",
+            "date_end",
+        )
+
+
+class EventSerializer(ShortEventSerializer):
+    class Meta(ShortEventSerializer.Meta):
+        fields = SLUG_MODEL_FIELDS + (
+            "id",
             "description",
             "image",
             "discount",
             "date_start",
             "date_end",
-            "slug",
         )
