@@ -15,8 +15,10 @@ DEBUG = os.getenv("DEBUG", default=False)
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
 # CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS")
-CSRF_TRUSTED_ORIGINS=["https://ecome.acceleratorpracticum.ru",
-                      "https://test-ecome.acceleratorpracticum.ru"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://ecome.acceleratorpracticum.ru",
+    "https://test-ecome.acceleratorpracticum.ru",
+]
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r"^/api/.*$"
@@ -127,7 +129,6 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "COERCE_DECIMAL_TO_STRING": False,
