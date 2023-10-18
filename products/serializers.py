@@ -6,12 +6,25 @@ from users.models import Favorite, ShoppingCart
 from .models import Brand, Category, ImageSet, Product
 
 
+class FullBrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = (
+            "id",
+            "name",
+            "description",
+            "country",
+            "slug",
+        )
+
+
 class ShortProductSerializer(serializers.ModelSerializer):
     preview_image = serializers.SerializerMethodField()
     amount = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
     category = serializers.StringRelatedField(read_only=True)
     is_favorite = serializers.SerializerMethodField()
+    brand = FullBrandSerializer()
 
     class Meta:
         model = Product
@@ -134,9 +147,3 @@ class FullCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ("id", "name", "description", "slug")
-
-
-class FullBrandSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Brand
-        fields = ("id", "name", "description", "country", "slug")
