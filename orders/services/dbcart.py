@@ -1,3 +1,4 @@
+from orders.serializers import DBCartSerializer
 from users.models import ShoppingCart
 
 
@@ -8,7 +9,6 @@ class DBCart:
 
     def __init__(self, request):
         self.dbcart = ShoppingCart.objects.filter(user=request.user)
-        # self.serializer = DBCartSerializer(self.dbcart, many=True)
 
     # def save(self):
     #     self.session[VARS.CART_SESSION_ID] = self.cart
@@ -37,15 +37,15 @@ class DBCart:
     #         del self.cart[pid]
     #         self.save()
 
-    # def get_dbcart_list(self):
-    #     serializer = DBCartSerializer(self.dbcart, many=True)
-    #     return serializer.data
+    def __iter__(self):
+        serializer = DBCartSerializer(self.dbcart, many=True)
+        yield from serializer.data
 
     # def __len__(self):
     #     return sum(item["amount"] for item in self.cart.values())
 
-    # def get_total_price(self):
-    #     return sum([dict(item)["total_price"] for item in self.get_dbcart_list])
+    def get_total_price(self):
+        return sum([dict(item)["total_price"] for item in self.__iter__()])
 
     # def clear(self):
     #     del self.session[VARS.CART_SESSION_ID]

@@ -6,8 +6,9 @@ from rest_framework.views import APIView
 from api.permissions import IsOwnerOrReadOnly
 from orders import appvars as VARS
 from orders.models import Order
-from orders.serializers import DBCartSerializer, OrderSerializer
+from orders.serializers import OrderSerializer
 from orders.services.cart import Cart
+from orders.services.dbcart import DBCart
 from orders.services.orders import build_order
 from users.models import ShoppingCart
 
@@ -58,15 +59,11 @@ class CartListAPI(APIView):
 
     def get(self, request):
         if not request.user.is_anonymous:
-            dbcart = ShoppingCart.objects.filter(user=request.user)
-            serializer = DBCartSerializer(dbcart, many=True)
-            cart_total_price = sum(
-                [dict(item)["total_price"] for item in serializer.data]
-            )
+            dbcart = DBCart(request)
             return Response(
                 {
-                    "data": serializer.data,
-                    "cart_total_price": cart_total_price,
+                    "data": list(dbcart.__iter__()),
+                    "cart_total_price": dbcart.get_total_price(),
                 },
                 status=status.HTTP_200_OK,
             )
