@@ -43,9 +43,7 @@ class Cart:
         products = Product.objects.filter(id__in=product_ids)
         cart = self.cart.copy()
         for product in products:
-            cart[str(product.id)]["product"] = CartProductSerializer(
-                product
-            ).data
+            cart[str(product.id)]["product"] = CartProductSerializer(product).data
         for item in cart.values():
             item["price"] = Decimal(item["price"])
             item["total_price"] = item["price"] * item["amount"]
@@ -56,8 +54,7 @@ class Cart:
 
     def get_total_price(self):
         return sum(
-            Decimal(item["price"]) * item["amount"]
-            for item in self.cart.values()
+            Decimal(item["price"]) * item["amount"] for item in self.cart.values()
         )
 
     def clear(self):
@@ -68,25 +65,24 @@ class Cart:
         """
         Перенос корзины залогиненного пользователя из гостевой сессии в
         таблицу БД. Если в корзине есть совпадающие товары, то их количество
-        суммируется, цена обновляется.
+        суммируется.
+        Цена в таблице корзины не хранится, берется из таблицы продукта.
         """
         ids = list(
-            ShoppingCart.objects.filter(user=user).values_list(
-                "product_id", flat=True
-            )
+            ShoppingCart.objects.filter(user=user).values_list("product_id", flat=True)
         )
         for product_id, data in self.cart.items():
             product = Product.objects.get(id=int(product_id))
             if product.id in ids:
                 item = ShoppingCart.objects.get(product=product)
                 item.amount += data["amount"]
-                item.price = data["price"]
+                # item.price = data["price"]
                 item.save()
             else:
                 ShoppingCart.objects.create(
                     user=user,
                     product=product,
                     amount=data["amount"],
-                    price=data["price"],
+                    # price=data["price"],
                 )
         self.clear()

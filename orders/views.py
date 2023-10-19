@@ -58,17 +58,15 @@ class CartListAPI(APIView):
 
     def get(self, request):
         if not request.user.is_anonymous:
-            db_cart = ShoppingCart.objects.filter(user=request.user)
-            if not db_cart:
-                return Response(
-                    {"message": "DB cart is empty"},
-                    status=status.HTTP_204_NO_CONTENT,
-                )
-            serializer = DBCartSerializer(db_cart, many=True)
+            dbcart = ShoppingCart.objects.filter(user=request.user)
+            serializer = DBCartSerializer(dbcart, many=True)
+            cart_total_price = sum(
+                [dict(item)["total_price"] for item in serializer.data]
+            )
             return Response(
                 {
                     "data": serializer.data,
-                    "cart_total_price": 0,
+                    "cart_total_price": cart_total_price,
                 },
                 status=status.HTTP_200_OK,
             )

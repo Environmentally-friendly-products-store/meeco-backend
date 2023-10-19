@@ -12,7 +12,7 @@ def build_order(db_cart, order_instance):
             "order_id": order_instance,
             "product_id": product_instance,
             "amount": item.amount,
-            "purchase_price": item.price,
+            "purchase_price": product_instance.price_per_unit,
         }
         record = OrderProduct.objects.create(**data)
         order_total += record.item_total

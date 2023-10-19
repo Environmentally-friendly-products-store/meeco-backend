@@ -4,20 +4,11 @@ from orders.models import Order, OrderProduct
 from products.models import Product
 from users.models import ShoppingCart
 
-# class ProductLocalSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Product
-#         fields = (
-#             "id",
-#             "name",
-#             "price_per_unit",
-#             "description",
-#         )
-
 
 class CartProductSerializer(serializers.ModelSerializer):
     preview_image = serializers.SerializerMethodField()
     category = serializers.StringRelatedField(read_only=True)
+    brand = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Product
@@ -42,15 +33,19 @@ class DBCartSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault(),
     )
+    total_price = serializers.SerializerMethodField()
 
     class Meta:
         model = ShoppingCart
         fields = (
-            # "id",
             "user",
             "product",
             "amount",
+            "total_price",
         )
+
+    def get_total_price(self, obj):
+        return obj.product.price_per_unit * obj.amount
 
 
 class OrderProductSerializer(serializers.ModelSerializer):
