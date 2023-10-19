@@ -54,7 +54,6 @@ class CartListAPI(APIView):
     Multi API to handle cart operations
     """
 
-    # permission_classes = [~permissions.IsAuthenticated]
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
@@ -78,8 +77,22 @@ class CartListAPI(APIView):
         )
 
     def post(self, request):
-        cart = Cart(request)
+        if not request.user.is_anonymous:
+            dbcart = DBCart(request)
+            if "amount" not in request.data.keys():
+                dbcart.add(product_id=request.data["product"])
+            else:
+                dbcart.add(
+                    product_id=request.data["product"],
+                    amount=request.data["amount"],
+                    overide_amount=True,
+                )
+            return Response(
+                {"message": "dbcart is updated"},
+                status=status.HTTP_202_ACCEPTED,
+            )
 
+        cart = Cart(request)
         if "amount" not in request.data.keys():
             cart.add(product_id=request.data["product"])
         else:

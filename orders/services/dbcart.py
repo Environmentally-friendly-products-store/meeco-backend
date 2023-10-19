@@ -1,6 +1,8 @@
 from orders.serializers import DBCartSerializer
 from users.models import ShoppingCart
 
+# from products.models import Product
+
 
 class DBCart:
     """
@@ -10,26 +12,17 @@ class DBCart:
     def __init__(self, request):
         self.dbcart = ShoppingCart.objects.filter(user=request.user)
 
-    # def save(self):
-    #     self.session[VARS.CART_SESSION_ID] = self.cart
-    #     self.session.modified = True
-
-    # def add(self, product_id, amount=1, overide_amount=False):
-    #     pid = str(product_id)
-    #     price = str(Product.objects.get(id=product_id).price_per_unit)
-    #     if pid not in self.cart:
-    #         self.cart[pid] = {
-    #             "amount": amount,
-    #             "price": price,
-    #         }
-    #     else:
-    #         if overide_amount:
-    #             self.cart[pid]["amount"] = amount
-    #             self.cart[pid]["price"] = price
-    #         else:
-    #             self.cart[pid]["amount"] += amount
-    #             self.cart[pid]["price"] = price
-    #     self.save()
+    def add(self, product_id, amount=1, overide_amount=False):
+        # pid = str(product_id)
+        item = self.dbcart.get(product_id=product_id)
+        if item:
+            item.amount += amount
+        else:
+            if overide_amount:
+                item.amount = amount
+            else:
+                item.amount += amount
+        item.save()
 
     # def remove(self, product_id):
     #     pid = str(product_id)

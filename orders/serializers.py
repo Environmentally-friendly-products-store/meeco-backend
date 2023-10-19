@@ -39,9 +39,9 @@ class DBCartSerializer(serializers.ModelSerializer):
         model = ShoppingCart
         fields = (
             "user",
-            "product",
             "amount",
             "total_price",
+            "product",
         )
 
     def get_total_price(self, obj):
