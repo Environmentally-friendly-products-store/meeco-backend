@@ -11,8 +11,8 @@ class DBCart:
         self.dbcart = ShoppingCart.objects.filter(user=request.user)
 
     def add(self, user, product_id, amount=1, overide_amount=False):
-        pids = self.dbcart.values_list("product_id", flat=True)
-        if product_id not in pids:
+        product_ids = self.dbcart.values_list("product_id", flat=True)
+        if product_id not in product_ids:
             ShoppingCart.objects.create(
                 user_id=user,
                 product_id=product_id,
@@ -39,8 +39,8 @@ class DBCart:
         serializer = DBCartSerializer(self.dbcart, many=True)
         yield from serializer.data
 
-    # def __len__(self):
-    #     return sum(item["amount"] for item in self.cart.values())
+    def __len__(self):
+        return sum([dict(item)["amount"] for item in self.__iter__()])
 
     def get_total_price(self):
         return sum([dict(item)["total_price"] for item in self.__iter__()])

@@ -61,8 +61,9 @@ class CartListAPI(APIView):
             dbcart = DBCart(request)
             return Response(
                 {
-                    "data": list(dbcart.__iter__()),
+                    "items_count": dbcart.__len__(),
                     "cart_total_price": dbcart.get_total_price(),
+                    "data": list(dbcart.__iter__()),
                 },
                 status=status.HTTP_200_OK,
             )
@@ -70,8 +71,9 @@ class CartListAPI(APIView):
         cart = Cart(request)
         return Response(
             {
-                "data": list(cart.__iter__()),
+                "items_count": cart.__len__(),
                 "cart_total_price": cart.get_total_price(),
+                "data": list(cart.__iter__()),
             },
             status=status.HTTP_200_OK,
         )
@@ -115,15 +117,31 @@ class CartListAPI(APIView):
             dbcart = DBCart(request)
             dbcart.clear()
             return Response(
-                {"message": "dbcart  is cleared"},
+                {"message": "dbcart is cleared"},
                 status=status.HTTP_204_NO_CONTENT,
             )
 
         cart = Cart(request)
         cart.clear()
         return Response(
-            {"message": "cart  is cleared"},
+            {"message": "cart is cleared"},
             status=status.HTTP_204_NO_CONTENT,
+        )
+
+    def put(self, request):
+        """
+        Not documented method for manual transfering of session cart to DB.
+        """
+        cart = Cart(request)
+        if not cart:
+            return Response(
+                {"message": "no cart in session"},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        cart.build_cart(request.user)
+        return Response(
+            {"message": "cart uploaded to DB"},
+            status=status.HTTP_201_CREATED,
         )
 
 
@@ -132,7 +150,7 @@ class CartDetailAPI(APIView):
     Single API to handle cart operations
     """
 
-    permission_classes = [~permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     message = "cart details updated"
 
     def patch(self, request, **kwargs):
