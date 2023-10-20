@@ -32,6 +32,9 @@ class DBCart:
     #         del self.cart[pid]
     #         self.save()
 
+    def clear(self):
+        self.dbcart.delete()
+
     def __iter__(self):
         serializer = DBCartSerializer(self.dbcart, many=True)
         yield from serializer.data

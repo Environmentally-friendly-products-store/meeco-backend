@@ -111,9 +111,16 @@ class CartListAPI(APIView):
         )
 
     def delete(self, request):
+        if not request.user.is_anonymous:
+            dbcart = DBCart(request)
+            dbcart.clear()
+            return Response(
+                {"message": "dbcart  is cleared"},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+
         cart = Cart(request)
         cart.clear()
-
         return Response(
             {"message": "cart  is cleared"},
             status=status.HTTP_204_NO_CONTENT,
@@ -129,13 +136,19 @@ class CartDetailAPI(APIView):
     message = "cart details updated"
 
     def patch(self, request, **kwargs):
+        if not request.user.is_anonymous:
+            DBCart(request)
+
+            return Response(
+                {"message": self.message},
+                status=status.HTTP_205_RESET_CONTENT,
+            )
         cart = Cart(request)
         cart.add(
             product_id=kwargs["pk"],
             amount=request.data["amount"],
             overide_amount=True,
         )
-
         return Response(
             {"message": self.message},
             status=status.HTTP_205_RESET_CONTENT,
