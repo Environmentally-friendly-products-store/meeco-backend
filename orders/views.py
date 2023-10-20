@@ -79,14 +79,17 @@ class CartListAPI(APIView):
     def post(self, request):
         if not request.user.is_anonymous:
             dbcart = DBCart(request)
-            if "amount" not in request.data.keys():
-                dbcart.add(product_id=request.data["product"])
-            else:
-                dbcart.add(
-                    product_id=request.data["product"],
-                    amount=request.data["amount"],
-                    overide_amount=True,
+            data = {
+                "product_id": request.data["product"],
+            }
+            if "amount" in request.data.keys():
+                data.update(
+                    {
+                        "amount": request.data["amount"],
+                        "overide_amount": True,
+                    }
                 )
+            dbcart.add(**data, user=request.user.id)
             return Response(
                 {"message": "dbcart is updated"},
                 status=status.HTTP_202_ACCEPTED,
