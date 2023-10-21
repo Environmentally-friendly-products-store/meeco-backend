@@ -1,3 +1,4 @@
+from orders.models import OrderProduct, Product
 from orders.serializers import DBCartSerializer
 from users.models import ShoppingCart
 
@@ -44,3 +45,21 @@ class DBCart:
 
     def get_total_price(self):
         return sum([dict(item)["total_price"] for item in self.__iter__()])
+
+    def build_order(self, order_instance):
+        """
+        Перенос корзины залогиненного пользователя в заказ и её удаление.
+        """
+        order_total = 0
+        for item in self.dbcart:
+            product_instance = Product.objects.get(id=item.product.pk)
+            data = {
+                "order_id": order_instance,
+                "product_id": product_instance,
+                "amount": item.amount,
+                "purchase_price": product_instance.price_per_unit,
+            }
+            record = OrderProduct.objects.create(**data)
+            order_total += record.item_total
+        self.clear()
+        return order_total

@@ -55,11 +55,11 @@ class OrderProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
         fields = (
-            "product",
-            # "product_name",
             "amount",
             "purchase_price",
             "item_total",
+            "product",
+            # "product_name",
         )
         read_only_fields = ("item_total",)
 

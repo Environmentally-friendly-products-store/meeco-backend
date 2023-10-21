@@ -9,8 +9,6 @@ from orders.models import Order
 from orders.serializers import OrderSerializer
 from orders.services.cart import Cart
 from orders.services.dbcart import DBCart
-from orders.services.orders import build_order
-from users.models import ShoppingCart
 
 
 class OrderAPIView(APIView, LimitOffsetPagination):
@@ -27,8 +25,8 @@ class OrderAPIView(APIView, LimitOffsetPagination):
         return self.get_paginated_response(serializer.data)
 
     def post(self, request):
-        db_cart = ShoppingCart.objects.filter(user=request.user.id)
-        if not db_cart:
+        dbcart = DBCart(request)
+        if not dbcart:
             return Response(
                 {"message": "no data in DB cart"},
                 status=status.HTTP_204_NO_CONTENT,
@@ -42,7 +40,7 @@ class OrderAPIView(APIView, LimitOffsetPagination):
             self.request.session[VARS.ORDER_SESSION_ID] = order_id
 
             order_instance = Order.objects.get(id=order_id)
-            order_instance.price_total = build_order(db_cart, order_instance)
+            order_instance.price_total = dbcart.build_order(order_instance)
             order_instance.save()
             new_order = OrderSerializer(order_instance)
             return Response(new_order.data, status=status.HTTP_201_CREATED)
