@@ -36,8 +36,8 @@ class OrderAPIView(APIView, LimitOffsetPagination):
             serializer.save(customer=self.request.user)
             order_id = serializer.data["id"]
 
-            # order_created.delay(order_id)
             self.request.session[VARS.ORDER_SESSION_ID] = order_id
+            # order_created.delay(order_id)
 
             order_instance = Order.objects.get(id=order_id)
             order_instance.price_total = dbcart.build_order(order_instance)
@@ -128,18 +128,23 @@ class CartListAPI(APIView):
 
     def put(self, request):
         """
-        Not documented method for manual transfering of session cart to DB.
+        Extra method for manual transfering of session cart to DB.
         """
-        cart = Cart(request)
-        if not cart:
+        if not request.user.is_anonymous:
+            cart = Cart(request)
+            if not cart:
+                return Response(
+                    {"message": "no cart in session"},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+            cart.build_cart(request.user)
             return Response(
-                {"message": "no cart in session"},
-                status=status.HTTP_204_NO_CONTENT,
+                {"message": "cart uploaded to DB"},
+                status=status.HTTP_201_CREATED,
             )
-        cart.build_cart(request.user)
         return Response(
-            {"message": "cart uploaded to DB"},
-            status=status.HTTP_201_CREATED,
+            {"message": "AnonymousUser's requests not allowed"},
+            status=status.HTTP_403_FORBIDDEN,
         )
 
 
@@ -153,26 +158,32 @@ class CartDetailAPI(APIView):
 
     def patch(self, request, **kwargs):
         if not request.user.is_anonymous:
-            DBCart(request)
-
-            return Response(
-                {"message": self.message},
-                status=status.HTTP_205_RESET_CONTENT,
+            dbcart = DBCart(request)
+            dbcart.add(
+                user=request.user.id,
+                product_id=kwargs["pk"],
+                amount=request.data["amount"],
+                overide_amount=True,
             )
-        cart = Cart(request)
-        cart.add(
-            product_id=kwargs["pk"],
-            amount=request.data["amount"],
-            overide_amount=True,
-        )
+        else:
+            cart = Cart(request)
+            cart.add(
+                product_id=kwargs["pk"],
+                amount=request.data["amount"],
+                overide_amount=True,
+            )
         return Response(
             {"message": self.message},
             status=status.HTTP_205_RESET_CONTENT,
         )
 
     def delete(self, request, **kwargs):
-        cart = Cart(request)
-        cart.remove(kwargs["pk"])
+        if not request.user.is_anonymous:
+            dbcart = DBCart(request)
+            dbcart.remove(kwargs["pk"])
+        else:
+            cart = Cart(request)
+            cart.remove(kwargs["pk"])
 
         return Response(
             {"message": self.message},

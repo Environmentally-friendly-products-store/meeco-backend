@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+
 from orders.models import OrderProduct, Product
 from orders.serializers import DBCartSerializer
 from users.models import ShoppingCart
@@ -27,11 +29,8 @@ class DBCart:
                 item.amount += amount
             item.save()
 
-    # def remove(self, product_id):
-    #     pid = str(product_id)
-    #     if pid in self.cart:
-    #         del self.cart[pid]
-    #         self.save()
+    def remove(self, product_id):
+        get_object_or_404(self.dbcart, product=product_id).delete()
 
     def clear(self):
         self.dbcart.delete()
