@@ -17,19 +17,19 @@ class Cart:
 
     def add(self, product_id, amount=1, overide_amount=False):
         pid = str(product_id)
-        price = str(Product.objects.get(id=product_id).price_per_unit)
+        price = Product.objects.get(id=product_id).price_per_unit
         if pid not in self.cart:
             self.cart[pid] = {
                 "amount": amount,
-                "price": price,
+                "total_price": price * amount,
             }
         else:
             if overide_amount:
                 self.cart[pid]["amount"] = amount
-                self.cart[pid]["price"] = price
+                self.cart[pid]["total_price"] = price * amount
             else:
                 self.cart[pid]["amount"] += amount
-                self.cart[pid]["price"] = price
+                self.cart[pid]["total_price"] = price * self.cart[pid]["amount"]
         self.save()
 
     def remove(self, product_id):
@@ -39,26 +39,20 @@ class Cart:
             self.save()
 
     def __iter__(self):
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
+        ids = self.cart.keys()
+        products = Product.objects.filter(id__in=ids)
         cart = self.cart.copy()
         for product in products:
-            cart[str(product.id)]["product"] = CartProductSerializer(
-                product
-            ).data
+            cart[str(product.id)]["product"] = CartProductSerializer(product).data
         for item in cart.values():
-            item["price"] = Decimal(item["price"])
-            item["total_price"] = item["price"] * item["amount"]
+            item["total_price"] = Decimal(item["total_price"])
             yield item
 
     def __len__(self):
         return sum(item["amount"] for item in self.cart.values())
 
     def get_total_price(self):
-        return sum(
-            Decimal(item["price"]) * item["amount"]
-            for item in self.cart.values()
-        )
+        return sum(Decimal(item["total_price"]) for item in self.cart.values())
 
     def clear(self):
         del self.session[VARS.CART_SESSION_ID]
@@ -66,27 +60,22 @@ class Cart:
 
     def build_cart(self, user):
         """
-        Перенос корзины залогиненного пользователя из гостевой сессии в
-        таблицу БД. Если в корзине есть совпадающие товары, то их количество
-        суммируется, цена обновляется.
+        Перенос корзины залогиненного пользователя из гостевой сессии в БД.
+        Если в корзине есть совпадающие товары, то их количество
+        суммируется. Цена берется из таблицы продукта.
         """
-        ids = list(
-            ShoppingCart.objects.filter(user=user).values_list(
-                "product_id", flat=True
-            )
-        )
+        dbcart = ShoppingCart.objects.filter(user=user)
+        ids = list(dbcart.values_list("product_id", flat=True))
         for product_id, data in self.cart.items():
             product = Product.objects.get(id=int(product_id))
             if product.id in ids:
-                item = ShoppingCart.objects.get(product=product)
+                item = dbcart.get(product=product)
                 item.amount += data["amount"]
-                item.price = data["price"]
                 item.save()
             else:
                 ShoppingCart.objects.create(
                     user=user,
                     product=product,
                     amount=data["amount"],
-                    price=data["price"],
                 )
         self.clear()
