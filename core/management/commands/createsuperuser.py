@@ -21,6 +21,7 @@ class Command(createsuperuser.Command):
         email = options.get("email")
         first_name = options.get("first_name")
         last_name = options.get("last_name")
+        phone = options.get("phone")
 
         if not password or not email or not first_name or not last_name:
             raise CommandError(
@@ -33,6 +34,7 @@ class Command(createsuperuser.Command):
             "email": email,
             "first_name": first_name,
             "last_name": last_name,
+            "phone": phone,
         }
 
         self.UserModel._default_manager.db_manager(database).create_superuser(
