@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from djoser.serializers import UserCreateSerializer, UserSerializer
+from djoser.serializers import UserCreateSerializer
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -11,6 +11,7 @@ from core.views import UserProductViewSet
 from products.models import Product
 from users.models import Favorite, ShoppingCart
 from users.serializers import (
+    CustomUserSerializer,
     FavoriteSerializer,
     PasswordSerializer,
     ShoppingCartSerializer,
@@ -36,7 +37,7 @@ class UserRegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 @permission_classes([IsAuthenticated])
 def me(request: Request, *args, **kwargs):
     user = get_object_or_404(User, pk=request.user.id)
-    serializer = UserSerializer(user)
+    serializer = CustomUserSerializer(user)
     return Response(serializer.data)
 
 
