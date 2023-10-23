@@ -45,8 +45,8 @@ urlpatterns = [
         "products/<int:product_id>/shopping_cart/",
         ShoppingCartViewSet.as_view(),
     ),
-    path("cart", CartListAPI.as_view(), name="cart-list"),
-    path("cart/<int:pk>", CartDetailAPI.as_view(), name="cart-detail"),
+    path("cart/", CartListAPI.as_view(), name="cart-list"),
+    path("cart/<int:pk>/", CartDetailAPI.as_view(), name="cart-detail"),
     path("orders/", OrderAPIView.as_view(), name="orders"),
     path("", include(router.urls)),
 ]
