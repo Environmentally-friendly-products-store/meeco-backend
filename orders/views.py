@@ -113,16 +113,26 @@ class CartListAPI(APIView):
     def delete(self, request):
         if not request.user.is_anonymous:
             dbcart = DBCart(request)
+            if not dbcart:
+                return Response(
+                    {"message": "no dbcart available"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
             dbcart.clear()
             return Response(
-                {"message": "dbcart is cleared"},
+                {"message": "dbcart cleared"},
                 status=status.HTTP_204_NO_CONTENT,
             )
 
         cart = Cart(request)
+        if not cart:
+            return Response(
+                {"message": "no cart available"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         cart.clear()
         return Response(
-            {"message": "cart is cleared"},
+            {"message": "cart cleared"},
             status=status.HTTP_204_NO_CONTENT,
         )
 
