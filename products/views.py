@@ -20,7 +20,7 @@ class ProductViewSet(ReadOnlyModelViewSet):
     serializer_class = ShortProductSerializer
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = Pagination
-    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filter_backends = (DjangoFilterBackend, )
     filterset_class = ProductFilter
     ordering_fields = ('price_per_unit',)
 

@@ -1,8 +1,10 @@
 from django_filters.rest_framework import FilterSet, filters
 
+from core.models import NameDescriptionModel
 from events.models import Event
 from products.models import Category, Product, Brand
 from orders.models import Order
+from users.models import ShoppingCart, Favorite
 
 
 class ProductFilter(FilterSet):
@@ -23,8 +25,8 @@ class ProductFilter(FilterSet):
         queryset=Event.objects.all(),
     )
     price_per_unit = filters.NumberFilter()
-    min_price = filters.NumberFilter(name="price_per_unit", lookup_type='gte')
-    max_price = filters.NumberFilter(name="price_per_unit", lookup_type='lte')
+    min_price = filters.NumberFilter(field_name="price_per_unit", lookup_expr='gte')
+    max_price = filters.NumberFilter(field_name="price_per_unit", lookup_expr='lte')
     is_in_shopping_cart = filters.BooleanFilter(method="get_is_in_shopping_cart")
     is_favorite = filters.BooleanFilter(method="get_is_favorite")
 
@@ -33,26 +35,17 @@ class ProductFilter(FilterSet):
         fields = ("name", "category", "brand", "min_price", "max_price",
                   "is_in_shopping_cart", "event")
 
-    def get_is_in_shopping_cart(self, queryset, name, value):
+    def get_is_in_shopping_cart(self, obj):
         user = self.request.user
 
-        if value and not user.is_anonymous:
-            return queryset.filter(shopping_cart_product__user=user)
+        if not user.is_anonymous:
+            return ShoppingCart.objects.filter(user=user, product=obj).exists()
+        return False
 
-        return queryset
-
-    def get_is_favorite(self, queryset, name, value):
+    def get_is_favorite(self, obj):
         user = self.request.user
 
-        if value and not user.is_anonymous:
-            return queryset.filter(favorite_product__user=user)
+        if not user.is_anonymous:
+            return Favorite.objects.filter(user=user, product=obj).exists()
+        return False
 
-        return queryset
-
-
-class OrderFilter(FilterSet):
-    customer = filters.CharFilter(field_name="customer")
-
-    class Meta:
-        model = Order
-        fields = ('customer',)
