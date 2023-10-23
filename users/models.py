@@ -67,7 +67,7 @@ class DeliveryAddress(UserMixin):
         help_text="Введите улицу",
     )
     house = models.CharField(
-        max_length=10,
+        max_length=20,
         verbose_name="дом",
         help_text="Введите дом",
     )
