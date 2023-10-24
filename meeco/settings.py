@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", default="MyTestKey")
 
-DEBUG = os.getenv("DEBUG", default=True)
+DEBUG = os.getenv("DEBUG", default=False)
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
@@ -21,6 +21,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_URLS_REGEX = r"^/api/.*$"
 
