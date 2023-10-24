@@ -28,7 +28,11 @@ class Product(DiscountMixin, CreatedAtMixin):
         blank=True,
     )
     structure = models.TextField(
-        max_length=512, verbose_name="Состав", help_text="Введите состав"
+        max_length=512,
+        verbose_name="Состав",
+        help_text="Введите состав",
+        null=True,
+        blank=True,
     )
     category = models.ForeignKey(
         "Category",
