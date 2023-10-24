@@ -12,7 +12,7 @@ from events.models import Event
 
 
 class Product(DiscountMixin, CreatedAtMixin):
-    name = models.TextField(
+    name = models.CharField(
         max_length=50,
         verbose_name="Наименование товара короткое",
         help_text="Введите наименование",
@@ -20,7 +20,7 @@ class Product(DiscountMixin, CreatedAtMixin):
     description = models.TextField(
         max_length=1000, verbose_name="Описание товара", help_text="Введите описание"
     )
-    long_name = models.TextField(
+    long_name = models.CharField(
         max_length=255,
         verbose_name="Наименование товара длинное",
         help_text="Введите наименование",
@@ -36,7 +36,11 @@ class Product(DiscountMixin, CreatedAtMixin):
         related_name="category",
     )
     brand = models.ForeignKey(
-        "Brand", max_length=30, verbose_name="Брэнд", on_delete=models.CASCADE
+        "Brand",
+        verbose_name="Брэнд",
+        on_delete=models.CASCADE,
+        help_text="Введите производителя",
+        related_name="brand",
     )
     event = models.ForeignKey(
         Event,
