@@ -24,6 +24,8 @@ class Product(DiscountMixin, CreatedAtMixin):
         max_length=255,
         verbose_name="Наименование товара длинное",
         help_text="Введите наименование",
+        null=True,
+        blank=True,
     )
     structure = models.TextField(
         max_length=512, verbose_name="Состав", help_text="Введите состав"
