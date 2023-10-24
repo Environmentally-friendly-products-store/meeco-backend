@@ -1,10 +1,8 @@
 from django_filters.rest_framework import FilterSet, filters
 
-from core.models import NameDescriptionModel
 from events.models import Event
-from products.models import Category, Product, Brand
-from orders.models import Order
-from users.models import ShoppingCart, Favorite
+from products.models import Brand, Category, Product
+from users.models import Favorite, ShoppingCart
 
 
 class ProductFilter(FilterSet):
@@ -25,15 +23,22 @@ class ProductFilter(FilterSet):
         queryset=Event.objects.all(),
     )
     price_per_unit = filters.NumberFilter()
-    min_price = filters.NumberFilter(field_name="price_per_unit", lookup_expr='gte')
-    max_price = filters.NumberFilter(field_name="price_per_unit", lookup_expr='lte')
+    min_price = filters.NumberFilter(field_name="price_per_unit", lookup_expr="gte")
+    max_price = filters.NumberFilter(field_name="price_per_unit", lookup_expr="lte")
     is_in_shopping_cart = filters.BooleanFilter(method="get_is_in_shopping_cart")
     is_favorite = filters.BooleanFilter(method="get_is_favorite")
 
     class Meta:
         model = Product
-        fields = ("name", "category", "brand", "min_price", "max_price",
-                  "is_in_shopping_cart", "event")
+        fields = (
+            "name",
+            "category",
+            "brand",
+            "min_price",
+            "max_price",
+            "is_in_shopping_cart",
+            "event",
+        )
 
     def get_is_in_shopping_cart(self, obj):
         user = self.request.user
@@ -48,4 +53,3 @@ class ProductFilter(FilterSet):
         if not user.is_anonymous:
             return Favorite.objects.filter(user=user, product=obj).exists()
         return False
-

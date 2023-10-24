@@ -12,14 +12,15 @@ SECRET_KEY = os.getenv("SECRET_KEY", default="MyTestKey")
 
 DEBUG = True
 
-#os.getenv("DEBUG", default=False)
+# os.getenv("DEBUG", default=False)
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
 # CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS")
+
 CSRF_TRUSTED_ORIGINS = [
-    "https://ecome.acceleratorpracticum.ru",
-    "https://test-ecome.acceleratorpracticum.ru",
+    "http://www.ecome.acceleratorpracticum.ru",
+    "http://www.test-ecome.acceleratorpracticum.ru:81",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -135,14 +136,13 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend',  # Specify field filtering
-        'rest_framework.filters.OrderingFilter',  # Sorting backend
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",  # Specify field filtering
+        "rest_framework.filters.OrderingFilter",  # Sorting backend
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "COERCE_DECIMAL_TO_STRING": False,
     "PAGE_SIZE": 12,
-
 }
 
 SIMPLE_JWT = {
