@@ -8,6 +8,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "name",
+        "long_name",
+        "structure",
         "description",
         "category",
         "brand",
@@ -18,6 +20,8 @@ class ProductAdmin(admin.ModelAdmin):
     )
     list_editable = (
         "name",
+        "long_name",
+        "structure",
         "description",
         "category",
         "brand",
