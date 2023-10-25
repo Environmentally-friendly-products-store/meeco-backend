@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from decimal import Decimal
 
 from orders import appvars as VARS
@@ -22,6 +23,7 @@ class Cart:
             self.cart[pid] = {
                 "amount": amount,
                 "total_price": price * amount,
+                "created_at": int(datetime.now(timezone.utc).timestamp() * 1000),
             }
         else:
             if overide_amount:
@@ -47,6 +49,16 @@ class Cart:
         for item in cart.values():
             item["total_price"] = Decimal(item["total_price"])
             yield item
+
+    def sort_by_date(self):
+        sorted_cart = sorted(
+            self.__iter__(),
+            key=lambda x: x.get("created_at"),
+            reverse=True,
+        )
+        for item in sorted_cart:
+            del item["created_at"]
+        return sorted_cart
 
     def __len__(self):
         return sum(item["amount"] for item in self.cart.values())

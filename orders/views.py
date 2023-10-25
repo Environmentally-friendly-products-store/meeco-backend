@@ -71,7 +71,7 @@ class CartListAPI(APIView):
             {
                 "items_count": cart.__len__(),
                 "cart_total_price": cart.get_total_price(),
-                "data": list(cart.__iter__()),
+                "data": cart.sort_by_date(),
             },
             status=status.HTTP_200_OK,
         )
