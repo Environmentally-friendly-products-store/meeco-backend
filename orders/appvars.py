@@ -1,5 +1,13 @@
 # variables for orders app
 
+ORDER_STATUS = {
+    "new": "новый",
+    "processing": "в работе",
+    "ready": "готов",
+    "shipped": "отправлен",
+    "recieved": "получен",
+}
+
 # Order table fields
 ORDER_ADDRESS_ML = 255
 ORDER_ARTICLE_ML = 50
