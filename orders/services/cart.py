@@ -51,11 +51,14 @@ class Cart:
             yield item
 
     def sort_by_date(self):
-        return sorted(
-            self.cart.items(),
-            key=lambda x: x[1].get("created_at"),
+        sorted_cart = sorted(
+            self.__iter__(),
+            key=lambda x: x.get("created_at"),
             reverse=True,
         )
+        for item in sorted_cart:
+            del item["created_at"]
+        return sorted_cart
 
     def __len__(self):
         return sum(item["amount"] for item in self.cart.values())

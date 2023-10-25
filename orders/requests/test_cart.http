@@ -11,7 +11,7 @@ Content-Type: application/json
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk4MDQ0NjQwLCJpYXQiOjE2OTc0Mzk4NDAsImp0aSI6IjY5ZDc2N2MyY2Q5YzQ5NzdhZmU3MzZmZDk0Y2JiNzVhIiwidXNlcl9pZCI6Mn0.DZA67np_FFITtf-djl1YPd5TVQq2EVIRXeAIsdiYK0Q
 
 {
-  "product": 3
+  "product": 1
 }
 
 ### add multi products to cart
@@ -32,7 +32,7 @@ Content-Type: application/json
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk4MDQ0NjQwLCJpYXQiOjE2OTc0Mzk4NDAsImp0aSI6IjY5ZDc2N2MyY2Q5YzQ5NzdhZmU3MzZmZDk0Y2JiNzVhIiwidXNlcl9pZCI6Mn0.DZA67np_FFITtf-djl1YPd5TVQq2EVIRXeAIsdiYK0Q
 
 ### build cart to DB
-PUT http://127.0.0.1:8000/api/v1/cart
+PUT http://127.0.0.1:8000/api/v1/cart/
 Content-Type: application/json
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk4MDQ0NTk2LCJpYXQiOjE2OTc0Mzk3OTYsImp0aSI6IjY3YjRjYWRlNzEwYjQ0MTU5Yjg4ZTU1N2JhZjFlOTFjIiwidXNlcl9pZCI6MX0.9OJ83Vcw_PUBP2pYh8vePzvRLlhIO2Lh4PoiTc01Q2Q
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk4MDQ0NjQwLCJpYXQiOjE2OTc0Mzk4NDAsImp0aSI6IjY5ZDc2N2MyY2Q5YzQ5NzdhZmU3MzZmZDk0Y2JiNzVhIiwidXNlcl9pZCI6Mn0.DZA67np_FFITtf-djl1YPd5TVQq2EVIRXeAIsdiYK0Q
@@ -50,11 +50,11 @@ Content-Type: application/json
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk4MDQ0NjQwLCJpYXQiOjE2OTc0Mzk4NDAsImp0aSI6IjY5ZDc2N2MyY2Q5YzQ5NzdhZmU3MzZmZDk0Y2JiNzVhIiwidXNlcl9pZCI6Mn0.DZA67np_FFITtf-djl1YPd5TVQq2EVIRXeAIsdiYK0Q
 
 {
-  "amount": 2
+  "amount": 1
 }
 
 ### remove product from cart
-DELETE http://127.0.0.1:8000/api/v1/cart/1/
+DELETE http://127.0.0.1:8000/api/v1/cart/2/
 Content-Type: application/json
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk4MDQ0NTk2LCJpYXQiOjE2OTc0Mzk3OTYsImp0aSI6IjY3YjRjYWRlNzEwYjQ0MTU5Yjg4ZTU1N2JhZjFlOTFjIiwidXNlcl9pZCI6MX0.9OJ83Vcw_PUBP2pYh8vePzvRLlhIO2Lh4PoiTc01Q2Q
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk4MDQ0NjQwLCJpYXQiOjE2OTc0Mzk4NDAsImp0aSI6IjY5ZDc2N2MyY2Q5YzQ5NzdhZmU3MzZmZDk0Y2JiNzVhIiwidXNlcl9pZCI6Mn0.DZA67np_FFITtf-djl1YPd5TVQq2EVIRXeAIsdiYK0Q
