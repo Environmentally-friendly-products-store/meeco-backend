@@ -1,15 +1,14 @@
 from __future__ import print_function
 
+import base64
 import os.path
 from email.message import EmailMessage
 
-import base64
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
@@ -45,9 +44,8 @@ def gmail_send_message():
         }
         send_message = (service.users().messages().send
                         (userId="me", body=create_message).execute())
-        # print(F'Message Id: {send_message["id"]}')
-    except HttpError as error:
-        # print(F'An error occurred: {error}')
+
+    except HttpError:
         send_message = None
     return send_message
 
