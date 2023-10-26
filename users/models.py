@@ -114,7 +114,7 @@ class ShoppingCart(UserMixin):
     amount = models.PositiveSmallIntegerField(verbose_name="Количество", default=0)
 
     class Meta:
-        ordering = ["user"]
+        ordering = ["product"]
         verbose_name = "корзина"
         verbose_name_plural = "корзины"
         constraints = [
