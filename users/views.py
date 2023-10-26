@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer
 from rest_framework import mixins, status, viewsets
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -33,24 +33,28 @@ class UserRegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         serializer.save(username=username)
 
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def me(request: Request, *args, **kwargs):
-    user = get_object_or_404(User, pk=request.user.id)
-    serializer = CustomUserSerializer(user)
-    return Response(serializer.data)
+class CustomUserViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = CustomUserSerializer
 
+    @action(["get"], detail=False, permission_classes=[IsAuthenticated])
+    def me(self, request, *args, **kwargs):
+        user = get_object_or_404(User, pk=request.user.id)
+        serializer = self.serializer_class(user)
+        return Response(serializer.data)
 
-@action(["post"], detail=False, permission_classes=[IsAuthenticated])
-def set_password(self, request, *args, **kwargs):
-    user = self.request.user
-    serializer = PasswordSerializer(data=request.data)
-    if serializer.is_valid():
-        user.set_password(serializer.validated_data["new_password"])
-        user.save()
-        return Response("Пароль успешно изменен", status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    @action(["post"], detail=False, permission_classes=[IsAuthenticated])
+    def set_password(self, request, *args, **kwargs):
+        user = self.request.user
+        serializer = PasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            user.set_password(serializer.validated_data["new_password"])
+            user.save()
+            return Response(
+                "Пароль успешно изменен", status=status.HTTP_400_BAD_REQUEST
+            )
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FavoriteView(UserProductViewSet):
