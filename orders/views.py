@@ -33,7 +33,17 @@ class OrderAPIView(APIView, LimitOffsetPagination):
             )
         serializer = OrderSerializer(data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save(customer=self.request.user)
+            if (
+                "status" in serializer.validated_data
+                and serializer.validated_data["status"]
+            ):
+                order_status = serializer.validated_data["status"]
+            else:
+                order_status = VARS.ORDER_STATUS_DEFAULT
+            serializer.save(
+                customer=self.request.user,
+                status=order_status,
+            )
             order_id = serializer.data["id"]
 
             self.request.session[VARS.ORDER_SESSION_ID] = order_id

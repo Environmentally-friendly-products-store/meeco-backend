@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from orders import appvars as VARS
 from orders.models import Order, OrderProduct
 from products.models import Product
 from users.models import ShoppingCart
@@ -64,10 +65,22 @@ class OrderProductSerializer(serializers.ModelSerializer):
         read_only_fields = ("item_total",)
 
 
+class OrderStatusField(serializers.ChoiceField):
+    def to_representation(self, obj):
+        return self._choices[obj]
+
+    def to_internal_value(self, data):
+        for key, val in self._choices.items():
+            if val == data:
+                return key
+        self.fail("invalid_choice", input=data)
+
+
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.HiddenField(
         default=serializers.CurrentUserDefault(),
     )
+    status = OrderStatusField(choices=VARS.ORDER_STATUSES)
     products = OrderProductSerializer(
         source="order_products", many=True, required=False
     )
@@ -90,6 +103,3 @@ class OrderSerializer(serializers.ModelSerializer):
             "products_count",
             "products",
         )
-
-    def create(self, validated_data):
-        return super().create(validated_data)
