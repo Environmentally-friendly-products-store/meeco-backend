@@ -1,4 +1,0 @@
-###
-GET http://127.0.0.1:8000/api/v1/products/
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MzAyMzg2LCJpYXQiOjE2OTY2OTc1ODYsImp0aSI6ImQ2MjcxN2RjYzQwYzQ5Nzc4MDEzYmQ1ZDUyNmE4MWUzIiwidXNlcl9pZCI6MX0.u6j_ee-BgXK_jnFhYhaimXG7fptIjmsN5_oBaHbOJR0
