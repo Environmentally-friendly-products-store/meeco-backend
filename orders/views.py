@@ -9,6 +9,7 @@ from orders.models import Order
 from orders.serializers import OrderSerializer
 from orders.services.cart import Cart
 from orders.services.dbcart import DBCart
+from orders.services.task import order_created, set_order_status
 
 
 class OrderAPIView(APIView, LimitOffsetPagination):
@@ -33,25 +34,16 @@ class OrderAPIView(APIView, LimitOffsetPagination):
             )
         serializer = OrderSerializer(data=request.data, partial=True)
         if serializer.is_valid():
-            if (
-                "status" in serializer.validated_data
-                and serializer.validated_data["status"]
-            ):
-                order_status = serializer.validated_data["status"]
-            else:
-                order_status = VARS.ORDER_STATUS_DEFAULT
             serializer.save(
                 customer=self.request.user,
-                status=order_status,
+                status=set_order_status(serializer.validated_data),
             )
             order_id = serializer.data["id"]
-
             self.request.session[VARS.ORDER_SESSION_ID] = order_id
-            # order_created.delay(order_id)
-
             order_instance = Order.objects.get(id=order_id)
             order_instance.price_total = dbcart.build_order(order_instance)
             order_instance.save()
+            order_created(order_instance)
             new_order = OrderSerializer(order_instance)
             return Response(new_order.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
