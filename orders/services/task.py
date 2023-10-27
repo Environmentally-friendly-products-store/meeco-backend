@@ -1,18 +1,21 @@
-from celery import task
-from django.core.mail import send_mail
-
-from orders.models import Order
+from mail.send_mail import gmail_send_message
+from orders import appvars as VARS
 
 
-@task
-def order_created(order_id):
+def order_created(order_instance):
     """
     Task to send an e-mail notification when an order is successfully created.
     """
-    order = Order.objects.get(id=order_id)
-    subject = f"Заказ № {order_id} интернет-магазине EcoMe"
-    message = f"Здравствуйте, {order.customer.first_name},\n\nВы успешно оформили заказ № {order_id}."
-    mail_sent = send_mail(
-        subject, message, "admin@myshop.com", [order.customer.email]
-    )
-    return mail_sent
+    subject = f"Заказ № {order_instance.id} в интернет-магазине EcoMe"
+    message = f"Здравствуйте, <b>{order_instance.customer.first_name}</b>,</br>"
+    f"Вы успешно оформили заказ № {order_instance.id} на сумму {order_instance.price_total}."
+    return gmail_send_message(order_instance.customer.email, subject, message)
+
+
+def set_order_status(validated_data):
+    """
+    Task to set default order status when an order is successfully created.
+    """
+    if "status" in validated_data and validated_data["status"]:
+        return validated_data["status"]
+    return VARS.ORDER_STATUS_DEFAULT
