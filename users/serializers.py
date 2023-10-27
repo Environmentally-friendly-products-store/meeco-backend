@@ -1,10 +1,8 @@
 from django.contrib.auth import get_user_model
-from djoser.conf import settings
-from djoser.serializers import UserSerializer
 from rest_framework import serializers
 
 from core.serializers import UserProductSerializer
-from users.models import DeliveryAddress, Favorite, ShoppingCart
+from users.models import Favorite, ShoppingCart
 
 User = get_user_model()
 
@@ -29,29 +27,19 @@ class ShoppingCartSerializer(UserProductSerializer):
         fields = ["user", "product", "amount"]
 
 
-class CustomUserSerializer(UserSerializer):
-    delivery_address = serializers.SerializerMethodField()
-
+class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = tuple(User.REQUIRED_FIELDS) + (
-            settings.USER_ID_FIELD,
-            settings.LOGIN_FIELD,
+        fields = (
+            "email",
+            "id",
+            "username",
+            "first_name",
+            "last_name",
             "phone",
             "delivery_address",
         )
-        read_only_fields = (settings.LOGIN_FIELD,)
-
-    def get_delivery_address(self, obj):
-        if DeliveryAddress.objects.filter(user=obj).exists():
-            return (
-                DeliveryAddress.objects.filter(user=obj)
-                .values(
-                    "id",
-                    "city",
-                    "street",
-                    "house",
-                    "apartment",
-                )
-                .first()
-            )
+        read_only_fields = (
+            "email",
+            "id",
+        )

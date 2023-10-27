@@ -31,6 +31,13 @@ class User(AbstractUser):
         verbose_name="телефон пользователя",
         help_text="Введите телефон",
     )
+    delivery_address = models.CharField(
+        max_length=512,
+        null=True,
+        blank=True,
+        verbose_name="адрес доставки пользователя",
+        help_text="Введите адрес доставки",
+    )
 
     class Meta:
         ordering = ["email"]
@@ -53,34 +60,6 @@ class UserMixin(models.Model):
 
     class Meta:
         abstract = True
-
-
-class DeliveryAddress(UserMixin):
-    city = models.CharField(
-        max_length=100,
-        verbose_name="город",
-        help_text="Введите город",
-    )
-    street = models.CharField(
-        max_length=150,
-        verbose_name="улица",
-        help_text="Введите улицу",
-    )
-    house = models.CharField(
-        max_length=20,
-        verbose_name="дом",
-        help_text="Введите дом",
-    )
-    apartment = models.CharField(
-        max_length=10,
-        verbose_name="квартира",
-        help_text="Введите квартиру",
-    )
-
-    class Meta:
-        ordering = ["user"]
-        verbose_name = "Адрес доставки"
-        verbose_name_plural = "адреса доставки"
 
 
 class Favorite(UserMixin):

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-from .models import DeliveryAddress, Favorite, ShoppingCart
+from .models import Favorite, ShoppingCart
 
 User = get_user_model()
 
@@ -17,23 +17,17 @@ class UserAdmin(admin.ModelAdmin):
         "date_joined",
         "last_login",
         "phone",
+        "delivery_address",
     )
     list_editable = (
         "first_name",
         "last_name",
         "is_staff",
         "phone",
+        "delivery_address",
     )
     list_filter = ("email", "is_staff", "date_joined", "last_login")
     search_fields = ("email",)
-    empty_value_display = "-пусто-"
-
-
-@admin.register(DeliveryAddress)
-class DeliveryAddressAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "city", "street", "house", "apartment")
-    list_filter = ("user",)
-    search_fields = ("user",)
     empty_value_display = "-пусто-"
 
 
