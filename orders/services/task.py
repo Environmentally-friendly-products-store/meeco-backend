@@ -8,7 +8,8 @@ def order_created(order_instance):
     """
     subject = f"Заказ № {order_instance.id} в интернет-магазине EcoMe"
     message = f"Здравствуйте, <b>{order_instance.customer.first_name}</b>,</br>"
-    f"Вы успешно оформили заказ № {order_instance.id} на сумму {order_instance.price_total}."
+    f"Вы успешно оформили заказ № {order_instance.id} "
+    f"на сумму {order_instance.price_total} руб."
     return gmail_send_message(order_instance.customer.email, subject, message)
 
 
