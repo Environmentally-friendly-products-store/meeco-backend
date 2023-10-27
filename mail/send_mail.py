@@ -29,8 +29,8 @@ def gmail_send_message(mail_to_address, subject, message_text):
         message = EmailMessage()
 
         message.set_content(message_text)
+        message["From"] = "EcoMe интернет-магазин <ecome.bestonlineshop@gmail.com>"
         message["To"] = mail_to_address
-        message["From"] = "ecome.bestonlineshop@gmail.com"
         message["Subject"] = subject
 
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
