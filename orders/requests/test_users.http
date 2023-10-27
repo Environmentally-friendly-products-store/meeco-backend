@@ -3,7 +3,7 @@ POST http://127.0.0.1:8000/api/v1/register/
 Content-Type: application/json
 
 {
-  "email": "kiwi@mail.ru",
+  "email": "burny@ramler.ru",
   "first_name": "Kiwi",
   "last_name": "Newrise",
   "password": "4myfreddy"
@@ -14,8 +14,8 @@ POST http://127.0.0.1:8000/api/v1/token/
 Content-Type: application/json
 
 {
-    "email": "6509588@mail.ru",
-    "password": "4freddy"
+    "email": "burny@ramler.ru",
+    "password": "4myfreddy"
 }
 
 ###

@@ -7,9 +7,7 @@ def order_created(order_instance):
     Task to send an e-mail notification when an order is successfully created.
     """
     subject = f"Заказ № {order_instance.id} в интернет-магазине EcoMe"
-    message = f"Здравствуйте, <b>{order_instance.customer.first_name}</b>,</br>"
-    f"Вы успешно оформили заказ № {order_instance.id} "
-    f"на сумму {order_instance.price_total} руб."
+    message = f"Здравствуйте, {order_instance.customer.first_name}. Вы успешно оформили заказ № {order_instance.id} на сумму {order_instance.price_total} руб."
     return gmail_send_message(order_instance.customer.email, subject, message)
 
 

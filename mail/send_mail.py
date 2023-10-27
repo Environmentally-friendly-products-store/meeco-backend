@@ -11,7 +11,7 @@ from googleapiclient.errors import HttpError
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 
 
-def gmail_send_message(mail_to_address, subject, message):
+def gmail_send_message(mail_to_address, subject, message_text):
     creds = None
     if os.path.exists("token.json"):
         creds = Credentials.from_authorized_user_file("token.json", SCOPES)
@@ -28,7 +28,7 @@ def gmail_send_message(mail_to_address, subject, message):
         service = build("gmail", "v1", credentials=creds)
         message = EmailMessage()
 
-        message.set_content(message)
+        message.set_content(message_text)
         message["To"] = mail_to_address
         message["From"] = "ecome.bestonlineshop@gmail.com"
         message["Subject"] = subject
