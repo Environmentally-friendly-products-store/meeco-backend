@@ -12,7 +12,7 @@ MAIL_FROM_NAME = os.environ["MAIL_FROM_NAME"]
 
 
 def send_email(email_to_address, email_to_name, subject, message):
-    data = {
+    json = {
         "mail": {
             "to": {
                 "email": email_to_address,
@@ -27,4 +27,4 @@ def send_email(email_to_address, email_to_name, subject, message):
         }
     }
     headers = {"X-Api-Key": X_API_KEY}
-    return requests.post(MAIL_URL, json=data, headers=headers)
+    return requests.post(MAIL_URL, json=json, headers=headers)
