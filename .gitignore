@@ -128,6 +128,9 @@ ENV/
 env.bak/
 venv.bak/
 .vscode
+requests/
+credentials.json
+token.json
 
 # Spyder project settings
 .spyderproject

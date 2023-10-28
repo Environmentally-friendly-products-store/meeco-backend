@@ -21,6 +21,7 @@ class ProductViewSet(ReadOnlyModelViewSet):
     pagination_class = Pagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProductFilter
+    ordering_fields = ("price_per_unit",)
 
     def get_serializer_class(self):
         if self.action == "retrieve":
