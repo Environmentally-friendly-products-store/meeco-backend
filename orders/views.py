@@ -9,7 +9,7 @@ from orders.models import Order
 from orders.serializers import OrderSerializer
 from orders.services.cart import Cart
 from orders.services.dbcart import DBCart
-from orders.services.task import set_order_status
+from orders.services.task import order_created, set_order_status
 
 
 class OrderAPIView(APIView, LimitOffsetPagination):
@@ -43,7 +43,7 @@ class OrderAPIView(APIView, LimitOffsetPagination):
             order_instance = Order.objects.get(id=order_id)
             order_instance.price_total = dbcart.build_order(order_instance)
             order_instance.save()
-            # order_created(order_instance)
+            order_created(order_instance)
             new_order = OrderSerializer(order_instance)
             return Response(new_order.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
