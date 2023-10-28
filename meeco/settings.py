@@ -63,7 +63,7 @@ ROOT_URLCONF = "meeco.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "core" / "mail_api"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
