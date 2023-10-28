@@ -11,7 +11,29 @@ from core.models import (
 from events.models import Event
 
 
-class Product(NameDescriptionModel, DiscountMixin, CreatedAtMixin):
+class Product(DiscountMixin, CreatedAtMixin):
+    name = models.CharField(
+        max_length=50,
+        verbose_name="Наименование товара короткое",
+        help_text="Введите наименование",
+    )
+    description = models.TextField(
+        max_length=1000, verbose_name="Описание товара", help_text="Введите описание"
+    )
+    long_name = models.CharField(
+        max_length=255,
+        verbose_name="Наименование товара длинное",
+        help_text="Введите наименование",
+        null=True,
+        blank=True,
+    )
+    structure = models.TextField(
+        max_length=512,
+        verbose_name="Состав",
+        help_text="Введите состав",
+        null=True,
+        blank=True,
+    )
     category = models.ForeignKey(
         "Category",
         on_delete=models.CASCADE,
