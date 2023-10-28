@@ -25,12 +25,7 @@ def order_created(order_instance):
         "products": OrderProduct.objects.filter(order_id=order_id),
     }
     message = render_to_string(INVOICE_TEMPLATE, context)
-    return send_email(
-        customer_email,
-        customer_name,
-        subject,
-        message,
-    )
+    return send_email(customer_email, customer_name, subject, message)
 
 
 def set_order_status(validated_data):
