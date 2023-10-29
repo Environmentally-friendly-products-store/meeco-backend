@@ -31,6 +31,7 @@ class ProductFilter(FilterSet):
         model = Product
         fields = (
             "name",
+            "price_per_unit",
             "category",
             "brand",
             "min_price",
