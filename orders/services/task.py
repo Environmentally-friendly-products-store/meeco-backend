@@ -16,11 +16,14 @@ def order_created(order_instance):
     """
     order_id = order_instance.id
     customer_email = order_instance.customer.email
-    customer_name = order_instance.customer.first_name
+    customer_name = (
+        order_instance.customer.first_name + " " + order_instance.customer.last_name
+    )
     subject = f"Заказ № {order_id} в интернет-магазине EcoMe"
     context = {
         "order_id": order_id,
-        "customer_name": customer_name,
+        "created_at": order_instance.created_at.strftime("%d.%m.%Y"),
+        "customer_name": order_instance.customer.first_name,
         "order_total": order_instance.price_total,
         "products": OrderProduct.objects.filter(order_id=order_id),
     }
