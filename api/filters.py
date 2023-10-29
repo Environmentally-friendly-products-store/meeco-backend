@@ -2,7 +2,6 @@ from django_filters.rest_framework import FilterSet, filters
 
 from events.models import Event
 from products.models import Brand, Category, Product
-from users.models import Favorite, ShoppingCart
 
 
 class ProductFilter(FilterSet):
@@ -41,16 +40,18 @@ class ProductFilter(FilterSet):
             "event",
         )
 
-    def get_is_in_shopping_cart(self, obj):
+    def get_is_in_shopping_cart(self, queryset, name, value):
         user = self.request.user
 
-        if not user.is_anonymous:
-            return ShoppingCart.objects.filter(user=user, product=obj).exists()
-        return False
+        if value and not user.is_anonymous:
+            return queryset.filter(shopping_cart_product__user=user)
 
-    def get_is_favorite(self, obj):
+        return queryset
+
+    def get_is_favorite(self, queryset, name, value):
         user = self.request.user
 
-        if not user.is_anonymous:
-            return Favorite.objects.filter(user=user, product=obj).exists()
-        return False
+        if value and not user.is_anonymous:
+            return queryset.filter(favorite_product__user=user)
+
+        return queryset
