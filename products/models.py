@@ -18,7 +18,9 @@ class Product(DiscountMixin, CreatedAtMixin):
         help_text="Введите наименование",
     )
     description = models.TextField(
-        max_length=1000, verbose_name="Описание товара", help_text="Введите описание"
+        max_length=1000,
+        verbose_name="Описание товара",
+        help_text="Введите описание"
     )
     long_name = models.CharField(
         max_length=255,
@@ -74,6 +76,9 @@ class Product(DiscountMixin, CreatedAtMixin):
         ordering = ["id"]
         verbose_name = "товар"
         verbose_name_plural = "товары"
+
+    def __str__(self):
+        return self.name
 
 
 class ImageSet(models.Model):
