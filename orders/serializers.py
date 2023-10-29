@@ -66,9 +66,6 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 
 class OrderStatusField(serializers.ChoiceField):
-    def to_representation(self, obj):
-        return self._choices[obj]
-
     def to_internal_value(self, data):
         for key, val in self._choices.items():
             if val == data:
