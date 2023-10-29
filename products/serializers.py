@@ -52,6 +52,9 @@ class ImageSetSerializer(serializers.ModelSerializer):
 PRODUCT_FIELDS = (
     "id",
     "name",
+    "description",
+    "long_name",
+    "structure",
     "price_per_unit",
     "category",
     "brand",
