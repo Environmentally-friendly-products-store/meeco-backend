@@ -23,7 +23,7 @@ class ProductViewSet(ReadOnlyModelViewSet):
         SearchFilter,
     )
     filterset_class = ProductFilter
-    # ordering_fields = ("price_per_unit",)
+    ordering_fields = ("price_per_unit",)
     search_fields = ("$name",)
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = Pagination
