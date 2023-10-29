@@ -50,9 +50,7 @@ class CustomUserViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
         if serializer.is_valid():
             user.set_password(serializer.validated_data["new_password"])
             user.save()
-            return Response(
-                "Пароль успешно изменен", status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response("Пароль успешно изменен", status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
