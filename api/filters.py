@@ -33,6 +33,7 @@ class ProductFilter(FilterSet):
         fields = (
             "name",
             "category",
+            "price_per_unit",
             "brand",
             "min_price",
             "max_price",
