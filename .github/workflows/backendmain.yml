@@ -1,8 +1,8 @@
 name: ecome backend workflow
 on: [push]
 env:
-  BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/ecome_backend:v1
-  # BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/ecome_backend:test
+  # BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/ecome_backend:v1
+  BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/ecome_backend:test
 jobs:
 
   build_and_push_to_docker_hub:
