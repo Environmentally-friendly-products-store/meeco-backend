@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "orders.apps.OrdersConfig",
     "products.apps.ProductsConfig",
     "users.apps.UsersConfig",
+    "import_export",
 ]
 
 MIDDLEWARE = [
