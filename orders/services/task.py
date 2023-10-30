@@ -15,14 +15,15 @@ def order_created(order_instance):
     Task to send an e-mail notification when an order is successfully created.
     """
     order_id = order_instance.id
+    created_at = order_instance.created_at.strftime("%d.%m.%Y")
     customer_email = order_instance.customer.email
     customer_name = (
         order_instance.customer.first_name + " " + order_instance.customer.last_name
     )
-    subject = f"Заказ № {order_id} в интернет-магазине EcoMe"
+    subject = f"Заказ № {order_id} от {created_at} в интернет-магазине EcoMe"
     context = {
         "order_id": order_id,
-        "created_at": order_instance.created_at.strftime("%d.%m.%Y"),
+        "created_at": created_at,
         "customer_name": order_instance.customer.first_name,
         "order_total": order_instance.price_total,
         "products": OrderProduct.objects.filter(order_id=order_id),

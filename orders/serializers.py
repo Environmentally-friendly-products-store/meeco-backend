@@ -66,18 +66,32 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 
 class OrderStatusField(serializers.ChoiceField):
+    def to_representation(self, value):
+        if value in self._choices.keys():
+            return self._choices[value]
+        return value
+
     def to_internal_value(self, data):
         for key, val in self._choices.items():
             if val == data:
                 return key
-        self.fail("invalid_choice", input=data)
+        return self.fail(
+            "invalid_choice",
+            input=data,
+        )
 
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.HiddenField(
         default=serializers.CurrentUserDefault(),
     )
-    status = OrderStatusField(choices=VARS.ORDER_STATUSES)
+    status = OrderStatusField(
+        choices=VARS.ORDER_STATUSES,
+        error_messages={
+            "invalid_choice": "Invalid choice. "
+            f"Select one of {[item[1] for item in VARS.ORDER_STATUSES]}"
+        },
+    )
     products = OrderProductSerializer(
         source="order_products", many=True, required=False
     )
