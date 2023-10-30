@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from api.filters import ProductFilter
@@ -17,10 +18,12 @@ from .serializers import (
 class ProductViewSet(ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ShortProductSerializer
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filterset_class = ProductFilter
+    ordering_fields = ("price_per_unit",)
+    search_fields = ("$name",)
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = Pagination
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = ProductFilter
 
     def get_serializer_class(self):
         if self.action == "retrieve":

@@ -1,5 +1,14 @@
 # variables for orders app
 
+ORDER_STATUSES = [
+    ("new", "новый"),
+    ("processing", "в работе"),
+    ("ready", "готов"),
+    ("shipped", "отправлен"),
+    ("recieved", "получен"),
+]
+ORDER_STATUS_DEFAULT = "new"
+
 # Order table fields
 ORDER_ADDRESS_ML = 255
 ORDER_ARTICLE_ML = 50
@@ -24,3 +33,7 @@ DEL_ADDR_CITY_ML = 50
 DEL_ADDR_STREET_ML = 100
 DEL_ADDR_HOUSE_ML = 10
 DEL_ADDR_APARTMENT_ML = 10
+
+# Making session keys
+CART_SESSION_ID = "cart"
+ORDER_SESSION_ID = "order_id"

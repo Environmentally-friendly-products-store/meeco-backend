@@ -14,19 +14,33 @@ class User(AbstractUser):
         help_text="Введите email",
     )
     username = models.CharField(
-        max_length=150, verbose_name="логин", help_text="Введите логин"
+        max_length=50, verbose_name="логин", help_text="Введите логин"
     )
     first_name = models.CharField(
-        max_length=150, verbose_name="имя пользователя", help_text="Введите имя"
+        max_length=32, verbose_name="имя пользователя", help_text="Введите имя"
     )
     last_name = models.CharField(
-        max_length=150,
+        max_length=64,
         verbose_name="фамилия пользователя",
         help_text="Введите фамилию",
     )
+    phone = models.CharField(
+        max_length=15,
+        null=True,
+        blank=True,
+        verbose_name="телефон пользователя",
+        help_text="Введите телефон",
+    )
+    delivery_address = models.CharField(
+        max_length=512,
+        null=True,
+        blank=True,
+        verbose_name="адрес доставки пользователя",
+        help_text="Введите адрес доставки",
+    )
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["email"]
         verbose_name = "пользователь"
         verbose_name_plural = "пользователи"
 
@@ -36,7 +50,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
 
-class UserProduct(models.Model):
+class UserMixin(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -48,7 +62,7 @@ class UserProduct(models.Model):
         abstract = True
 
 
-class Favorite(UserProduct):
+class Favorite(UserMixin):
     product = models.ForeignKey(
         Product,
         verbose_name="Товар",
@@ -59,7 +73,7 @@ class Favorite(UserProduct):
     )
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["user"]
         verbose_name = "Избранное"
         verbose_name_plural = "Избранное"
         constraints = [
@@ -67,7 +81,7 @@ class Favorite(UserProduct):
         ]
 
 
-class ShoppingCart(UserProduct):
+class ShoppingCart(UserMixin):
     product = models.ForeignKey(
         Product,
         verbose_name="Товар",
@@ -79,6 +93,11 @@ class ShoppingCart(UserProduct):
     amount = models.PositiveSmallIntegerField(verbose_name="Количество", default=0)
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["product"]
         verbose_name = "корзина"
         verbose_name_plural = "корзины"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["product", "user"], name="unique_shopping_cart"
+            )
+        ]

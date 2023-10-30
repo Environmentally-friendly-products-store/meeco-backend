@@ -1,13 +1,35 @@
 from django.contrib import admin
+from import_export import resources
+from import_export.admin import ImportExportMixin
 
 from products.models import Brand, Category, ImageSet, Product
 
 
+class ProductResource(resources.ModelResource):
+    class Meta:
+        model = Product
+        exclude = ("created_at", "view_amount", "buy_amount")
+        export_order = (
+            "id",
+            "name",
+            "description",
+            "price_per_unit",
+            "discount",
+            "long_name",
+            "structure",
+            "category",
+            "brand",
+            "event",
+        )
+
+
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = (
         "id",
         "name",
+        "long_name",
+        "structure",
         "description",
         "category",
         "brand",
@@ -18,6 +40,8 @@ class ProductAdmin(admin.ModelAdmin):
     )
     list_editable = (
         "name",
+        "long_name",
+        "structure",
         "description",
         "category",
         "brand",
@@ -34,6 +58,7 @@ class ProductAdmin(admin.ModelAdmin):
     )
     search_fields = ("name",)
     empty_value_display = "-пусто-"
+    resource_classes = [ProductResource]
 
 
 @admin.register(ImageSet)

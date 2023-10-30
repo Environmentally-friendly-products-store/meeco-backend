@@ -3,18 +3,23 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt import views
 
 from events.views import EventViewSet
-from orders.views import OrderViewSet
+from orders.views import CartDetailAPI, CartListAPI, OrderAPIView
 from products.views import BrandViewSet, CategoryViewSet, ProductViewSet
-from users.views import FavoriteView, ShoppingCartViewSet, UserRegisterViewSet, me
+from users.views import (
+    CustomUserViewSet,
+    FavoriteView,
+    ShoppingCartViewSet,
+    UserRegisterViewSet,
+)
 
 app_name = "api"
 
 router = DefaultRouter()
 router.register(r"products", ProductViewSet)
-router.register(r"orders", OrderViewSet)
 router.register(r"categories", CategoryViewSet)
 router.register(r"events", EventViewSet)
 router.register(r"brands", BrandViewSet)
+router.register(r"users", CustomUserViewSet)
 
 urlpatterns = [
     path(
@@ -37,7 +42,6 @@ urlpatterns = [
         views.TokenVerifyView.as_view(),
         name="token_verify",
     ),
-    path("users/me/", me, name="user_me"),
     path(
         "products/<int:product_id>/favorite/",
         FavoriteView.as_view(),
@@ -46,5 +50,8 @@ urlpatterns = [
         "products/<int:product_id>/shopping_cart/",
         ShoppingCartViewSet.as_view(),
     ),
+    path("cart/", CartListAPI.as_view(), name="cart-list"),
+    path("cart/<int:pk>/", CartDetailAPI.as_view(), name="cart-detail"),
+    path("orders/", OrderAPIView.as_view(), name="orders"),
     path("", include(router.urls)),
 ]
