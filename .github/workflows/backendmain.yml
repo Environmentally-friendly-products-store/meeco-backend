@@ -47,6 +47,5 @@ jobs:
             sudo docker-compose -f docker-compose-test.yaml -p test stop
             sudo docker pull ${{ env.BACKEND_IMAGE }}
             # sudo docker-compose up -d
-            docker-compose -f docker-compose-test.yaml -p test up -d
-            docker cp credentials.json backend-test:app/credentials.json
+            sudo docker-compose -f docker-compose-test.yaml -p test up -d
             sudo docker image prune -f
