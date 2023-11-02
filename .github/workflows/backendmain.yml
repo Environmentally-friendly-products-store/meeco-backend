@@ -40,7 +40,7 @@ jobs:
           host: ${{ secrets.HOST_1 }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE_1 }}
+          passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             # # sudo docker-compose stop
             # cd test
