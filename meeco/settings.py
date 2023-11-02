@@ -18,6 +18,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 CSRF_TRUSTED_ORIGINS = [
     "https://ecome.acceleratorpracticum.ru",
     "https://test-ecome.acceleratorpracticum.ru",
+    "http://ecomestore.sytes.net"
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

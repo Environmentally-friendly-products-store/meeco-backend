@@ -37,15 +37,20 @@ jobs:
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
+          host: ${{ secrets.HOST_1 }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          passphrase: ${{ secrets.PASSPHRASE_1 }}
           script: |
-            # sudo docker-compose stop
-            cd test
-            sudo docker-compose -f docker-compose-test.yaml -p test stop
+            # # sudo docker-compose stop
+            # cd test
+            # sudo docker-compose -f docker-compose-test.yaml -p test stop
+            # sudo docker pull ${{ env.BACKEND_IMAGE }}
+            # # sudo docker-compose up -d
+            # docker-compose -f docker-compose-test.yaml -p test up -d
+            # sudo docker image prune -f
+            cd ecome
+            sudo docker-compose stop
             sudo docker pull ${{ env.BACKEND_IMAGE }}
-            # sudo docker-compose up -d
-            docker-compose -f docker-compose-test.yaml -p test up -d
+            sudo docker-compose up -d
             sudo docker image prune -f
