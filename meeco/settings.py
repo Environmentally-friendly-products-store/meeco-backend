@@ -18,11 +18,11 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 CSRF_TRUSTED_ORIGINS = [
     "https://ecome.acceleratorpracticum.ru",
     "https://test-ecome.acceleratorpracticum.ru",
-    "http://bugaton1.acceleratorpracticum.ru",
-    "http://bugaton2.acceleratorpracticum.ru",
-    "http://bugaton3.acceleratorpracticum.ru",
-    "http://bugaton4.acceleratorpracticum.ru",
-    "http://bugaton5.acceleratorpracticum.ru"
+    "https://bugaton1.acceleratorpracticum.ru",
+    "https://bugaton2.acceleratorpracticum.ru",
+    "https://bugaton3.acceleratorpracticum.ru",
+    "https://bugaton4.acceleratorpracticum.ru",
+    "https://bugaton5.acceleratorpracticum.ru"
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
